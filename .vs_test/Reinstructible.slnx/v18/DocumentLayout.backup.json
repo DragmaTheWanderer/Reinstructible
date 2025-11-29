@@ -1,0 +1,165 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.client\\src\\proxy.conf.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|solutionrelative:reinstructible.client\\src\\proxy.conf.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.client\\src\\main.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|solutionrelative:reinstructible.client\\src\\main.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.client\\src\\element\\element.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}|",
+      "RelativeMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|solutionrelative:reinstructible.client\\src\\element\\element.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.client\\src\\legoset\\legoset.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|solutionrelative:reinstructible.client\\src\\legoset\\legoset.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F00EE46-CA82-772E-13E6-EB3135577A07}|Reinstructible.Server\\Reinstructible.Server.csproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.server\\controllers\\elementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F00EE46-CA82-772E-13E6-EB3135577A07}|Reinstructible.Server\\Reinstructible.Server.csproj|solutionrelative:reinstructible.server\\controllers\\elementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.client\\src\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|solutionrelative:reinstructible.client\\src\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.client\\src\\legoset\\legoset.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|solutionrelative:reinstructible.client\\src\\legoset\\legoset.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F00EE46-CA82-772E-13E6-EB3135577A07}|Reinstructible.Server\\Reinstructible.Server.csproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.server\\controllers\\setcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F00EE46-CA82-772E-13E6-EB3135577A07}|Reinstructible.Server\\Reinstructible.Server.csproj|solutionrelative:reinstructible.server\\controllers\\setcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|c:\\users\\dragm\\source\\repos\\reinstructible\\reinstructible.client\\src\\legoset\\legoset-module.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{D6A97165-D33B-4222-E63E-8A82F9FF79D0}|reinstructible.client\\reinstructible.client.esproj|solutionrelative:reinstructible.client\\src\\legoset\\legoset-module.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "proxy.conf.js",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\proxy.conf.js",
+              "RelativeDocumentMoniker": "reinstructible.client\\src\\proxy.conf.js",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\proxy.conf.js",
+              "RelativeToolTip": "reinstructible.client\\src\\proxy.conf.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-26T22:01:10.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "element.ts",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\element\\element.ts",
+              "RelativeDocumentMoniker": "reinstructible.client\\src\\element\\element.ts",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\element\\element.ts",
+              "RelativeToolTip": "reinstructible.client\\src\\element\\element.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-26T21:42:47.287Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "legoset.ts",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\legoset\\legoset.ts",
+              "RelativeDocumentMoniker": "reinstructible.client\\src\\legoset\\legoset.ts",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\legoset\\legoset.ts",
+              "RelativeToolTip": "reinstructible.client\\src\\legoset\\legoset.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-26T20:33:55.322Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ElementController.cs",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\Reinstructible.Server\\Controllers\\ElementController.cs",
+              "RelativeDocumentMoniker": "Reinstructible.Server\\Controllers\\ElementController.cs",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\Reinstructible.Server\\Controllers\\ElementController.cs",
+              "RelativeToolTip": "Reinstructible.Server\\Controllers\\ElementController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T21:41:01.187Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "legoset-module.ts",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\legoset\\legoset-module.ts",
+              "RelativeDocumentMoniker": "reinstructible.client\\src\\legoset\\legoset-module.ts",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\legoset\\legoset-module.ts",
+              "RelativeToolTip": "reinstructible.client\\src\\legoset\\legoset-module.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-26T21:16:18.472Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SetController.cs",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\Reinstructible.Server\\Controllers\\SetController.cs",
+              "RelativeDocumentMoniker": "Reinstructible.Server\\Controllers\\SetController.cs",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\Reinstructible.Server\\Controllers\\SetController.cs",
+              "RelativeToolTip": "Reinstructible.Server\\Controllers\\SetController.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwA8AAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T21:11:18.595Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "main.ts",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\main.ts",
+              "RelativeDocumentMoniker": "reinstructible.client\\src\\main.ts",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\main.ts",
+              "RelativeToolTip": "reinstructible.client\\src\\main.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-26T20:57:40.899Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\index.html",
+              "RelativeDocumentMoniker": "reinstructible.client\\src\\index.html",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\index.html",
+              "RelativeToolTip": "reinstructible.client\\src\\index.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-11-26T20:56:14.569Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "legoset.html",
+              "DocumentMoniker": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\legoset\\legoset.html",
+              "RelativeDocumentMoniker": "reinstructible.client\\src\\legoset\\legoset.html",
+              "ToolTip": "C:\\Users\\dragm\\source\\repos\\Reinstructible\\reinstructible.client\\src\\legoset\\legoset.html",
+              "RelativeToolTip": "reinstructible.client\\src\\legoset\\legoset.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-11-26T20:33:51.873Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+<h1 id="tableLabel">Lego Set Elements</h1>
+
+<p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
+<div>
+  <label>
+    Set Number:
+    <input type="text" name="setNumber" [(ngModel)]="idValue" placeholder="Enter Set Number">
+  </label>
+  <button type="submit" (click)="getElement()">Submit</button>
+</div>
+
+<table *ngIf="Loaded">
+    <thead>
+      <tr>
+        <th>Set Number</th>
+        <th>Quantity</th>
+        <th>Part Name</th>
+        <th>Part Color</th>
+        <th>Image Url</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of elements">
+        <td>{{ item.set_num }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.part.name }}</td>
+        <td>{{ item.color.name }}</td>
+        <td>{{ item.part.part_img_url }}</td>
+      </tr>
+    </tbody>
+</table>
+

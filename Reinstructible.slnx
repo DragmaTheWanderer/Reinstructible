@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="reinstructible.client/reinstructible.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="Reinstructible.Server/Reinstructible.Server.csproj" />
+</Solution>
