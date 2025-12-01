@@ -4,6 +4,7 @@ interface ILegoSet {
   set_num_parent: string;
   name: string;
   theme_id: number;
+  theme: ITheme[];
   set_img_url: string;
   set_imager_resource: number;
   set_element_count: number;
@@ -43,6 +44,11 @@ interface IColor {
   rgb: string;
   is_trans: boolean;
 }
+interface ITheme {
+  id: number;
+  parent_id: number;
+  name: string;
+}
 
 export type {
   IColor,
@@ -50,5 +56,5 @@ export type {
   ILegoSet,
   IPart,
   IPartCategory,
-  
+  ITheme,
 }

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
-import { ILegoSet } from '../interfaces/rebrickable'
+import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 
 @Component({
   selector: 'legoset-root',
@@ -17,7 +17,7 @@ export class LegoSet implements OnInit {
   public idValue: string = "";
 
   ngOnInit() {
-    this.getSet();
+    //this.getSet();
   }
 
   getSet() {

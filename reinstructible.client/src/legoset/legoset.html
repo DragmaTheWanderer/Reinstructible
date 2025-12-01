@@ -12,17 +12,19 @@
 <table *ngIf="setsLoaded">
     <thead>
         <tr>
+            <th>Theme</th>
             <th>Set Number</th>
             <th>Name</th>
             <th>Image Url</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let set of legoSets">
-            <td>{{ set.set_num }}</td>
-            <td>{{ set.name }}</td>
-            <td>{{ set.set_img_url }}</td>
-        </tr>
+      <tr *ngFor="let set of legoSets">
+        <td>{{ set.theme[0].name }}</td>
+        <td>{{ set.set_num }}</td>
+        <td>{{ set.name }}</td>
+        <td>{{ set.set_img_url }}</td>
+      </tr>
     </tbody>
 </table>
 
