@@ -1,8 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using Reinstructible.Server.DL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+
+// Configure the DbContext to use SQLite
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<sqliteContext>(options =>
+    options.UseSqlite(connectionString)); // UseSqlite extension method
+
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 // Add services to the container.
