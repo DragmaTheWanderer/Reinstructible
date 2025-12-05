@@ -1,8 +1,11 @@
-﻿namespace Reinstructible.Server.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Reinstructible.Server.Models
 {
     public class SubInventory
     {
         //Key combo
+        [Key]
         public int id {  get; set; }
         public string? set_num { get; set; }
         public string? element_id { get; set; }

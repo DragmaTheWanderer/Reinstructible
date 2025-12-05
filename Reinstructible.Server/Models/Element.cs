@@ -1,4 +1,6 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles\
+using System.ComponentModel.DataAnnotations;
+
 namespace Reinstructible.Server.Models
 {
 
@@ -9,6 +11,7 @@ namespace Reinstructible.Server.Models
 
     public class Element
     {
+        [Key]
         public int id { get; set; }
         public int inv_part_id { get; set; }
         public Part? part { get; set; }

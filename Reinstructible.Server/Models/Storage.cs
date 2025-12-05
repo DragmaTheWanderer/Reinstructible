@@ -1,7 +1,10 @@
-﻿namespace Reinstructible.Server.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Reinstructible.Server.Models
 {
     public class Storage
     {
+        [Key]
         public int Id { get; set; }
         public string? element_id { get; set; }
         public string? Bin { get; set; }
