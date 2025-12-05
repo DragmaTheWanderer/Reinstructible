@@ -3,6 +3,7 @@
     public class Storage
     {
         public int Id { get; set; }
+        public string? element_id { get; set; }
         public string? Bin { get; set; }
         public string? Drawer { get; set; }
 

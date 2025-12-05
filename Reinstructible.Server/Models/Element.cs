@@ -18,6 +18,9 @@ namespace Reinstructible.Server.Models
         public bool is_spare { get; set; }
         public string? element_id { get; set; }
         public int num_sets { get; set; }
+
+        public Storage storage_location {  get; set; }
+        public SubInventory[] sub_inventory { get; set; } 
     }
 }
 #pragma warning restore IDE1006 // Naming Styles

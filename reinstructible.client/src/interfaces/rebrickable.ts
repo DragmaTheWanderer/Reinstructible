@@ -20,6 +20,9 @@ interface IElement {
   is_spare: boolean;
   element_id: string;
   num_sets: number;
+
+  storage_location: IStorage
+  sub_inventory: ISubInventory;
 }
 interface IPart {
   part_num: string;
@@ -50,6 +53,24 @@ interface ITheme {
   name: string;
 }
 
+interface ISubInventory {
+  //Key combo
+  id: number;
+  set_num: string;
+  element_id: string;
+
+  //fields
+  quantity: number;
+  subBuildName: string;
+  page: number;
+  step: number;
+}
+interface IStorage {
+  Id: number;
+  element_id: string;
+  Bin: string;
+  Drawer: string;
+}
 export type {
   IColor,
   IElement,

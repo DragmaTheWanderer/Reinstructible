@@ -4,7 +4,8 @@
 <div>
   <label>
     Set Number:
-    <input type="text" name="setNumber" [(ngModel)]="filterValue" placeholder="Enter Set Number">
+    <input type="text" name="setNumber" [(ngModel)]="filterValue" placeholder="Enter Set Number"
+           (keyup.enter)="getSet()">
   </label>
   <button type="submit" (click)="getSet()">Submit</button>
 </div>
