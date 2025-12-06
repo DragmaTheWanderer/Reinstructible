@@ -1,0 +1,6 @@
+﻿select set, then
+1) save set
+2) save theme
+3) save element/part/color
+4) save part Category
+5) set up element storage location

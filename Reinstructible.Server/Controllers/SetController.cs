@@ -50,37 +50,37 @@ namespace Reinstructible.Server.Controllers
                     themeItem = JsonSerializer.Deserialize<Theme>(resultStr)!;
                     themeDetail.Add(themeItem);
                 }
-                item.theme = themeDetail.ToArray();
+                item.theme = [.. themeDetail];
             }
             
             return result;
         }
 
         //CRUD Methods
-        public void CreateSavedSet(LegoSet set)
+        public void CreateSavedItem(LegoSet set)
         {
-            var result = _context.LegoSets.Add(set);
+            _ = _context.LegoSets.Add(set);
         }
-        public List<LegoSet> ReadSavedSets()
+        public List<LegoSet> ReadSavedItems()
         {
             var result = _context.LegoSets.OrderBy(x=>x.name).ToList();
 
             return result;
         }
-        public LegoSet GetSavedSetBySet(LegoSet set)
+        public LegoSet GetSavedSetByItem(LegoSet set)
         {
             var result = (LegoSet)_context.LegoSets.Where(x=>x.set_num == set.set_num);
                 
 
             return result;
         }
-        public void UpdateSavedSet(LegoSet set)
+        public void UpdateSavedItem(LegoSet set)
         {
-            var result = _context.LegoSets.Update(set);
+            _ = _context.LegoSets.Update(set);
         }
-        public void DeleteSavedSet(LegoSet set)
+        public void DeleteSavedItem(LegoSet set)
         {
-            var result = _context.LegoSets.Remove(set);
+            _ = _context.LegoSets.Remove(set);
         }
     }
 }

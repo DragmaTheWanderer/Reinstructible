@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
-using System.Linq;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace Reinstructible.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ElementController(IHttpClientFactory httpClientFactory) : ControllerBase
+    public class ElementController(IHttpClientFactory httpClientFactory, sqliteContext context) : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private readonly sqliteContext _context = context;
 
         [HttpGet]
         public async Task<Element[]> GetAsync(string id = "")
@@ -43,7 +43,35 @@ namespace Reinstructible.Server.Controllers
             OrigList.AddRange(NewList);
             return [.. OrigList];
         }
-    } 
+
+        //CRUD Methods
+        public void CreateSavedItem(Element element)
+        {
+            _ = _context.Elements.Add(element);
+        }
+        public List<Element> ReadSavedItems()
+        {
+            var result = _context.Elements.OrderBy(x => x.part!.name).ThenBy(y=>y.color!.name).ToList();
+
+            return result;
+        }
+        public Element GetSavedItemByItem(Element element)
+        {
+            var result = (Element)_context.Elements.Where(x => x.element_id == element.element_id);
+
+
+            return result;
+        }
+        public void UpdateSavedItem(Element element)
+        {
+            _ = _context.Elements.Update(element);
+        }
+        public void DeleteSavedItem(Element element)
+        {
+            _ = _context.Elements.Remove(element);
+        }
+
+    }
 }
 
 

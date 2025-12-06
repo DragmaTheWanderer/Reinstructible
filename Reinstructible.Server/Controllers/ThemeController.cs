@@ -1,13 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
 using System.Text.Json;
 
 namespace Reinstructible.Server.Controllers
 {
-    public class ThemeController(IHttpClientFactory httpClientFactory) : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ThemeController(IHttpClientFactory httpClientFactory, sqliteContext context) : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private readonly sqliteContext _context = context;
 
         [HttpGet]
         public async Task<Theme[]> GetAsync(string id = "")
@@ -30,5 +34,33 @@ namespace Reinstructible.Server.Controllers
             }
             return result;
         }
+
+        //CRUD Methods
+        public void CreateSavedItem(Theme theme)
+        {
+            _ = _context.Themes.Add(theme);
+        }
+        public List<Theme> ReadSavedItems()
+        {
+            var result = _context.Themes.OrderBy(x => x.name).ToList();
+
+            return result;
+        }
+        public Theme GetSavedSetByItem(Theme theme)
+        {
+            var result = (Theme)_context.Themes.Where(x => x.id == theme.id);
+
+
+            return result;
+        }
+        public void UpdateSavedItem(Theme theme)
+        {
+            _ = _context.Themes.Update(theme);
+        }
+        public void DeleteSavedItem(Theme theme)
+        {
+            _ = _context.Themes.Remove(theme);
+        }
+
     }
 }

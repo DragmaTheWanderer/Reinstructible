@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
 using System.Text.Json;
@@ -7,9 +8,10 @@ namespace Reinstructible.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PartController(IHttpClientFactory httpClientFactory) : ControllerBase
+    public class PartController(IHttpClientFactory httpClientFactory, sqliteContext context) : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private readonly sqliteContext _context = context;
 
         [HttpGet]
         public async Task<Part[]> GetAsync(string id = "", string param = "")
@@ -34,5 +36,33 @@ namespace Reinstructible.Server.Controllers
             }
             return result;
         }
+
+        //CRUD Methods
+        public void CreateSavedItem(Part part)
+        {
+            _ = _context.Parts.Add(part);
+        }
+        public List<Part> ReadSavedItems()
+        {
+            var result = _context.Parts.OrderBy(x => x.name).ToList();
+
+            return result;
+        }
+        public Part GetSavedSetByItem(Part part)
+        {
+            var result = (Part)_context.Parts.Where(x => x.part_num == part.part_num);
+
+
+            return result;
+        }
+        public void UpdateSavedItem(Part part)
+        {
+            _ = _context.Parts.Update(part);
+        }
+        public void DeleteSavedItem(Part part)
+        {
+            _ = _context.Parts.Remove(part);
+        }
+
     }
 }
