@@ -8,10 +8,10 @@ namespace Reinstructible.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ElementController(IHttpClientFactory httpClientFactory, sqliteContext context) : ControllerBase
+    public class ElementController(IHttpClientFactory httpClientFactory, SqliteContext context) : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-        private readonly sqliteContext _context = context;
+        private readonly SqliteContext _context = context;
 
         [HttpGet]
         public async Task<Element[]> GetAsync(string id = "")

@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
 import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 
@@ -38,7 +38,30 @@ export class LegoSet implements OnInit {
         console.error(error);
         this.setsLoaded = false;
       }
-    })
+    });
+  }
+
+  saveSet(legoSet: ILegoSet){
+    let result = {};
+    let loading = true;
+    let error = "";
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      observe: 'response' as 'response', // To get the full HttpResponse
+    };
+
+    // const body = { 'legoSetJSON' : JSON.stringify(legoSet) };
+    const data: string = legoSet.set_num;
+    const jsonString = JSON.stringify(data);
+
+
+    this.http.post('/api/set', jsonString, httpOptions).subscribe({
+      next: (res) => { result = res; loading = false; },
+      error: (error) => { console.error(error); error = 'Failed to create post'; loading = false; }
+    });
   }
   protected readonly title = signal('reinstructible.client');
 }

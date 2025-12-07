@@ -8,10 +8,10 @@ namespace Reinstructible.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ColorController(IHttpClientFactory httpClientFactory, sqliteContext context) : ControllerBase
+    public class ColorController(IHttpClientFactory httpClientFactory, SqliteContext context) : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-        private readonly sqliteContext _context = context;
+        private readonly SqliteContext _context = context;
 
         [HttpGet]
         public async Task<Color[]> GetAsync(string id = "")

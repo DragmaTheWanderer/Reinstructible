@@ -10,7 +10,7 @@ using Reinstructible.Server.DL;
 
 namespace Reinstructible.Server.Migrations
 {
-    [DbContext(typeof(sqliteContext))]
+    [DbContext(typeof(SqliteContext))]
     [Migration("20251205221332_InitialCreate")]
     partial class InitialCreate
     {

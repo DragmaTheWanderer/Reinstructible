@@ -20,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let set of legoSets">
+      <tr *ngFor="let set of legoSets" (click)="saveSet(set)">
         <td>{{ set.theme[0].name }}</td>
         <td>{{ set.set_num }}</td>
         <td>{{ set.name }}</td>

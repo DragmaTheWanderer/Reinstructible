@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 namespace Reinstructible.Server.DL
 {
-    public class sqliteContext : DbContext
+    public class SqliteContext(DbContextOptions<SqliteContext> options) : DbContext(options)
     {
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Configure the context to use SQLite and a local database file
+            optionsBuilder.UseSqlite("Data Source=reinstructiable.db");
+        }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Element> Elements { get; set; }
         public DbSet<LegoSet> LegoSets { get; set; }
@@ -20,12 +24,6 @@ namespace Reinstructible.Server.DL
         //use Add-Migration InitialCreate to create the DB
         // undo with Remove-Migration
         // finally create the file with: Update-Database
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Configure the context to use SQLite and a local database file
-            optionsBuilder.UseSqlite("Data Source=reinstructiable.db");
-        }
 
     }
 }

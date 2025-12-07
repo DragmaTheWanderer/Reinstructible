@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
@@ -8,10 +9,10 @@ namespace Reinstructible.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ThemeController(IHttpClientFactory httpClientFactory, sqliteContext context) : ControllerBase
+    public class ThemeController(IHttpClientFactory httpClientFactory, SqliteContext context) : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-        private readonly sqliteContext _context = context;
+        private readonly SqliteContext _context = context;
 
         [HttpGet]
         public async Task<Theme[]> GetAsync(string id = "")
@@ -35,10 +36,23 @@ namespace Reinstructible.Server.Controllers
             return result;
         }
 
+        public void SaveThemes(Theme[] themes)
+        {
+            foreach (var theme in themes)
+            {
+                //check if theme is saved
+                Theme? themeCheck = GetSavedThemeByItem(theme);
+                if (themeCheck == null) {
+                    CreateSavedItem(theme);
+                }
+            }
+        }
+
         //CRUD Methods
         public void CreateSavedItem(Theme theme)
         {
-            _ = _context.Themes.Add(theme);
+            _context.Themes.Add(theme);
+            _context.SaveChanges();
         }
         public List<Theme> ReadSavedItems()
         {
@@ -46,20 +60,24 @@ namespace Reinstructible.Server.Controllers
 
             return result;
         }
-        public Theme GetSavedSetByItem(Theme theme)
+        public Theme? GetSavedThemeByItem(Theme theme)
         {
-            var result = (Theme)_context.Themes.Where(x => x.id == theme.id);
+            Theme? result = null;
+            var test = _context.Themes.Where(x => x.id == theme.id);
+            if (!test.Any()) return result;
 
-
+            result = test.FirstOrDefault();
             return result;
         }
         public void UpdateSavedItem(Theme theme)
         {
-            _ = _context.Themes.Update(theme);
+            _context.Themes.Update(theme);
+            _context.SaveChanges();
         }
         public void DeleteSavedItem(Theme theme)
         {
-            _ = _context.Themes.Remove(theme);
+            _context.Themes.Remove(theme);
+            _context.SaveChanges();
         }
 
     }

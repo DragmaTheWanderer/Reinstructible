@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 
 // Configure the DbContext to use SQLite
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<sqliteContext>(options =>
+builder.Services.AddDbContext<SqliteContext>(options =>
     options.UseSqlite(connectionString)); // UseSqlite extension method
 
 

@@ -9,7 +9,7 @@ using Reinstructible.Server.DL;
 
 namespace Reinstructible.Server.Migrations
 {
-    [DbContext(typeof(sqliteContext))]
+    [DbContext(typeof(SqliteContext))]
     partial class sqliteContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
