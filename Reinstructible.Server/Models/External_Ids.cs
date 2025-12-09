@@ -1,6 +1,6 @@
-﻿namespace Reinstructible.Server.Models
+﻿    #pragma warning disable IDE1006 // Naming Styles
+namespace Reinstructible.Server.Models
 {
-    #pragma warning disable IDE1006 // Naming Styles
     public class External_Ids_Color
     {
         public Bricklink? BrickLink { get; set; }

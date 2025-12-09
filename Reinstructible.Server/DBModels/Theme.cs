@@ -1,13 +1,12 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
+using System.ComponentModel.DataAnnotations;
 
-namespace Reinstructible.Server.Models
+namespace Reinstructible.Server.DBModels
 {
-    public class Themes : BaseRecord
-    {
-        public Theme[]? results { get; set; }
-    }
+  
     public class Theme
     {
+        [Key]
         public int id { get; set; }
         public int? parent_id { get; set; }
         public string? name { get; set; }
@@ -16,16 +15,15 @@ namespace Reinstructible.Server.Models
         public Theme(int id, string name, int? parent_id = null)
         {
             this.id = id;
-            this.name = name;
             this.parent_id = parent_id;
+            this.name = name;
         }
-        public Theme(DBModels.Theme dbm)
+        public Theme(Models.Theme vm)
         {
-            this.id = dbm.id;
-            this.name = dbm.name;
-            this.parent_id = dbm.parent_id;
+            this.id = vm.id;
+            this.parent_id=vm.parent_id;
+            this.name = vm.name;
         }
-
     }
 
 }

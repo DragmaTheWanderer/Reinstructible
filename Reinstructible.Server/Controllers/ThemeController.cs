@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace Reinstructible.Server.Controllers
@@ -13,7 +14,7 @@ namespace Reinstructible.Server.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
         private readonly SqliteContext _context = context;
-
+       
         [HttpGet]
         public async Task<Theme[]> GetAsync(string id = "")
         {
@@ -51,32 +52,39 @@ namespace Reinstructible.Server.Controllers
         //CRUD Methods
         public void CreateSavedItem(Theme theme)
         {
-            _context.Themes.Add(theme);
+            DBModels.Theme dbTheme = new(theme);
+            _context.Themes.Add(dbTheme);
             _context.SaveChanges();
         }
         public List<Theme> ReadSavedItems()
         {
-            var result = _context.Themes.OrderBy(x => x.name).ToList();
-
+            List<Theme> result = [];
+            var dbThemes = _context.Themes.OrderBy(x => x.name).ToList();
+            foreach (var item in dbThemes)
+            {
+                result.Add(new Theme(item));
+            }
             return result;
         }
         public Theme? GetSavedThemeByItem(Theme theme)
         {
             Theme? result = null;
-            var test = _context.Themes.Where(x => x.id == theme.id);
-            if (!test.Any()) return result;
+            var dbTheme = _context.Themes.Where(x => x.id == theme.id);
+            if (!dbTheme.Any()) return result;
 
-            result = test.FirstOrDefault();
+            result = new Theme(dbTheme.FirstOrDefault()!);
             return result;
         }
         public void UpdateSavedItem(Theme theme)
         {
-            _context.Themes.Update(theme);
+            DBModels.Theme dbTheme = new(theme);
+            _context.Themes.Update(dbTheme);
             _context.SaveChanges();
         }
         public void DeleteSavedItem(Theme theme)
         {
-            _context.Themes.Remove(theme);
+            DBModels.Theme dbTheme = new(theme);
+            _context.Themes.Remove(dbTheme);
             _context.SaveChanges();
         }
 

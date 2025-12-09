@@ -1,13 +1,11 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
-namespace Reinstructible.Server.Models
-{
-    public class PartCategorys : BaseRecord
-    {
-        public PartCategory[]? results { get; set; }
-    }
+using System.ComponentModel.DataAnnotations;
 
-    public class PartCategory
+namespace Reinstructible.Server.DBModels
+{
+     public class PartCategory
     {
+        [Key]
         public int id { get; set; }
         public string? name { get; set; }
         public int part_count { get; set; }
@@ -19,12 +17,13 @@ namespace Reinstructible.Server.Models
             this.name = name;
             this.part_count = part_count;
         }
-        public PartCategory(DBModels.PartCategory dbm)
+        public PartCategory(Models.PartCategory vm)
         {
-            this.id = dbm.id;
-            this.name = dbm.name;
-            this.part_count = dbm.part_count;
+            this.id = vm.id;
+            this.name = vm.name;
+            this.part_count = vm.part_count;
         }
+
     }
 
 }

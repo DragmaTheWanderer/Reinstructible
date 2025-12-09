@@ -74,33 +74,36 @@ namespace Reinstructible.Server.Controllers
                 {
                     _themeController.SaveThemes(ls.theme!);
                     //save the set
-                    CreateSavedItem(ls);
+                    await CreateSavedItem(ls);
                     //save the elements
-                    //_elementController.SaveElements(ls.set_num);
+                    await _elementController.SaveElements(ls.set_num!);
                 }
             }
             return data;
         }
 
+
        
         //CRUD Methods
-        public void CreateSavedItem(LegoSet set)
+        public async Task CreateSavedItem(LegoSet set)
         {
-            set.theme = null;
-            _context.LegoSets.Add(set);
+            DBModels.LegoSet dbSet = new(set);
+            _context.LegoSets.Add(dbSet);
             _context.SaveChanges();
         }
         public List<LegoSet> ReadSavedItems()
         {
-            var result = _context.LegoSets.OrderBy(x=>x.name).ToList();
-
+            List<LegoSet> result = [];
+            var dbSet = _context.LegoSets.OrderBy(x=>x.name).ToList();
+            foreach (var item in dbSet) {
+                result.Add(new LegoSet(item));
+            }
             return result;
         }
         public LegoSet GetSavedSetByItem(LegoSet set)
         {
-            var result = (LegoSet)_context.LegoSets.Where(x=>x.set_num == set.set_num);
-                
-
+            var dbSet = _context.LegoSets.Where(x=>x.set_num == set.set_num).FirstOrDefault();
+            LegoSet result = new(dbSet!);
             return result;
         }
         public LegoSet? GetSavedSetBySetNum(string setNum)
@@ -110,17 +113,19 @@ namespace Reinstructible.Server.Controllers
 
             if (!test.Any()) return result;
 
-            result = test.FirstOrDefault()!;
+            result = new LegoSet(test.FirstOrDefault()!);
             return result;
         }
         public void UpdateSavedItem(LegoSet set)
         {
-            _context.LegoSets.Update(set);
+            DBModels.LegoSet dbSet = new(set);
+            _context.LegoSets.Update(dbSet);
             _context.SaveChanges();
         }
         public void DeleteSavedItem(LegoSet set)
         {
-            _context.LegoSets.Remove(set);
+            DBModels.LegoSet dbSet = new(set);
+            _context.LegoSets.Remove(dbSet);
             _context.SaveChanges();
         }
     }

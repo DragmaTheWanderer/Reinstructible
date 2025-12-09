@@ -1,13 +1,13 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
-namespace Reinstructible.Server.Models
+using System.ComponentModel.DataAnnotations;
+
+namespace Reinstructible.Server.DBModels
 {
-    public class Parts : BaseRecord
-    {
-        public Part[]? results { get; set; }
-    }
+  
 
     public class Part
     {
+        [Key]
         public string?  part_num    { get; set; }
         public string?  name        { get; set; }
         public int      part_cat_id { get; set; }
@@ -15,10 +15,6 @@ namespace Reinstructible.Server.Models
         public int      year_to     { get; set; }
         public string?  part_url    { get; set; }
         public string?  part_img_url { get; set; }
-        public string[]? prints     { get; set; }
-        public string[]? molds      { get; set; }
-        public string[]? alternates { get; set; }
-
 
         public Part() { }
         public Part(string? part_num, string? name, int part_cat_id, int year_from, int year_to, string? part_url, string? part_img_url)
@@ -31,19 +27,17 @@ namespace Reinstructible.Server.Models
             this.part_url = part_url;
             this.part_img_url = part_img_url;
         }
-        public Part(DBModels.Part dbm)
+        public Part(Models.Part vm)
         {
-            this.part_num = dbm.part_num;
-            this.name = dbm.name;
-            this.part_cat_id = dbm.part_cat_id;
-            this.year_from = dbm.year_from;
-            this.year_to = dbm.year_to;
-            this.part_url = dbm.part_url;
-            this.part_img_url = dbm.part_img_url;
+            this.part_num = vm.part_num;
+            this.name = vm.name;
+            this.part_cat_id = vm.part_cat_id;
+            this.year_from = vm.year_from;
+            this.year_to = vm.year_to;
+            this.part_url = vm.part_url;
+            this.part_img_url = vm.part_img_url;
         }
+
     }
-
-
-
 }
 #pragma warning restore IDE1006 // Naming Styles

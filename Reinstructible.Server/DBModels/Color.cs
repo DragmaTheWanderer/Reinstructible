@@ -1,12 +1,11 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
-namespace Reinstructible.Server.Models
+using System.ComponentModel.DataAnnotations;
+
+namespace Reinstructible.Server.DBModels
 {
-    public class Colors : BaseRecord
-    {
-        public Color[]? results { get; set; }
-    }
     public class Color
     {
+        [Key]
         public int      id      { get; set; }
         public string?  name    { get; set; }
         public string?  rgb     { get; set; }
@@ -20,15 +19,13 @@ namespace Reinstructible.Server.Models
             this.rgb = rgb;
             this.is_trans = is_trans;
         }
-        public Color(DBModels.Color dbm)
+        public Color(Models.Color vm)
         {
-            this.id = dbm.id;
-            this.name = dbm.name;
-            this.rgb = dbm.rgb;
-            this.is_trans = dbm.is_trans;
+            this.id = vm.id;
+            this.name = vm.name;
+            this.rgb = vm.rgb;
+            this.is_trans = vm.is_trans;
         }
-
     }
-
 }
 #pragma warning restore IDE1006 // Naming Styles

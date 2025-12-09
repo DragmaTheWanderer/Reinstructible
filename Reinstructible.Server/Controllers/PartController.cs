@@ -37,31 +37,66 @@ namespace Reinstructible.Server.Controllers
             return result;
         }
 
+        public async Task SaveParts(Part[] parts)
+        {
+            //Check each part to see if it has been saved
+            foreach (var part in parts) {
+                Part? testPart = GetSavedPartByItem(part);
+                if (testPart == null) {
+                    //no part saved, We have the Part so save it
+                    CreateSavedItem(part);
+                }
+            }
+        }
         //CRUD Methods
         public void CreateSavedItem(Part part)
         {
-            _ = _context.Parts.Add(part);
+            DBModels.Part dbPart = new(part);
+            _context.Parts.Add(dbPart);
+            _context.SaveChanges();
         }
         public List<Part> ReadSavedItems()
         {
-            var result = _context.Parts.OrderBy(x => x.name).ToList();
+            List<Part> result = [];
+            var dbPart = _context.Parts.OrderBy(x => x.name).ToList();
+
+            foreach (var item in dbPart) {
+                result.Add(new Part(item));
+            }
 
             return result;
         }
-        public Part GetSavedSetByItem(Part part)
+        public Part? GetSavedPartByItem(Part part)
         {
-            var result = (Part)_context.Parts.Where(x => x.part_num == part.part_num);
+            Part? result = null;
+            var dbPart = _context.Parts.Where(x => x.part_num == part.part_num);
 
+            if (!dbPart.Any()) return result;
 
+            result = new Part(dbPart.FirstOrDefault()!);
+            return result;
+        }
+        public Part? GetSavedPartById(string part_num)
+        {
+            Part? result = null;
+            var dbPart = _context.Parts.Where(x => x.part_num == part_num);
+
+            if (!dbPart.Any()) return result;
+
+            result = new Part(dbPart.FirstOrDefault()!);
             return result;
         }
         public void UpdateSavedItem(Part part)
         {
-            _ = _context.Parts.Update(part);
+            DBModels.Part dbPart = new(part);
+            _context.Parts.Update(dbPart);
+            _context.SaveChanges();
         }
         public void DeleteSavedItem(Part part)
         {
-            _ = _context.Parts.Remove(part);
+            DBModels.Part dbPart = new(part);
+            _context.Parts.Remove(dbPart);
+            _context.SaveChanges();
         }
 
     }

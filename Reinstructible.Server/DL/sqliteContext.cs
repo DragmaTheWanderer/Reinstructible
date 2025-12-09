@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Reinstructible.Server.Models;
+using Reinstructible.Server.DBModels;
 using System.Collections.Generic;
 
 namespace Reinstructible.Server.DL

@@ -3,6 +3,7 @@ using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Reinstructible.Server.Controllers
 {
@@ -34,31 +35,61 @@ namespace Reinstructible.Server.Controllers
             }
             return result;
         }
+
+        public async Task SaveCategories(int[] Ids)
+        {
+            //check each ID to see if we have a category
+            foreach (var id in Ids) {
+                PartCategory? partCategory = GetSavedCategoryByID(id);
+                if (partCategory == null) {
+                    //no category saved,  get from Rebrickable API
+                    PartCategory[] partCategories = await GetAsync(id.ToString());
+                    foreach (var category in partCategories) {
+                        CreateSavedItem(category);
+                    }
+                }
+            }
+
+        }
         //CRUD Methods
         public void CreateSavedItem(PartCategory partCategory)
         {
-            _ = _context.PartCategorys.Add(partCategory);
+            DBModels.PartCategory dbPartCategory = new(partCategory);
+            _context.PartCategorys.Add(dbPartCategory);
+            _context.SaveChanges();
         }
         public List<PartCategory> ReadSavedItems()
         {
-            var result = _context.PartCategorys.OrderBy(x => x.name).ToList();
+            List<PartCategory> result = [];
+            var dbPartCategory =_context.PartCategorys.OrderBy(x => x.name).ToList();
+            foreach (var item in dbPartCategory)
+            {
+                result.Add(new PartCategory(item));
+            }
 
             return result;
         }
-        public PartCategory GetSavedSetByItem(PartCategory partCategory)
+        public PartCategory? GetSavedCategoryByID(int Id)
         {
-            var result = (PartCategory)_context.PartCategorys.Where(x => x.id == partCategory.id);
+            PartCategory? result = null;
+            var dbPartCategory = _context.PartCategorys.Where(x => x.id == Id);
 
+            if (!dbPartCategory.Any()) return result;
 
+            result = new PartCategory(dbPartCategory.FirstOrDefault()!);
             return result;
         }
         public void UpdateSavedItem(PartCategory partCategory)
         {
-            _ = _context.PartCategorys.Update(partCategory);
+            DBModels.PartCategory dbPartCategory = new(partCategory);
+            _ = _context.PartCategorys.Update(dbPartCategory);
+            _context.SaveChanges();
         }
         public void DeleteSavedItem(PartCategory partCategory)
         {
-            _ = _context.PartCategorys.Remove(partCategory);
+            DBModels.PartCategory dbPartCategory = new(partCategory);
+            _ = _context.PartCategorys.Remove(dbPartCategory);
+            _context.SaveChanges();
         }
 
     }
