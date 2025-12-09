@@ -40,10 +40,11 @@ namespace Reinstructible.Server.Controllers
                     result = ConcatElements([.. result!], [.. newResults!]);
                 }
             }
-            //foreach (var item in result!) {
-            //    item.color_id = item.color!.id;
-            //    item.part_num_id = item.part!.part_num;
-            //}
+            foreach (var item in result!)
+            {
+                item.part_img_url = item.part!.part_img_url;
+                item.part_url = item.part!.part_url;
+            }
             return result!;
         }
         private static Element[] ConcatElements(List<Element> OrigList, List<Element> NewList)

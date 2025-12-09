@@ -21,15 +21,13 @@ namespace Reinstructible.Server.Models
 
 
         public Part() { }
-        public Part(string? part_num, string? name, int part_cat_id, int year_from, int year_to, string? part_url, string? part_img_url)
+        public Part(string? part_num, string? name, int part_cat_id, int year_from, int year_to)
         {
             this.part_num = part_num;
             this.name = name;
             this.part_cat_id = part_cat_id;
             this.year_from = year_from;
             this.year_to = year_to;
-            this.part_url = part_url;
-            this.part_img_url = part_img_url;
         }
         public Part(DBModels.Part dbm)
         {
@@ -38,8 +36,6 @@ namespace Reinstructible.Server.Models
             this.part_cat_id = dbm.part_cat_id;
             this.year_from = dbm.year_from;
             this.year_to = dbm.year_to;
-            this.part_url = dbm.part_url;
-            this.part_img_url = dbm.part_img_url;
         }
     }
 

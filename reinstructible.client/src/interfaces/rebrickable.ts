@@ -20,7 +20,8 @@ interface IElement {
   is_spare: boolean;
   element_id: string;
   num_sets: number;
-
+  part_img_url: string;
+  part_url: string;
   storage_location: IStorage
   sub_inventory: ISubInventory;
 }
@@ -30,8 +31,7 @@ interface IPart {
   part_cat_id: number;
   year_from: number;
   year_to: number;
-  part_url: string;
-  part_img_url: string[];
+  
   prints: string[];
   molds: string[];
   alternates: string;

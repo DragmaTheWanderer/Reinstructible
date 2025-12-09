@@ -19,6 +19,8 @@ namespace Reinstructible.Server.Models
         public bool is_spare { get; set; }
         public string? element_id { get; set; }
         public int num_sets { get; set; }
+        public string? part_img_url { get; set; }
+        public string? part_url { get; set; }
 
         public Storage? storage_location {  get; set; }
         public SubInventory[]? sub_inventory { get; set; }
@@ -46,6 +48,8 @@ namespace Reinstructible.Server.Models
             this.is_spare = dbm.is_spare;
             this.color = color;
             this.part = part;
+            this.part_img_url = dbm.part_img_url;
+
         }
 
 
