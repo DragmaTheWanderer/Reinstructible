@@ -3,23 +3,23 @@ import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms'; // 1. Import FormsModule
 
-import { LegoSetRoutingModule } from './legoset-routing-module';
-import { LegoSet } from './legoset';
+import { LegoSet_addRoutingModule } from './legoset_add-routing-module';
+import { LegoSet_add } from './legoset_add';
 
 @NgModule({
   declarations: [
-    LegoSet
+    LegoSet_add
   ],
   imports: [
     BrowserModule,
     FormsModule,
     
-    LegoSetRoutingModule
+    LegoSet_addRoutingModule
   ],
   providers: [
     provideHttpClient(),
     provideBrowserGlobalErrorListeners()
   ],
-  bootstrap: [LegoSet]
+  bootstrap: [LegoSet_add]
 })
-export class LegoSetModule { }
+export class LegoSet_AddModule { }

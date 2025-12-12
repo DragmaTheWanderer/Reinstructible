@@ -3,31 +3,33 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 
 @Component({
-  selector: 'legoset-root',
+  selector: 'legoset_owned-root',
   standalone: false,
-  templateUrl: './legoset.html',
-  styleUrl: './legoset.css'
+  templateUrl: './legoset_owned.html',
+  styleUrl: './legoset_owned.css'
 })
-export class LegoSet implements OnInit {
+export class LegoSet_owned implements OnInit {
   public legoSets: ILegoSet[] = [];
   public setsLoaded: boolean = false;
   constructor(private http: HttpClient) {}
 
   public filterValue: string = "";
   public idValue: string = "";
+  public paramValue: string = "LoadSets";
 
   ngOnInit() {
-    //this.getSet();
+    this.getSets();
   }
 
-  getSet() {
+  getSets() {
     let filterValue: string = this.filterValue;
     let idValue: string = this.idValue;
+    let paramValue: string = this.paramValue;
 
     let params = new HttpParams()
       .set('filter', filterValue)
       .set('id', idValue) // Convert non-string values if needed
-      .set('param', '');
+      .set('param', paramValue);
 
     this.http.get<ILegoSet[]>('/api/set', { params: params }).subscribe({
       next: (result) => {

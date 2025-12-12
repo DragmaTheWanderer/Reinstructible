@@ -17,11 +17,22 @@ namespace Reinstructible.Server.Controllers
         private readonly ThemeController _themeController = new(httpClientFactory, context);
         private readonly ElementController _elementController = new(httpClientFactory, context);
 
+        const string typeSet = "sets";
+        const string typeTheme = "themes";
+
         [HttpGet]
         public async Task<LegoSet[]> GetAsync(string filter="", string id ="", string param = "")
         {
-            const string typeSet = "sets";
-            const string typeTheme = "themes";
+            LegoSet[]? result = param switch
+            {
+                "AddSets" => await GetSetFromAPI(filter, id, param),
+                _ => await GetSetsFromDB(),
+            };
+            return result;
+        }
+
+        private async Task<LegoSet[]> GetSetFromAPI(string filter, string id, string param)
+        {
             LegoSet[]? result;
             var service = new RebrickableAPIService(_httpClientFactory);
 
@@ -36,40 +47,57 @@ namespace Reinstructible.Server.Controllers
                 var resultStr = string.IsNullOrEmpty(param) ?
                     await service.GetRecordByIdAsync(typeSet, id) :
                     await service.GetRecordByIdAsync(typeSet, id, param);
-                
+
                 LegoSet? setDetail = JsonSerializer.Deserialize<LegoSet>(resultStr);
                 result = [setDetail!];
             }
 
 
             //get the set theme
-            foreach(var item in result)
+            foreach (var item in result)
             {
                 var resultStr = await service.GetRecordByIdAsync(typeTheme, item.theme_id.ToString());
                 Theme themeItem = JsonSerializer.Deserialize<Theme>(resultStr)!;
                 List<Theme>? themeDetail = [themeItem];
-                while (themeItem.parent_id != null) {
+                while (themeItem.parent_id != null)
+                {
                     resultStr = await service.GetRecordByIdAsync(typeTheme, themeItem.parent_id.ToString()!);
                     themeItem = JsonSerializer.Deserialize<Theme>(resultStr)!;
                     themeDetail.Add(themeItem);
                 }
                 item.theme = [.. themeDetail];
             }
-            
+
+            return result;
+        }
+        private async Task<LegoSet[]> GetSetsFromDB()
+        {
+            //load saved sets
+            LegoSet[]? result;
+            List<LegoSet> setDB = ReadSavedItems();
+            foreach(var set in setDB)
+            {
+                var theme = _themeController.GetSavedThemeById(set.theme_id);
+                List<Theme> themeList = [];
+                themeList.Add(theme!);
+
+                set.theme = [.. themeList];
+            }
+            result = [.. setDB];
             return result;
         }
 
         [HttpPost]
-        public async Task<string> PostAsync([FromBody] string data)
+        public async Task<string> PostAsync([FromBody] string set_num)
         {
             Console.WriteLine("acheaved post from sets controller");
             //checked if set is in DB
-            LegoSet? legoSet = GetSavedSetBySetNum(data);
+            LegoSet? legoSet = GetSavedSetBySetNum(set_num);
             if (legoSet == null)
             {
                 //no set saved,  Save Themes first
                 //reload the set from Reinstructible
-                LegoSet[] lsArray = await GetAsync(id: data);
+                LegoSet[] lsArray = await GetSetFromAPI("", set_num, "");
                 foreach (var ls in lsArray)
                 {
                     _themeController.SaveThemes(ls.theme!);
@@ -79,7 +107,7 @@ namespace Reinstructible.Server.Controllers
                     await _elementController.SaveElements(ls.set_num!);
                 }
             }
-            return data;
+            return set_num;
         }
 
 

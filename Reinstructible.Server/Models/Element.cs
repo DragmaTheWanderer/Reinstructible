@@ -9,7 +9,6 @@ namespace Reinstructible.Server.Models
 
     public class Element
     {
-      
         public int id { get; set; }
         public int inv_part_id { get; set; }
         public Part? part { get; set; }
@@ -33,23 +32,29 @@ namespace Reinstructible.Server.Models
             this.quantity = quantity;
             this.is_spare = is_spare;
         }
-        public Element(DBModels.Element dbm)
+        //public Element(DBModels.Element dbm)
+        //{
+        //    this.element_id = dbm.element_id;
+        //    this.part_img_url = dbm.part_img_url;
+        //    this.color_id = dbm.color_id;
+        //    this.part_num_id = dbm.part_num_id;
+        //}
+        public Element(DBModels.Inventory dbm)
         {
             this.element_id = dbm.element_id;
             this.set_num = dbm.set_num;
             this.quantity = dbm.quantity;
             this.is_spare = dbm.is_spare;
         }
-        public Element(DBModels.Element dbm, Color color, Part part)
+        public Element(DBModels.Element dbe, DBModels.Inventory dbi, Color color, Part part)
         {
-            this.element_id = dbm.element_id;
-            this.set_num = dbm.set_num;
-            this.quantity = dbm.quantity;
-            this.is_spare = dbm.is_spare;
+            this.element_id = dbe.element_id;
+            this.set_num = dbi.set_num;
+            this.quantity = dbi.quantity;
+            this.is_spare = dbi.is_spare;
             this.color = color;
             this.part = part;
-            this.part_img_url = dbm.part_img_url;
-
+            this.part_img_url = dbe.part_img_url;
         }
 
 

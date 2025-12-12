@@ -7,4 +7,4 @@ const routes: Routes = [];
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class LegoSetRoutingModule { }
+export class LegoSet_ownedRoutingModule { }

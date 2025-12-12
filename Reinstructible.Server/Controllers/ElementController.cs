@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace Reinstructible.Server.Controllers
 {
@@ -16,20 +18,40 @@ namespace Reinstructible.Server.Controllers
         private readonly ColorController _colorController = new(httpClientFactory, context);
         private readonly PartController _partController = new(httpClientFactory, context);
         private readonly PartCategoryController _partCategoryController = new(httpClientFactory, context);
+        private readonly InventoryController _inventoryController = new(httpClientFactory, context);
 
         [HttpGet]
         public async Task<Element[]> GetAsync(string id = "")
         {
+           
+            Element[]? result;
+            //var service = new RebrickableAPIService(_httpClientFactory);
+            //get parts from DB
+            result = await GetElementsFromDB(id);
+            //get parts from Reinstructiable
+            result ??= await GetElementsFromAPI(id);
+
+            return result;
+        }
+        private async Task<Element[]> GetElementsFromDB(string set_num)
+        {
+            Element[]? result;
+            var elementDB = GetSavedElementsBySetNumber(set_num);
+            
+            result = elementDB;
+            return result!;
+        }
+        private async Task<Element[]> GetElementsFromAPI(string id)
+        {
+            var service = new RebrickableAPIService(_httpClientFactory);
+
             const string type = "sets";
             const string param = "parts";
             Element[]? result;
-            var service = new RebrickableAPIService(_httpClientFactory);
-
-            //get parts
             var resultStr = await service.GetRecordByIdAsync(type, id, param);
             Elements? detail = JsonSerializer.Deserialize<Elements>(resultStr);
             result = detail!.results;
-                
+
             while (detail.next != null)
             {
                 if (!string.IsNullOrWhiteSpace(detail.next.ToString()))
@@ -47,6 +69,7 @@ namespace Reinstructible.Server.Controllers
             }
             return result!;
         }
+
         private static Element[] ConcatElements(List<Element> OrigList, List<Element> NewList)
         {
             OrigList.AddRange(NewList);
@@ -55,8 +78,9 @@ namespace Reinstructible.Server.Controllers
 
         public async Task SaveElements(string set_num)
         {
+
             //get the elements to save (this is coming from the initall set saving
-            Element[]? elements = await GetAsync(set_num);
+            Element[]? elements = await GetElementsFromAPI(set_num);
             
             //get all the colors, partCategory, and  parts in seperate condenced lists then check on them befor saving the element 
             Color[]? colors = elements.Select(c => c.color).DistinctBy(c1=>c1!.id).OrderBy(c2=>c2!.name).ToArray()!;
@@ -70,11 +94,13 @@ namespace Reinstructible.Server.Controllers
 
             foreach(var elem in elements)
             {
+                
                 Element? elementTest = GetSavedElementByItem(elem);
                 if(elementTest == null)
                 {
                     //ellement not saved,  save item
                     await CreateSavedItem(elem);
+                    await _inventoryController.CreateSavedItem(elem);
                 }
             }
         }
@@ -84,8 +110,12 @@ namespace Reinstructible.Server.Controllers
         {
             DBModels.Element dbElement = new(element);
 
-            _context.Elements.Add(dbElement);
-            _context.SaveChanges();    
+            var test = _context.Elements.Where(x => x.element_id == dbElement.element_id);
+            if (!test.Any())
+            {
+                _context.Elements.Add(dbElement);
+                _context.SaveChanges();
+            }
         }
         public List<Element> ReadSavedItems()
         {
@@ -95,25 +125,50 @@ namespace Reinstructible.Server.Controllers
             {
                 var color = _colorController.GetSavedColorById(elem.color_id);
                 var part = _partController.GetSavedPartById(elem.part_num_id!);
-
-                result.Add( new Element(elem, color, part));
+                var inventory = _inventoryController.GetSavedInventorysByElementId(elem.element_id!);
+                foreach (var inv in inventory!)
+                {
+                    result.Add(new Element(dbe: elem, dbi: inv, color: color!, part: part!));
+                }
             }
 
 
             return result;
         }
+        public Element[]? GetSavedElementsBySetNumber(string set_num)
+        {
+            List<Element>? result = [];
+            var dbInventory = _context.Inventory.Where(x => x.set_num == set_num);
+
+            if (!dbInventory.Any()) return null;
+
+            foreach (var invDB in dbInventory)
+            {
+                var dbElement = _context.Elements.Where(x=>x.element_id == invDB.element_id);
+                var elemDB = dbElement.FirstOrDefault();
+                var color = _colorController.GetSavedColorById(elemDB!.color_id);
+                var part = _partController.GetSavedPartById(elemDB!.part_num_id!);
+                
+                result.Add(new Element(elemDB!, invDB!, color!, part!));
+            }
+            return [.. result];
+        }
+
         public Element? GetSavedElementByItem(Element element)
         {
             Element? result = null;
+            var dbInventory = _context.Inventory.Where(x => x.set_num == element.set_num);
             var dbElement = _context.Elements.Where(x => x.element_id == element.element_id);
 
+            if (!dbInventory.Any()) return result;
             if (!dbElement.Any()) return result;
 
             var color = _colorController.GetSavedColorById(dbElement.FirstOrDefault()!.color_id);
             var part = _partController.GetSavedPartById(dbElement.FirstOrDefault()!.part_num_id!);
-            result = new Element(dbElement.FirstOrDefault()!, color, part);
+            result = new Element(dbElement.FirstOrDefault()!, dbInventory.FirstOrDefault()!, color!, part!);
             return result;
         }
+
         public void UpdateSavedItem(Element element)
         {
             DBModels.Element dbElement = new(element);

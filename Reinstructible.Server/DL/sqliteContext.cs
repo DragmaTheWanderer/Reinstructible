@@ -13,6 +13,7 @@ namespace Reinstructible.Server.DL
         }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Element> Elements { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
         public DbSet<LegoSet> LegoSets { get; set; }
         public DbSet<Part> Parts { get; set; }
         public DbSet<PartCategory> PartCategorys { get; set; }

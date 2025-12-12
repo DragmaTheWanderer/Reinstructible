@@ -75,6 +75,15 @@ namespace Reinstructible.Server.Controllers
             result = new Theme(dbTheme.FirstOrDefault()!);
             return result;
         }
+        public Theme? GetSavedThemeById(int id)
+        {
+            Theme? result = null;
+            var dbTheme = _context.Themes.Where(x => x.id == id);
+            if (!dbTheme.Any()) return result;
+
+            result = new Theme(dbTheme.FirstOrDefault()!);
+            return result;
+        }
         public void UpdateSavedItem(Theme theme)
         {
             DBModels.Theme dbTheme = new(theme);

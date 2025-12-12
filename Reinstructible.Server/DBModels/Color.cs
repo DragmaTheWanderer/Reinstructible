@@ -1,11 +1,13 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Reinstructible.Server.DBModels
 {
     public class Color
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int      id      { get; set; }
         public string?  name    { get; set; }
         public string?  rgb     { get; set; }

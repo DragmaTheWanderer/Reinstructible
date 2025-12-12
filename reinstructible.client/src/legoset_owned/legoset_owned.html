@@ -1,0 +1,24 @@
+<h1 id="tableLabel">Owned Lego Sets</h1>
+
+<p *ngIf="!setsLoaded"><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
+<p *ngIf="setsLoaded"><em>Select the set you want to see the inventory of.</em></p>
+
+<table *ngIf="setsLoaded">
+  <thead>
+    <tr>
+      <th>Theme</th>
+      <th>Set Number</th>
+      <th>Name</th>
+      <th>Image Url</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let set of legoSets" (click)="saveSet(set)">
+      <td>{{ set.theme[0].name }}</td>
+      <td>{{ set.set_num }}</td>
+      <td>{{ set.name }}</td>
+      <td>{{ set.set_img_url }}</td>
+    </tr>
+  </tbody>
+</table>
+

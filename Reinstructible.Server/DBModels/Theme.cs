@@ -1,5 +1,6 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Reinstructible.Server.DBModels
 {
@@ -7,6 +8,7 @@ namespace Reinstructible.Server.DBModels
     public class Theme
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int id { get; set; }
         public int? parent_id { get; set; }
         public string? name { get; set; }
