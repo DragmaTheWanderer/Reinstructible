@@ -1,26 +1,22 @@
-import { platformBrowser } from '@angular/platform-browser';
+import { bootstrapApplication, platformBrowser } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
 
-//import { AppModule } from './app/app-module';
-//platformBrowser().bootstrapModule(AppModule, {
-//  ngZoneEventCoalescing: true,
-//})
-//  .catch(err => console.error(err));
+import { App } from './app/app';
+bootstrapApplication(App, {
+  providers: [provideHttpClient()]
+});
 
+import { LegoSet_owned } from './legoset_owned/legoset_owned';
+bootstrapApplication(LegoSet_owned, {
+  providers: [provideHttpClient()]
+});
 
-import { LegoSet_OwnedModule } from './legoset_owned/legoset_owned-module';
-platformBrowser().bootstrapModule(LegoSet_OwnedModule, {
-  ngZoneEventCoalescing: true,
-})
-  .catch(err => console.error(err));
+import { LegoSet_add } from './legoset_add/legoset_add';
+bootstrapApplication(LegoSet_add, {
+  providers: [provideHttpClient()]
+});
 
-import { LegoSet_AddModule } from './legoset_add/legoset_add-module';
-platformBrowser().bootstrapModule(LegoSet_AddModule, {
-  ngZoneEventCoalescing: true,
-})
-  .catch(err => console.error(err));
-
-import { ElementModule } from './element/element-module';
-platformBrowser().bootstrapModule(ElementModule, {
-  ngZoneEventCoalescing: true,
-})
-  .catch(err => console.error(err));
+import { Element } from './element/element';
+bootstrapApplication(Element, {
+  providers: [provideHttpClient()]
+});

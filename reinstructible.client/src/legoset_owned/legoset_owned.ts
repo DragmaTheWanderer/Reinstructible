@@ -3,8 +3,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 
 @Component({
-  selector: 'legoset_owned-root',
-  standalone: false,
+  selector: 'legoset_owned',
+  standalone: true,
   templateUrl: './legoset_owned.html',
   styleUrl: './legoset_owned.css'
 })

@@ -13,8 +13,8 @@ interface TestString {
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   templateUrl: './app.html',
-  standalone: false,
   styleUrl: './app.css'
 })
 export class App implements OnInit {

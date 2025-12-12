@@ -3,8 +3,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { IElement, IPart, IColor, IPartCategory, } from '../interfaces/rebrickable'
 
 @Component({
-  selector: 'element-root',
-  standalone: false,
+  selector: 'element',
+  standalone: true,
   templateUrl: './element.html',
   styleUrl: './element.css'
 })
