@@ -13,7 +13,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let set of legoSets" (click)="saveSet(set)">
+    <tr *ngFor="let set of legoSets" (click)="loadSet(set)">
       <td>{{ set.theme[0].name }}</td>
       <td>{{ set.set_num }}</td>
       <td>{{ set.name }}</td>
@@ -21,4 +21,7 @@
     </tr>
   </tbody>
 </table>
+<button type="button" (click)="popUp()">Add Set</button>
 
+<legoset_add *ngIf="showPopUp"></legoset_add>
+<!--<legoset_add></legoset_add>-->

@@ -1,5 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 
 interface PartsInf {
   id:                        number;    
@@ -14,10 +16,11 @@ interface PartsInf {
 }
 
 @Component({
-  selector: 'parts-root',
-  templateUrl: './parts.html',
-  standalone: false,
-  styleUrl: './parts.css'
+    selector: 'parts-root',
+    templateUrl: './parts.html',
+    standalone: true,
+    imports: [CommonModule],
+    styleUrl: './parts.css'
 })
 export class Parts implements OnInit {
   public parts :PartsInf[] = [];

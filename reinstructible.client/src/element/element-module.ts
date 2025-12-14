@@ -8,12 +8,13 @@ import { Element } from './element';
 
 @NgModule({
   declarations: [
-    Element
+    
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    ElementRoutingModule
+    ElementRoutingModule,
+    Element,
   ],
   providers: [
     provideHttpClient(),

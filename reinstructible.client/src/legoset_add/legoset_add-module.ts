@@ -8,12 +8,12 @@ import { LegoSet_add } from './legoset_add';
 
 @NgModule({
   declarations: [
-    LegoSet_add
+    
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    
+    LegoSet_add,
     LegoSet_addRoutingModule
   ],
   providers: [

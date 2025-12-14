@@ -8,13 +8,13 @@ import { LegoSet_owned } from './legoset_owned';
 
 @NgModule({
   declarations: [
-    LegoSet_owned
+    
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    
-    LegoSet_ownedRoutingModule
+    LegoSet_owned,
+    LegoSet_ownedRoutingModule,
   ],
   providers: [
     provideHttpClient(),

@@ -7,12 +7,13 @@ import { App } from './app';
 
 @NgModule({
   declarations: [
-    App
+    
     
   ],
   imports: [
     BrowserModule, 
     AppRoutingModule,
+    App,
   ],
   providers: [
     provideHttpClient(),

@@ -7,11 +7,12 @@ import { Parts } from './parts';
 
 @NgModule({
   declarations: [
-    Parts
+   
   ],
   imports: [
     BrowserModule, 
-    PartsRoutingModule
+    PartsRoutingModule,
+    Parts,
   ],
   providers: [
     provideHttpClient(),

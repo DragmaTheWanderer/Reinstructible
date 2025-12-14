@@ -1,10 +1,15 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+
 import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 
 @Component({
   selector: 'legoset_add',
   standalone: true,
+    imports: [CommonModule, FormsModule],
   templateUrl: './legoset_add.html',
   styleUrl: './legoset_add.css'
 })

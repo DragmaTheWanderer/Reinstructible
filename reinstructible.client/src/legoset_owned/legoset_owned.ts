@@ -1,12 +1,17 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { ILegoSet, ITheme } from '../interfaces/rebrickable'
+import { LegoSet_add } from '../legoset_add/legoset_add';
 
 @Component({
-  selector: 'legoset_owned',
-  standalone: true,
-  templateUrl: './legoset_owned.html',
-  styleUrl: './legoset_owned.css'
+    selector: 'legoset_owned',
+    standalone: true,
+    imports: [LegoSet_add, CommonModule, FormsModule, ],
+    templateUrl: './legoset_owned.html',
+    styleUrl: './legoset_owned.css'
 })
 export class LegoSet_owned implements OnInit {
   public legoSets: ILegoSet[] = [];
@@ -16,6 +21,8 @@ export class LegoSet_owned implements OnInit {
   public filterValue: string = "";
   public idValue: string = "";
   public paramValue: string = "LoadSets";
+
+  public showPopUp: boolean = false;
 
   ngOnInit() {
     this.getSets();
@@ -42,8 +49,11 @@ export class LegoSet_owned implements OnInit {
       }
     });
   }
+  popUp() {
+    this.showPopUp = !this.showPopUp;
+  }
 
-  saveSet(legoSet: ILegoSet){
+  loadSet(legoSet: ILegoSet){
     let result = {};
     let loading = true;
     let error = "";

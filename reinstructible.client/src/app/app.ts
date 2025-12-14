@@ -1,5 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { LegoSet_owned } from '../legoset_owned/legoset_owned';
+import { Element } from '../element/element';
 
 interface WeatherForecast {
   date: string;
@@ -14,6 +18,7 @@ interface TestString {
 @Component({
   selector: 'app-root',
   standalone: true,
+  imports: [CommonModule, LegoSet_owned, Element],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -23,7 +28,8 @@ export class App implements OnInit {
   public test: TestString = {
     value: ""
   };
-
+  public ElementVisable = false;
+  public SetVisable = true;
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
