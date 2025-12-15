@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, OnChanges, signal, Input, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -12,7 +12,7 @@ import { IElement, IPart, IColor, IPartCategory, } from '../interfaces/rebrickab
   templateUrl: './element.html',
   styleUrl: './element.css'
 })
-export class Element implements OnInit {
+export class Element implements OnInit, OnChanges {
   public elements: IElement[] = [];
   public elementsBase: IElement[] = [];
   public partCategory: IPartCategory[] = [];
@@ -24,8 +24,13 @@ export class Element implements OnInit {
   constructor(private http: HttpClient) {}
 
   public filterValue: string = "";
-  public idValue: string = "";
+  //public idValue: string = "";
 
+  @Input() idValue: string = "";
+  ngOnChanges(changes: SimpleChanges) {
+    let change = changes;
+    this.getElement();
+  }
   ngOnInit() {
   /*    this.getElement();*/
   }

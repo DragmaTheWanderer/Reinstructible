@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -7,11 +7,11 @@ import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 import { LegoSet_add } from '../legoset_add/legoset_add';
 
 @Component({
-    selector: 'legoset_owned',
-    standalone: true,
-    imports: [LegoSet_add, CommonModule, FormsModule, ],
-    templateUrl: './legoset_owned.html',
-    styleUrl: './legoset_owned.css'
+  selector: 'legoset_owned',
+  standalone: true,
+  imports: [LegoSet_add, CommonModule, FormsModule],
+  templateUrl: './legoset_owned.html',
+  styleUrl: './legoset_owned.css'
 })
 export class LegoSet_owned implements OnInit {
   public legoSets: ILegoSet[] = [];
@@ -23,6 +23,12 @@ export class LegoSet_owned implements OnInit {
   public paramValue: string = "LoadSets";
 
   public showPopUp: boolean = false;
+
+  //setting up an emitter to send the setnumber to the events component.
+  @Output() loadElementsEvent = new EventEmitter<string>();
+  loadSet(value: string) {
+    this.loadElementsEvent.emit(value);
+  }
 
   ngOnInit() {
     this.getSets();
@@ -53,27 +59,14 @@ export class LegoSet_owned implements OnInit {
     this.showPopUp = !this.showPopUp;
   }
 
-  loadSet(legoSet: ILegoSet){
-    let result = {};
-    let loading = true;
-    let error = "";
+  //loadSet(legoSet: ILegoSet){
+  //  let result = {};
+  //  let loading = true;
+  //  let error = "";
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      observe: 'response' as 'response', // To get the full HttpResponse
-    };
+  //  // const body = { 'legoSetJSON' : JSON.stringify(legoSet) };
+  //  const data: string = legoSet.set_num;
 
-    // const body = { 'legoSetJSON' : JSON.stringify(legoSet) };
-    const data: string = legoSet.set_num;
-    const jsonString = JSON.stringify(data);
-
-
-    this.http.post('/api/set', jsonString, httpOptions).subscribe({
-      next: (res) => { result = res; loading = false; },
-      error: (error) => { console.error(error); error = 'Failed to create post'; loading = false; }
-    });
-  }
+  //}
   protected readonly title = signal('reinstructible.client');
 }

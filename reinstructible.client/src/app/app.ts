@@ -28,8 +28,10 @@ export class App implements OnInit {
   public test: TestString = {
     value: ""
   };
-  public ElementVisable = false;
-  public SetVisable = true;
+  public ElementVisable: boolean = false;
+  public SetVisable: boolean = true;
+  public setNum: string = "";
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -47,6 +49,15 @@ export class App implements OnInit {
         this.forcastLoaded = false;
       }
     });
+  }
+
+  loadElements(set_num: string) {
+    this.setNum = set_num
+    this.SetVisable = false;
+    this.ElementVisable = true;
+
+    
+    //pass the setnum on
   }
 
   protected readonly title = signal('reinstructible.client');

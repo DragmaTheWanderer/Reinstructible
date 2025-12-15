@@ -3,7 +3,7 @@
 <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
 <div>
   <label>
-    Set Number:
+    Set Number: {{idValue}}
     <input type="text" name="setNumber" [(ngModel)]="idValue" placeholder="Enter Set Number"
            (keyup.enter)="getElement()">
   </label>
