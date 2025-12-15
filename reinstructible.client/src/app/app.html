@@ -22,5 +22,9 @@
     </tr>
   </tbody>
 </table>-->
-<legoset_owned *ngIf="SetVisable" (loadElementsEvent)="loadElements($event)"></legoset_owned>
-<element *ngIf="ElementVisable" [idValue]="setNum"></element>
+<legoset_owned *ngIf="SetVisable"
+               (loadElementsEvent)="loadElements($event)">
+</legoset_owned>
+<element *ngIf="ElementVisable"
+         [idValue]="setNum">
+</element>

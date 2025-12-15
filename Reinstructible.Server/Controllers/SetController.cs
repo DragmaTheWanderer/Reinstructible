@@ -88,7 +88,7 @@ namespace Reinstructible.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<string> PostAsync([FromBody] string set_num)
+        public async Task<IActionResult> PostAsync([FromBody] string set_num)
         {
             Console.WriteLine("acheaved post from sets controller");
             //checked if set is in DB
@@ -107,7 +107,9 @@ namespace Reinstructible.Server.Controllers
                     await _elementController.SaveElements(ls.set_num!);
                 }
             }
-            return set_num;
+            string result = $"Received: {set_num} at {System.DateTime.Now}";
+            string jsonresult = JsonSerializer.Serialize(result);
+            return Ok(jsonresult);
         }
 
 

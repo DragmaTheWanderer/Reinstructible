@@ -30,6 +30,10 @@ export class LegoSet_owned implements OnInit {
     this.loadElementsEvent.emit(value);
   }
 
+  addedSet(newSet: ILegoSet) {
+    this.showPopUp = false;
+    this.getSets();
+  }
   ngOnInit() {
     this.getSets();
   }

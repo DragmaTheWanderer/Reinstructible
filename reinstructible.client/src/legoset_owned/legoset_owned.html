@@ -23,5 +23,6 @@
 </table>
 <button type="button" (click)="popUp()">Add Set</button>
 
-<legoset_add *ngIf="showPopUp"></legoset_add>
-<!--<legoset_add></legoset_add>-->
+<legoset_add *ngIf="showPopUp"
+             (addSetEvent)="addedSet($event)">
+</legoset_add>

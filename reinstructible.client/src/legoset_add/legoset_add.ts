@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal,Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -22,6 +22,12 @@ export class LegoSet_add implements OnInit {
   public idValue: string = "";
   public paramValue: string = "AddSets";
 
+  @Output() addSetEvent = new EventEmitter<ILegoSet>();
+  addSet(value: ILegoSet) {
+    this.saveSet(value);
+    
+  }
+ 
   ngOnInit() {
     //this.getSet();
   }
@@ -65,8 +71,15 @@ export class LegoSet_add implements OnInit {
 
 
     this.http.post('/api/set', jsonString, httpOptions).subscribe({
-      next: (res) => { result = res; loading = false; },
-      error: (error) => { console.error(error); error = 'Failed to create post'; loading = false; }
+      next: (res) => {
+        result = res;
+        loading = false;
+        this.addSetEvent.emit(legoSet);
+      },
+      error: (error) => {
+        console.error(error);
+        error = 'Failed to create post'; loading = false;
+      }
     });
   }
   protected readonly title = signal('reinstructible.client');
