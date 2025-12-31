@@ -1,0 +1,29 @@
+<h1 id="tableLabel">Lego Elements Storage</h1>
+
+<p *ngIf="!storageLoaded"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+
+<table *ngIf="storageLoaded">
+  <thead>
+    <tr>
+      <th>Part Name</th>
+      <th>Part Color</th>
+      <th>Image Url</th>
+      <th>Bin</th>
+      <th>Drawer</th>
+      <th>Save</th>
+      <th>Save All</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of elementList">
+      <td>{{ item.part.name }}</td>
+      <td>{{ item.color.name }}</td>
+      <td>{{ item.part_img_url }}</td>
+      <td><input type="text" [(ngModel)]="item.storage_location.bin" placeholder="Bin Id" /></td>
+      <td><input type="text" [(ngModel)]="item.storage_location.drawer" placeholder="Drawer Id" /></td>
+      <td><button (click)="saveCurrentStorage(item)">Save</button></td>
+      <td><button (click)="saveAllStorage(item)">Save All</button></td>
+    </tr>
+  </tbody>
+</table>
+

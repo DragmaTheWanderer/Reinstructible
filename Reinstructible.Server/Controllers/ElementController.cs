@@ -4,7 +4,6 @@ using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace Reinstructible.Server.Controllers
 {
@@ -19,18 +18,36 @@ namespace Reinstructible.Server.Controllers
         private readonly PartController _partController = new(httpClientFactory, context);
         private readonly PartCategoryController _partCategoryController = new(httpClientFactory, context);
         private readonly InventoryController _inventoryController = new(httpClientFactory, context);
+        private readonly StorageController _storageController = new(httpClientFactory, context);
 
         [HttpGet]
-        public async Task<Element[]> GetAsync(string id = "")
+        public async Task<Element[]> GetAsync(string id = "", string partId = "", string colorId = "", string param = "")
         {
-           
+
+            Element[]? result = param switch
+            {
+                "storage" => await GetElementsForStorage(partId, colorId),
+                _ => await GetInventory(id),
+            };
+
+            return result;
+        }
+
+        private async Task<Element[]> GetInventory(string id)
+        {
             Element[]? result;
             //var service = new RebrickableAPIService(_httpClientFactory);
             //get parts from DB
             result = await GetElementsFromDB(id);
             //get parts from Reinstructiable
             result ??= await GetElementsFromAPI(id);
+            return result;
+        }
 
+        private async Task<Element[]?> GetElementsForStorage(string partId, string colorId)
+        {
+
+            var result = await GetElementsByPartNumFromDB(partId);
             return result;
         }
         private async Task<Element[]> GetElementsFromDB(string set_num)
@@ -70,6 +87,20 @@ namespace Reinstructible.Server.Controllers
             return result!;
         }
 
+        private async Task<Element[]> GetElementsByPartNumFromDB(string partId)
+        {
+            List<Element> result = [];
+            var elemDb = _context.Elements.Where(x => x.part_num_id == partId).ToArray();
+            foreach (var elem in elemDb)
+            {
+                var colorDB = _colorController.GetSavedColorById(elem.color_id);
+                var partDB = _partController.GetSavedPartById(elem.part_num_id);
+                var storageDB = _storageController.GetStorageByElementID(elem.element_id);
+
+                result.Add(new Element(elem, colorDB!, partDB!, storageDB!));
+            }
+            return [.. result];
+        }
         private static Element[] ConcatElements(List<Element> OrigList, List<Element> NewList)
         {
             OrigList.AddRange(NewList);
@@ -126,9 +157,10 @@ namespace Reinstructible.Server.Controllers
                 var color = _colorController.GetSavedColorById(elem.color_id);
                 var part = _partController.GetSavedPartById(elem.part_num_id!);
                 var inventory = _inventoryController.GetSavedInventorysByElementId(elem.element_id!);
+                var storage = _storageController.GetStorageByElementID(elem.element_id!);   
                 foreach (var inv in inventory!)
                 {
-                    result.Add(new Element(dbe: elem, dbi: inv, color: color!, part: part!));
+                    result.Add(new Element(dbe: elem, dbi: inv, color: color!, part: part!, storage: storage!));
                 }
             }
 
@@ -148,8 +180,8 @@ namespace Reinstructible.Server.Controllers
                 var elemDB = dbElement.FirstOrDefault();
                 var color = _colorController.GetSavedColorById(elemDB!.color_id);
                 var part = _partController.GetSavedPartById(elemDB!.part_num_id!);
-                
-                result.Add(new Element(elemDB!, invDB!, color!, part!));
+                var storage = _storageController.GetStorageByElementID(elemDB!.element_id!);
+                result.Add(new Element(elemDB!, invDB!, color!, part!, storage));
             }
             return [.. result];
         }
@@ -165,7 +197,8 @@ namespace Reinstructible.Server.Controllers
 
             var color = _colorController.GetSavedColorById(dbElement.FirstOrDefault()!.color_id);
             var part = _partController.GetSavedPartById(dbElement.FirstOrDefault()!.part_num_id!);
-            result = new Element(dbElement.FirstOrDefault()!, dbInventory.FirstOrDefault()!, color!, part!);
+            var storage = _storageController.GetStorageByElementID(dbElement.FirstOrDefault()!.element_id!);
+            result = new Element(dbElement.FirstOrDefault()!, dbInventory.FirstOrDefault()!, color!, part!, storage!);
             return result;
         }
 

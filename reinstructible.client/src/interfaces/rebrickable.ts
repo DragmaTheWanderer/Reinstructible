@@ -66,10 +66,16 @@ interface ISubInventory {
   step: number;
 }
 interface IStorage {
-  Id: number;
+  //Id: number;
   element_id: string;
-  Bin: string;
-  Drawer: string;
+  bin: string;
+  drawer: string;
+}
+
+interface IStorage_updateList {
+  element_ids: string[];
+  bin: string;
+  drawer: string;
 }
 export type {
   IColor,
@@ -78,4 +84,8 @@ export type {
   IPart,
   IPartCategory,
   ITheme,
+
+  IStorage,
+  IStorage_updateList,
+  ISubInventory,
 }

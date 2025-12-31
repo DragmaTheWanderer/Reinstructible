@@ -25,7 +25,6 @@ export class LegoSet_add implements OnInit {
   @Output() addSetEvent = new EventEmitter<ILegoSet>();
   addSet(value: ILegoSet) {
     this.saveSet(value);
-    
   }
  
   ngOnInit() {

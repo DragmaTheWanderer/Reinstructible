@@ -46,7 +46,7 @@ namespace Reinstructible.Server.Models
             this.quantity = dbm.quantity;
             this.is_spare = dbm.is_spare;
         }
-        public Element(DBModels.Element dbe, DBModels.Inventory dbi, Color color, Part part)
+        public Element(DBModels.Element dbe, DBModels.Inventory dbi, Color color, Part part,Storage storage)
         {
             this.element_id = dbe.element_id;
             this.set_num = dbi.set_num;
@@ -55,8 +55,16 @@ namespace Reinstructible.Server.Models
             this.color = color;
             this.part = part;
             this.part_img_url = dbe.part_img_url;
+            this.storage_location = storage;
         }
-
+        public Element(DBModels.Element dbe, Color color, Part part, Storage storage)
+        {
+            this.element_id = dbe.element_id;
+            this.color = color;
+            this.part = part;
+            this.part_img_url = dbe.part_img_url;
+            this.storage_location = storage;
+        }
 
     }
 }

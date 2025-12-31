@@ -35,7 +35,10 @@ export class LegoSet_owned implements OnInit {
     this.getSets();
   }
   ngOnInit() {
-    this.getSets();
+    setTimeout( () => {
+      this.getSets();
+    }, 2000)
+    
   }
 
   getSets() {

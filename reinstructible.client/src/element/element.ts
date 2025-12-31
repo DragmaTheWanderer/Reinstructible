@@ -1,14 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, OnChanges, signal, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, signal, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IElement, IPart, IColor, IPartCategory, } from '../interfaces/rebrickable'
+import { Storage } from '../storage/storage';
+import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, } from '../interfaces/rebrickable'
 
 @Component({
   selector: 'element',
   standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, Storage],
   templateUrl: './element.html',
   styleUrl: './element.css'
 })
@@ -17,10 +18,13 @@ export class Element implements OnInit, OnChanges {
   public elementsBase: IElement[] = [];
   public partCategory: IPartCategory[] = [];
   public partColor: IColor[] = [];
-
+  
   public Loaded: boolean = false;
   public selectedCategoryValue: any = null; // Bind the selected value here
   public selectedColorValue: any = null; // Bind the selected value here
+
+  public storageVisable: boolean = false;
+  public elementForStorage!: IElement;
   constructor(private http: HttpClient) {}
 
   public filterValue: string = "";
@@ -31,6 +35,29 @@ export class Element implements OnInit, OnChanges {
     let change = changes;
     this.getElement();
   }
+
+  @Output() loadStorageEvent = new EventEmitter<IElement>();
+  setStorage(value: IElement) {
+    console.log("testing");
+    this.elementForStorage = value;
+    this.storageVisable = true;
+    //transfer element to storage component
+    this.loadStorageEvent.emit(value);
+  }
+
+  addedStorage(newStorages: IStorage_updateList) {
+    //close popup and update exsisting elements
+    newStorages.element_ids.forEach((elementId, index) => {
+      this.elements.forEach((eleItem, index2) => {
+        if (eleItem.element_id == elementId) {
+          eleItem.storage_location.bin = newStorages.bin;
+          eleItem.storage_location.drawer = newStorages.drawer;
+        }
+      })
+    })
+    this.storageVisable = false;
+  }
+
   ngOnInit() {
   /*    this.getElement();*/
   }

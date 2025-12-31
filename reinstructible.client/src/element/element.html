@@ -1,14 +1,14 @@
 <h1 id="tableLabel">Lego Set Elements</h1>
 
 <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-<div>
+<!--<div>
   <label>
     Set Number: {{idValue}}
     <input type="text" name="setNumber" [(ngModel)]="idValue" placeholder="Enter Set Number"
            (keyup.enter)="getElement()">
   </label>
   <button type="submit" (click)="getElement()">Submit</button>
-</div>
+</div>-->
 
 <div *ngIf="Loaded">
   <label>
@@ -44,6 +44,9 @@
       <th>Part Name</th>
       <th>Part Color</th>
       <th>Image Url</th>
+      <th>Bin</th>
+      <th>Drawer</th>
+
     </tr>
   </thead>
   <tbody>
@@ -53,7 +56,13 @@
       <td>{{ item.part.name }}</td>
       <td>{{ item.color.name }}</td>
       <td>{{ item.part_img_url }}</td>
+      <td (click)="setStorage(item)">{{ item.storage_location.bin }}</td>
+      <td (click)="setStorage(item)">{{ item.storage_location.drawer }}</td>
     </tr>
   </tbody>
 </table>
 
+<storage *ngIf="storageVisable"
+         (saveStorageEvent)="addedStorage($event)"
+         [elementValue]="elementForStorage">
+</storage>

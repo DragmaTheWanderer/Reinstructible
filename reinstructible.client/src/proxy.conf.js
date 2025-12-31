@@ -13,7 +13,7 @@ const PROXY_CONFIG = [
       "/api/parts",
       "/api/partcategory",
       "/api/set",
-
+      "/api/storage",
     ],
     target,
     secure: false,
