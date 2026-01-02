@@ -6,10 +6,11 @@
   <div>
     <label>
       Set Number:
-      <input type="text" name="setNumber" [(ngModel)]="filterValue" placeholder="Enter Set Number"
+      <input type="text" name="setNumber" class="form-control"
+             [(ngModel)]="filterValue" placeholder="Enter Set Number"
              (keyup.enter)="getSet()">
     </label>
-    <button class="btn btn-small"type="submit" (click)="getSet()">Submit</button>
+    <button class="btn btn-primary"type="submit" (click)="getSet()">Submit</button>
   </div>
   <hr />
   <table *ngIf="setsLoaded">
