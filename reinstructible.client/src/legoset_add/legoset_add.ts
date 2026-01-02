@@ -9,7 +9,7 @@ import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 @Component({
   selector: 'legoset_add',
   standalone: true,
-    imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './legoset_add.html',
   styleUrl: './legoset_add.css'
 })

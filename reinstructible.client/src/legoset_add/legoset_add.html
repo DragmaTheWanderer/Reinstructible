@@ -1,31 +1,31 @@
-<h1 id="tableLabel">Add a Lego Set</h1>
-
-<p><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-<div>
-  <label>
-    Set Number:
-    <input type="text" name="setNumber" [(ngModel)]="filterValue" placeholder="Enter Set Number"
-           (keyup.enter)="getSet()">
-  </label>
-  <button type="submit" (click)="getSet()">Submit</button>
-</div>
-
-<table *ngIf="setsLoaded">
+<div class="legoset_add modal">
+  <h1 id="tableLabel">Add a Lego Set</h1>
+  <hr />
+  <p><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
+  <button class="close_modal" type="button">&times;</button>
+  <div>
+    <label>
+      Set Number:
+      <input type="text" name="setNumber" [(ngModel)]="filterValue" placeholder="Enter Set Number"
+             (keyup.enter)="getSet()">
+    </label>
+    <button class="btn btn-small"type="submit" (click)="getSet()">Submit</button>
+  </div>
+  <hr />
+  <table *ngIf="setsLoaded">
     <thead>
-        <tr>
-            <th>Theme</th>
-            <th>Set Number</th>
-            <th>Name</th>
-            <th>Image Url</th>
-        </tr>
+      <tr>
+        <th>Set Number</th>
+        <th>Name</th>
+        <th>Set Image</th>
+      </tr>
     </thead>
     <tbody>
       <tr *ngFor="let set of legoSets" (click)="addSet(set)">
-        <td>{{ set.theme[0].name }}</td>
         <td>{{ set.set_num }}</td>
         <td>{{ set.name }}</td>
-        <td>{{ set.set_img_url }}</td>
+        <td><img class="set_img" src="{{ set.set_img_url }}" /></td>
       </tr>
     </tbody>
-</table>
-
+  </table>
+</div>
