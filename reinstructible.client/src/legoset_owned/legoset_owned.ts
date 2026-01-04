@@ -15,6 +15,8 @@ import { LegoSet_add } from '../legoset_add/legoset_add';
 })
 export class LegoSet_owned implements OnInit {
   public legoSets: ILegoSet[] = [];
+  public legoSetsBase: ILegoSet[] = [];
+  public themes: ITheme[] = []
   public setsLoaded: boolean = false;
   constructor(private http: HttpClient) {}
 
@@ -53,8 +55,14 @@ export class LegoSet_owned implements OnInit {
 
     this.http.get<ILegoSet[]>('/api/set', { params: params }).subscribe({
       next: (result) => {
-      this.legoSets = result;
-      this.setsLoaded = true;
+        this.legoSets = result;
+        this.legoSetsBase = result;
+        this.themes = result.flatMap(t => t.theme)
+          .sort((a,b) => a.name.localeCompare(b.name))
+          .filter((item, index, self) =>
+              index === self.findIndex((t) => (
+                t.id === item.id && t.name ===item.name)));
+        this.setsLoaded = true;
     },
       error: (error) => {
         console.error(error);
@@ -66,14 +74,14 @@ export class LegoSet_owned implements OnInit {
     this.showPopUp = !this.showPopUp;
   }
 
-  //loadSet(legoSet: ILegoSet){
-  //  let result = {};
-  //  let loading = true;
-  //  let error = "";
+  clearTheme() {
+    this.legoSets = this.legoSetsBase;
+  }
+  setTheme(id: number) {
 
-  //  // const body = { 'legoSetJSON' : JSON.stringify(legoSet) };
-  //  const data: string = legoSet.set_num;
+    //filter
+    this.legoSets = this.legoSetsBase.filter(x => x.theme_id === id);
 
-  //}
+  }
   protected readonly title = signal('reinstructible.client');
 }

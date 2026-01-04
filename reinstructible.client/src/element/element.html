@@ -1,67 +1,62 @@
 <h1 id="tableLabel">Lego Set Elements</h1>
 
 <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-<!--<div>
-  <label>
-    Set Number: {{idValue}}
-    <input type="text" name="setNumber" [(ngModel)]="idValue" placeholder="Enter Set Number"
-           (keyup.enter)="getElement()">
-  </label>
-  <button type="submit" (click)="getElement()">Submit</button>
-</div>-->
 
 <div *ngIf="Loaded">
-  <label>
-    Category:
-    <select [(ngModel)]="selectedCategoryValue" name="ddCategory"
-            (change)="onCategorySelected()">
-      <option [ngValue]="null">Select an option (this clears this filter.)</option>
-      <option *ngFor="let option of partCategory" [ngValue]="option">
-        {{ option.name }}
-      </option>
-    </select>
-  </label>
+  <!--sidebar-->
+  <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%;">
+    <div>
+      <label>
+        Category:
+        <select [(ngModel)]="selectedCategoryValue" name="ddCategory"
+                (change)="onCategorySelected()">
+          <option [ngValue]="null">Select an option (this clears this filter.)</option>
+          <option *ngFor="let option of partCategory" [ngValue]="option">
+            {{ option.name }}
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <div>
+      <label>
+        Color:
+        <select [(ngModel)]="selectedColorValue" name="ddColor"
+                (change)="onColorSelected()">
+          <option [ngValue]="null">Select an option (this clears this filter.)</option>
+          <option *ngFor="let option of partColor" [ngValue]="option">
+            {{ option.name }}
+          </option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <!--Body-->
+  <div style="margin-left:25%;">
+    <table class="w3-table-all w3-hoverable">
+      <thead>
+        <tr class="w3-grey">
+          <th class="w3-text-white">Quantity</th>
+          <th class="w3-text-white">Image Url</th>
+          <th class="w3-text-white">Part</th>
+          <th class="w3-text-white">Storage</th>
+        </tr>
+      </thead>
+      <tbody style="overflow-y:auto;">
+        <tr *ngFor="let item of elements">
+          <td class="w3-jumbo"><b>{{ item.quantity }}</b></td>
+          <td><img src="{{ item.part_img_url }}" class="element-img" /></td>
+          <td class="w3-left-align">{{ item.color.name }} {{ item.part.name }}</td>
+          <td (click)="setStorage(item)">
+            {{ item.storage_location.bin }} <br />
+            {{ item.storage_location.drawer }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<div *ngIf="Loaded">
-  <label>
-    Color:
-    <select [(ngModel)]="selectedColorValue" name="ddColor"
-            (change)="onColorSelected()">
-      <option [ngValue]="null">Select an option (this clears this filter.)</option>
-      <option *ngFor="let option of partColor" [ngValue]="option">
-        {{ option.name }}
-      </option>
-    </select>
-  </label>
-</div>
-
-<table *ngIf="Loaded">
-  <thead>
-    <tr>
-      <th>Set Number</th>
-      <th>Quantity</th>
-      <th>Part Name</th>
-      <th>Part Color</th>
-      <th>Image Url</th>
-      <th>Bin</th>
-      <th>Drawer</th>
-
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of elements">
-      <td>{{ item.set_num }}</td>
-      <td>{{ item.quantity }}</td>
-      <td>{{ item.part.name }}</td>
-      <td>{{ item.color.name }}</td>
-      <td>{{ item.part_img_url }}</td>
-      <td (click)="setStorage(item)">{{ item.storage_location.bin }}</td>
-      <td (click)="setStorage(item)">{{ item.storage_location.drawer }}</td>
-    </tr>
-  </tbody>
-</table>
-
 <storage *ngIf="storageVisable"
          (saveStorageEvent)="addedStorage($event)"
          [elementValue]="elementForStorage">

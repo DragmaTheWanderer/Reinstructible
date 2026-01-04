@@ -2,31 +2,41 @@
   <h1 id="tableLabel">Add a Lego Set</h1>
   <hr />
   <p><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-  <button class="close_modal" type="button">&times;</button>
-  <div>
-    <label>
-      Set Number:
-      <input type="text" name="setNumber" class="form-control"
+  <button class="close_modal w3-button w3-circle w3-padding-small w3-black" type="button">&times;</button>
+  <div class="w3-row w3-section">
+    <div class="w3-quarter">
+      <label>Set Number:</label>
+    </div>
+    <div class="w3-half ">
+      <input type="text" name="setNumber" class="w3-input w3-border w3-round"
              [(ngModel)]="filterValue" placeholder="Enter Set Number"
              (keyup.enter)="getSet()">
-    </label>
-    <button class="btn btn-primary"type="submit" (click)="getSet()">Submit</button>
+    </div>
+    <div class="w3-rest">
+      <button class="w3-btn w3-round-large w3-dark-grey" type="submit" (click)="getSet()">Submit</button>
+    </div>
   </div>
   <hr />
-  <table *ngIf="setsLoaded">
-    <thead>
-      <tr>
-        <th>Set Number</th>
-        <th>Name</th>
-        <th>Set Image</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let set of legoSets" (click)="addSet(set)">
-        <td>{{ set.set_num }}</td>
-        <td>{{ set.name }}</td>
-        <td><img class="set_img" src="{{ set.set_img_url }}" /></td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="setsLoaded">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Set Number</th>
+          <th>Name</th>
+          <th>Set Image</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let set of legoSets" >
+          <td><button class="w3-button w3-circle w3-padding-small w3-green"
+                      (click)="addSet(set)">+</button></td>
+          <td>{{ set.set_num }}</td>
+          <td>{{ set.name }}</td>
+          <td><img class="set_img" src="{{ set.set_img_url }}" /></td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
 </div>

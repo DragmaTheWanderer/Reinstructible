@@ -3,25 +3,51 @@
 <p *ngIf="!setsLoaded"><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
 <p *ngIf="setsLoaded"><em>Select the set you want to see the inventory of.</em></p>
 
-<table *ngIf="setsLoaded">
-  <thead>
-    <tr>
-      <th>Theme</th>
-      <th>Set Number</th>
-      <th>Name</th>
-      <th>Image Url</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let set of legoSets" (click)="loadSet(set.set_num)">
-      <td>{{ set.theme[0].name }}</td>
-      <td>{{ set.set_num }}</td>
-      <td>{{ set.name }}</td>
-      <td>{{ set.set_img_url }}</td>
-    </tr>
-  </tbody>
-</table>
-<button type="button" (click)="popUp()">Add Set</button>
+<div class="w3-row w3-container" *ngIf="setsLoaded">
+  <div id="controlls" class="w3-third w3-container">
+    <div class="w3-card">
+      <header class="w3-container w3-dark-grey">
+        Themes
+      </header>
+      <ul class="w3-ul">
+        <li (click)="clearTheme()">All</li>
+        <li *ngFor="let thm of themes"
+            (click)="setTheme(thm.id)">
+          {{thm.name}}
+        </li>
+      </ul>
+      <footer></footer>
+    </div>
+    <hr />
+    <button type="button" class="w3-btn w3-round-large w3-dark-grey"
+            (click)="popUp()">
+      Add Set
+    </button>
+  </div>
+  <div id="table" class="w3-rest">
+    <table class="w3-table-all w3-hoverable">
+      <thead >
+        <tr class="w3-grey">
+          <th class="w3-text-white">Image</th>
+          <th class="w3-text-white">Set Info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let set of legoSets" (click)="loadSet(set.set_num)">
+          <td><img src="{{ set.set_img_url }}" class="set_img" /></td>
+          <td>
+            <span><b>{{ set.name }}</b> </span><br />
+            <span>{{ set.theme[0].name }}</span> <br />
+            <span>{{ set.set_num }}</span>
+
+          </td>
+          
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <legoset_add 
              *ngIf="showPopUp"
