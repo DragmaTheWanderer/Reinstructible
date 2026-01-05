@@ -13,7 +13,8 @@ import { IElement, IStorage_updateList } from '../interfaces/rebrickable';
     styleUrl: './storage.css'
 })
 export class Storage implements OnInit, OnChanges {
-  public elementList :IElement[] = [];
+  public elementList: IElement[] = [];
+  public selectedElement!: IElement;
   public storageLoaded: boolean = false;
 
   public partValue: string = "";
@@ -54,6 +55,10 @@ export class Storage implements OnInit, OnChanges {
       next: (result) => {
         this.elementList = result;
         this.storageLoaded = true;
+
+        //get the selected element and remove it from the rest of the list.
+        this.selectedElement = this.elementList.find(element => element.element_id === this.elementValue.element_id)!;
+        this.elementList = this.elementList.filter(element => element.element_id !== this.selectedElement.element_id);
     },
       error: (error) => {
         console.error(error);
@@ -95,8 +100,9 @@ export class Storage implements OnInit, OnChanges {
       drawer: item.storage_location.drawer,
       element_ids: []
     }
-    this.elementList.forEach((item, index) => {
-      let element_id = item.storage_location.element_id;
+    data.element_ids.push(item.storage_location.element_id);
+    this.elementList.forEach((elem, index) => {
+      let element_id = elem.storage_location.element_id;
       data.element_ids.push(element_id);
     })
     const jsonString = JSON.stringify(data);

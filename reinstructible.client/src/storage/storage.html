@@ -1,29 +1,73 @@
-<h1 id="tableLabel">Lego Elements Storage</h1>
+<div class="storage_add modal">
+  <h1 id="tableLabel">Lego Elements Storage</h1>
 
-<p *ngIf="!storageLoaded"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+  <p *ngIf="!storageLoaded"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+  <div *ngIf="storageLoaded">
+    <table class="w3-table-all w3-hoverable">
+      <thead>
+        <tr class="w3-grey">
+          <th class="w3-text-white">Image</th>
+          <th class="w3-text-white">Part</th>
+          <th class="w3-text-white">Bin / Drawer</th>
+          <th class="w3-text-white"></th>
+        </tr>
+      </thead>
+      <tbody style="overflow-y:auto;">
+        <tr>
+          <td><img src="{{ selectedElement.part_img_url }}" class="element-img" /></td>
+          <td class="w3-left-align">{{ selectedElement.color.name }}<br /> {{ selectedElement.part.name }}</td>
+          <td>
+            <input class="w3-input w3-border w3-round storage-input" type="text" [(ngModel)]="selectedElement.storage_location.bin" placeholder="Bin Id" />
+            <input class="w3-input w3-border w3-round storage-input" type="text" [(ngModel)]="selectedElement.storage_location.drawer" placeholder="Drawer Id" />
+          </td>
+          <td>
+            <button class="w3-btn w3-round-large w3-dark-grey" (click)="saveCurrentStorage(selectedElement)">Save This</button><br />
+            <button class="w3-btn w3-round-large w3-dark-grey" (click)="saveAllStorage(selectedElement)">Save All</button>
+          </td>
+        </tr>
+        <tr *ngFor="let item of elementList">
+          <td><img src="{{ item.part_img_url }}" class="element-img" /></td>
+          <td class="w3-left-align">{{ item.color.name }}<br /> {{ item.part.name }}</td>
+          <td>
+            <input class="w3-input w3-border w3-round storage-input" type="text" [(ngModel)]="item.storage_location.bin" placeholder="Bin Id" />
+            <input class="w3-input w3-border w3-round storage-input" type="text" [(ngModel)]="item.storage_location.drawer" placeholder="Drawer Id" />
+          </td>
+          <td>
+            <button class="w3-btn w3-round-large w3-dark-grey" (click)="saveCurrentStorage(item)">Save</button><br />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+  <!--<div class="storage_add modal">
+  <h1 id="tableLabel">Lego Elements Storage</h1>
 
-<table *ngIf="storageLoaded">
-  <thead>
-    <tr>
-      <th>Part Name</th>
-      <th>Part Color</th>
-      <th>Image Url</th>
-      <th>Bin</th>
-      <th>Drawer</th>
-      <th>Save</th>
-      <th>Save All</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of elementList">
-      <td>{{ item.part.name }}</td>
-      <td>{{ item.color.name }}</td>
-      <td>{{ item.part_img_url }}</td>
-      <td><input type="text" [(ngModel)]="item.storage_location.bin" placeholder="Bin Id" /></td>
-      <td><input type="text" [(ngModel)]="item.storage_location.drawer" placeholder="Drawer Id" /></td>
-      <td><button (click)="saveCurrentStorage(item)">Save</button></td>
-      <td><button (click)="saveAllStorage(item)">Save All</button></td>
-    </tr>
-  </tbody>
-</table>
-
+  <p *ngIf="!storageLoaded"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+  <div *ngIf="storageLoaded" >
+    <table class="w3-table-all w3-hoverable">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Part</th>
+          <th>Bin / Drawer</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of elementList">
+          <td><img src="{{ item.part_img_url }}" class="element_img" /></td>
+          <td>{{ item.color.name }} {{ item.part.name }}</td>
+          <td>
+            <input class="w3-input w3-border w3-round" type="text" [(ngModel)]="item.storage_location.bin" placeholder="Bin Id" />
+            <input class="w3-input w3-border w3-round" type="text" [(ngModel)]="item.storage_location.drawer" placeholder="Drawer Id" />
+          </td>
+          <td>
+            <button class="w3-btn w3-round-large w3-dark-grey" (click)="saveCurrentStorage(item)">Save</button><br />
+            <button class="w3-btn w3-round-large w3-dark-grey" (click)="saveAllStorage(item)">Save All</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>-->
