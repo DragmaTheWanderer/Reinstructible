@@ -19,6 +19,7 @@ namespace Reinstructible.Server.Models
         public string? element_id { get; set; }
         public int num_sets { get; set; }
         public string? part_img_url { get; set; }
+        public string? alt_part_img_url { get; set; }
         public string? part_url { get; set; }
 
         public Storage? storage_location {  get; set; }
@@ -55,6 +56,7 @@ namespace Reinstructible.Server.Models
             this.color = color;
             this.part = part;
             this.part_img_url = dbe.part_img_url;
+            this.alt_part_img_url = string.Format("https://cdn.rebrickable.com/media/parts/elements/{0}.jpg", dbe.element_id);
             this.storage_location = storage;
         }
         public Element(DBModels.Element dbe, Color color, Part part, Storage storage)

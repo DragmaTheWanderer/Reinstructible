@@ -21,6 +21,7 @@ interface IElement {
   element_id: string;
   num_sets: number;
   part_img_url: string;
+  alt_part_img_url: string;
   part_url: string;
   storage_location: IStorage
   sub_inventory: ISubInventory;
