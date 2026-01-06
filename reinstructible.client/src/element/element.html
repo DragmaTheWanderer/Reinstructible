@@ -5,40 +5,60 @@
 <div *ngIf="Loaded">
   <!--sidebar-->
   <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%;">
-    <div>
-      <label>
-        Category:
-        <select [(ngModel)]="selectedCategoryValue" name="ddCategory"
-                (change)="onCategorySelected()">
-          <option [ngValue]="null">Select an option (this clears this filter.)</option>
-          <option *ngFor="let option of partCategory" [ngValue]="option">
-            {{ option.name }}
-          </option>
-        </select>
-      </label>
+    <div class="w3-card-4">
+      <h2>Category(s)</h2>
+      <ul class="w3-ul w3-hoverable  ">
+        <li class="w3-left-align w3-white">
+          <button class="w3-button w3-round-large w3-green">All</button>
+          <button class="w3-button w3-round-large w3-gray w3-text-white w3-right"
+                  (click)="collapse('category')">
+            &#x2304;
+          </button>
+        </li>
+      </ul>
+      <div *ngIf="!categoryCollapse">
+      <ul class="w3-ul w3-hoverable  ">
+        <li class="w3-left-align"
+            *ngFor="let option of partCategory">
+          <label>
+            <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
+            {{option.name}}
+          </label>
+        </li>
+      </ul>
     </div>
+  </div>
 
-    <div>
-      <label>
-        Color:
-        <select [(ngModel)]="selectedColorValue" name="ddColor"
-                (change)="onColorSelected()">
-          <option [ngValue]="null">Select an option (this clears this filter.)</option>
-          <option *ngFor="let option of partColor" [ngValue]="option">
-            {{ option.name }}
-          </option>
-        </select>
-      </label>
+    <div class="w3-card-4">
+      <h2>Color(s)</h2>
+      <ul class="w3-ul w3-hoverable">
+        <li class="w3-left-align w3-white">
+          <button class="w3-button w3-round-large w3-green">All</button>
+          <button class="w3-button w3-round-large w3-gray w3-text-white w3-right"
+                  (click)="collapse('color')">&#x2304;</button>
+        </li>
+      </ul>
+      <div *ngIf="!colorCollapse">
+        <ul class="w3-ul w3-hoverable">
+          <li class="w3-left-align"
+              *ngFor="let option of partColor">
+            <label>
+              <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
+              {{option.name}}
+            </label>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <!--Body-->
-  <div style="margin-left:25%;">
+  <div class="element-body">
     <table class="w3-table-all w3-hoverable">
       <thead>
         <tr class="w3-grey">
           <th class="w3-text-white">Quantity</th>
-          <th class="w3-text-white">Image Url</th>
+          <th class="w3-text-white">Image</th>
           <th class="w3-text-white">Part</th>
           <th class="w3-text-white">Storage</th>
         </tr>
@@ -61,5 +81,6 @@
 </div>
 <storage *ngIf="storageVisable"
          (saveStorageEvent)="addedStorage($event)"
+         (closeModalEvent)="setStorageHidden($event)"
          [elementValue]="elementForStorage">
 </storage>

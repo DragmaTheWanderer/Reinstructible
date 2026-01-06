@@ -38,9 +38,37 @@ export class Storage implements OnInit, OnChanges {
   }
 
   @Output() saveStorageEvent = new EventEmitter<IStorage_updateList>();
+  @Output() closeModalEvent = new EventEmitter<boolean>();
+  closeModal() {
+    this.closeModalEvent.emit(false);
+  }
 
   ngOnInit() {
     this.getStorage();
+  }
+
+  toggleSelections() {
+    // toggles all elements in the list
+    this.elementList.forEach(element => {
+      element.selected = !element.selected;
+    })
+  }
+
+  copySelected() {
+    // copies the selected element's storage location to all other selected elements in the list
+    this.elementList.forEach(element => {
+      if (element.selected) {
+        element.storage_location.bin = this.selectedElement.storage_location.bin;
+        element.storage_location.drawer = this.selectedElement.storage_location.drawer;
+      }
+    })
+  }
+
+  clearSelected() {
+    //clears the listed elements
+    this.elementList.forEach(element => {
+      element.selected = false;
+    })
   }
 
   getStorage() {
@@ -58,6 +86,7 @@ export class Storage implements OnInit, OnChanges {
 
         //get the selected element and remove it from the rest of the list.
         this.selectedElement = this.elementList.find(element => element.element_id === this.elementValue.element_id)!;
+        this.selectedElement.selected = true;
         this.elementList = this.elementList.filter(element => element.element_id !== this.selectedElement.element_id);
     },
       error: (error) => {
@@ -67,30 +96,6 @@ export class Storage implements OnInit, OnChanges {
     })
   }
 
-  saveCurrentStorage(item: IElement) {
-    let result = {};
-    let loading = true;
-    let error = "";
-    const data: IStorage_updateList = {
-      bin: item.storage_location.bin,
-      drawer: item.storage_location.drawer,
-      element_ids: []
-    }
-    data.element_ids.push(item.element_id);
-    const jsonString = JSON.stringify(item.storage_location);
-
-    this.http.post('/api/storage', jsonString, this.httpOptions).subscribe({
-      next: (res) => {
-        result = res;
-        loading = false;
-        this.saveStorageEvent.emit(data);
-      },
-      error: (error) => {
-        console.error(error);
-        error = 'Failed to create storage'; loading = false;
-      }
-    });
-  }
   saveAllStorage(item: IElement) {
     let result = {};
     let loading = true;

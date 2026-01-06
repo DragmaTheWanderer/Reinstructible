@@ -52,3 +52,32 @@ table {
 .storage-input{
     width:120px;
 }
+
+.selected-row {
+  background-color: #f0f0f0;
+  border: groove 4px #f0f0f0;
+}
+.storage-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+  .storage-body th {
+    position: sticky;
+    top: 0;
+    background-color: #9e9e9e; /* Required to cover scrolling body text */
+    z-index: 2;
+    padding: 10px;
+    border-bottom: 2px solid #ddd
+  }
+.storage-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+}
+  .storage-footer button {
+    text-wrap: auto;
+    width: 100px;
+  }

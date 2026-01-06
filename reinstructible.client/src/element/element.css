@@ -16,3 +16,19 @@ table {
 .element-img {
   width: 75px;
 }
+.element-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 85vh;
+  overflow-y: auto;
+  margin-left: 25%;
+}
+  .element-body th {
+    position: sticky;
+    top: 0;
+    background-color: #9e9e9e; /* Required to cover scrolling body text */
+    z-index: 2;
+    padding: 10px;
+    border-bottom: 2px solid #ddd
+  }

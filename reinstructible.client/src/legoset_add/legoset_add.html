@@ -1,8 +1,8 @@
 <div class="legoset_add modal">
+  <button class="close_modal w3-button w3-circle w3-padding-small w3-black" type="button">&times;</button>
   <h1 id="tableLabel">Add a Lego Set</h1>
   <hr />
   <p><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-  <button class="close_modal w3-button w3-circle w3-padding-small w3-black" type="button">&times;</button>
   <div class="w3-row w3-section">
     <div class="w3-quarter">
       <label>Set Number:</label>
@@ -28,15 +28,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let set of legoSets" >
-          <td><button class="w3-button w3-circle w3-padding-small w3-green"
-                      (click)="addSet(set)">+</button></td>
+        <tr *ngFor="let set of legoSets">
+          <td>
+            <button class="w3-button w3-circle w3-padding-small w3-green"
+                    (click)="addSet(set)">
+              +
+            </button>
+          </td>
           <td>{{ set.set_num }}</td>
           <td>{{ set.name }}</td>
           <td><img class="set_img" src="{{ set.set_img_url }}" /></td>
         </tr>
       </tbody>
     </table>
-    
+
   </div>
 </div>

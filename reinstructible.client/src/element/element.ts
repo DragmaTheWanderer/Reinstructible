@@ -78,6 +78,9 @@ export class Element implements OnInit, OnChanges {
    */
   public filterValue: string = "";
 
+  public colorCollapse: boolean = true;
+  public categoryCollapse: boolean = true;
+
   // Input: optional id used when querying the backend for elements.
   @Input() idValue: string = "";
 
@@ -110,6 +113,10 @@ export class Element implements OnInit, OnChanges {
     // transfer element to storage component
     this.loadStorageEvent.emit(value);
   }
+  setStorageHidden(value: boolean) {
+    this.storageVisable = false;
+  }
+
 
   /**
    * Handler that receives storage updates from the storage component.
@@ -179,6 +186,18 @@ export class Element implements OnInit, OnChanges {
         this.elements = this.elementsBase.filter(p => p.part.part_cat_id === categoryValue.id);
         this.elements = this.elements.filter(p => p.color.id === colorValue.id);
       }
+    }
+  }
+
+  collapse(type: string) {
+    if (type == "color") {
+      this.colorCollapse = !this.colorCollapse;
+      if (!this.colorCollapse) this.categoryCollapse = true;
+    }
+    if (type == "category") {
+      this.categoryCollapse = !this.categoryCollapse;
+      if (!this.categoryCollapse) this.colorCollapse = true;
+
     }
   }
 

@@ -25,6 +25,7 @@ interface IElement {
   part_url: string;
   storage_location: IStorage
   sub_inventory: ISubInventory;
+  selected: boolean;
 }
 interface IPart {
   part_num: string;
@@ -36,17 +37,20 @@ interface IPart {
   prints: string[];
   molds: string[];
   alternates: string;
+  selected: boolean;
 }
 interface IPartCategory {
   id: number;
   name: string;
   part_count: number;
+  selected: boolean;
 }
 interface IColor {
   id: number;
   name: string;
   rgb: string;
   is_trans: boolean;
+  selected: boolean;
 }
 interface ITheme {
   id: number;
