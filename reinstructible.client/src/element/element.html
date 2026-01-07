@@ -6,36 +6,43 @@
   <!--sidebar-->
   <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%;">
     <div class="w3-card-4">
-      <h2>Category(s)</h2>
+      <header class="w3-container w3-dark-grey">
+        <h2>Category(s)</h2>
+      </header>
       <ul class="w3-ul w3-hoverable  ">
         <li class="w3-left-align w3-white">
           <button class="w3-button w3-round-large w3-green">All</button>
           <button class="w3-button w3-round-large w3-gray w3-text-white w3-right"
                   (click)="collapse('category')">
-            &#x2304;
+            <span [innerHTML]="catergoryArrow"></span>
           </button>
         </li>
       </ul>
       <div *ngIf="!categoryCollapse">
-      <ul class="w3-ul w3-hoverable  ">
-        <li class="w3-left-align"
-            *ngFor="let option of partCategory">
-          <label>
-            <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
-            {{option.name}}
-          </label>
-        </li>
-      </ul>
+        <ul class="w3-ul w3-hoverable  ">
+          <li class="w3-left-align"
+              *ngFor="let option of partCategory">
+            <label>
+              <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
+              {{option.name}}
+            </label>
+          </li>
+        </ul>
+      </div>
+      <footer></footer>
     </div>
-  </div>
 
     <div class="w3-card-4">
-      <h2>Color(s)</h2>
+      <header class="w3-container w3-dark-grey">
+        <h2>Color(s)</h2>
+      </header>
       <ul class="w3-ul w3-hoverable">
         <li class="w3-left-align w3-white">
           <button class="w3-button w3-round-large w3-green">All</button>
           <button class="w3-button w3-round-large w3-gray w3-text-white w3-right"
-                  (click)="collapse('color')">&#x2304;</button>
+                  (click)="collapse('color')">
+            <span [innerHTML]="colorArrow"></span>
+          </button>
         </li>
       </ul>
       <div *ngIf="!colorCollapse">
@@ -44,11 +51,13 @@
               *ngFor="let option of partColor">
             <label>
               <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
-              {{option.name}}
-            </label>
+              {{option.name
+              }}
+              </label>
           </li>
         </ul>
       </div>
+      <footer></footer>
     </div>
   </div>
 

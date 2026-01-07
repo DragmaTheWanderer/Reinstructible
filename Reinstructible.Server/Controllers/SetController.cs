@@ -75,6 +75,7 @@ namespace Reinstructible.Server.Controllers
             //load saved sets
             LegoSet[]? result;
             List<LegoSet> setDB = ReadSavedItems();
+                
             foreach(var set in setDB)
             {
                 var theme = _themeController.GetSavedThemeById(set.theme_id);
@@ -83,7 +84,7 @@ namespace Reinstructible.Server.Controllers
 
                 set.theme = [.. themeList];
             }
-            result = [.. setDB];
+            result = [.. setDB.OrderBy(x => x.theme![0].name).ThenBy(x => x.name)];
             return result;
         }
 
@@ -93,8 +94,10 @@ namespace Reinstructible.Server.Controllers
             Console.WriteLine("acheaved post from sets controller");
             //checked if set is in DB
             LegoSet? legoSet = GetSavedSetBySetNum(set_num);
-            if (legoSet == null)
-            {
+            //allow for resaving of set info if needed.
+            
+            //if (legoSet == null)
+            //{
                 //no set saved,  Save Themes first
                 //reload the set from Reinstructible
                 LegoSet[] lsArray = await GetSetFromAPI("", set_num, "");
@@ -106,7 +109,7 @@ namespace Reinstructible.Server.Controllers
                     //save the elements
                     await _elementController.SaveElements(ls.set_num!);
                 }
-            }
+            //}
             string result = $"Received: {set_num} at {System.DateTime.Now}";
             string jsonresult = JsonSerializer.Serialize(result);
             return Ok(jsonresult);
@@ -117,6 +120,14 @@ namespace Reinstructible.Server.Controllers
         //CRUD Methods
         public async Task CreateSavedItem(LegoSet set)
         {
+            LegoSet? legoSet = GetSavedSetBySetNum(set.set_num!);
+            ;
+            if (legoSet != null)
+            {
+                Console.WriteLine($"Set {set.set_num} already exists in DB, skipping save.");
+                UpdateSavedItem(set);
+                return;
+            }
             DBModels.LegoSet dbSet = new(set);
             _context.LegoSets.Add(dbSet);
             _context.SaveChanges();
@@ -124,7 +135,7 @@ namespace Reinstructible.Server.Controllers
         public List<LegoSet> ReadSavedItems()
         {
             List<LegoSet> result = [];
-            var dbSet = _context.LegoSets.OrderBy(x=>x.name).ToList();
+            var dbSet = _context.LegoSets.ToList();
             foreach (var item in dbSet) {
                 result.Add(new LegoSet(item));
             }
@@ -148,7 +159,8 @@ namespace Reinstructible.Server.Controllers
         }
         public void UpdateSavedItem(LegoSet set)
         {
-            DBModels.LegoSet dbSet = new(set);
+            DBModels.LegoSet dbSet = _context.LegoSets.Where(x => x.set_num == set.set_num).FirstOrDefault();
+            dbSet.updateFromModel(set);
             _context.LegoSets.Update(dbSet);
             _context.SaveChanges();
         }

@@ -26,7 +26,11 @@ export class LegoSet_add implements OnInit {
   addSet(value: ILegoSet) {
     this.saveSet(value);
   }
- 
+  @Output() closeModalEvent = new EventEmitter<boolean>();
+  closeModal() {
+    this.closeModalEvent.emit(false);
+  }
+
   ngOnInit() {
     //this.getSet();
   }

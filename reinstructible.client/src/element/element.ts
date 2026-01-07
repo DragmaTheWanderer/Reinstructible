@@ -78,9 +78,12 @@ export class Element implements OnInit, OnChanges {
    */
   public filterValue: string = "";
 
+  private downArrow: string = "&#x21E9;";
+  private upArrow: string = "&#x21E7;";
   public colorCollapse: boolean = true;
   public categoryCollapse: boolean = true;
-
+  public colorArrow: string = this.downArrow;
+  public catergoryArrow: string = this.downArrow;
   // Input: optional id used when querying the backend for elements.
   @Input() idValue: string = "";
 
@@ -192,12 +195,21 @@ export class Element implements OnInit, OnChanges {
   collapse(type: string) {
     if (type == "color") {
       this.colorCollapse = !this.colorCollapse;
-      if (!this.colorCollapse) this.categoryCollapse = true;
+      this.colorArrow = this.downArrow;
+      if (!this.colorCollapse) {
+        this.categoryCollapse = true;
+        this.catergoryArrow = this.downArrow;
+        this.colorArrow = this.upArrow;
+      }
     }
     if (type == "category") {
       this.categoryCollapse = !this.categoryCollapse;
-      if (!this.categoryCollapse) this.colorCollapse = true;
-
+      this.catergoryArrow = this.downArrow;
+      if (!this.categoryCollapse) {
+        this.colorCollapse = true;
+        this.colorArrow = this.downArrow;
+        this.catergoryArrow = this.upArrow;
+      }
     }
   }
 

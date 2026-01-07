@@ -37,6 +37,16 @@ namespace Reinstructible.Server.DBModels
             this.set_img_url = vm.set_img_url;
             this.set_url = vm.set_url;
         }
+
+        internal void updateFromModel(Models.LegoSet vm)
+        {
+            this.name = vm.name;
+            this.year = vm.year;
+            this.theme_id = vm.theme_id;
+            this.num_parts = vm.num_parts;
+            this.set_img_url = vm.set_img_url;
+            this.set_url = vm.set_url;
+        }
     }
 
 }

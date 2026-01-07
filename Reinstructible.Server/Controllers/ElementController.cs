@@ -129,6 +129,13 @@ namespace Reinstructible.Server.Controllers
                 Element? elementTest = GetSavedElementByItem(elem);
                 if(elementTest == null)
                 {
+                    //null elementID test
+                    if (elem.element_id == null)
+                    {
+                        //element id should be able to be obtained via the part# and Color#
+                        elem.element_id = elem.part!.part_num + "-" + elem.color!.id;
+                    }
+
                     //ellement not saved,  save item
                     await CreateSavedItem(elem);
                     await _inventoryController.CreateSavedItem(elem);

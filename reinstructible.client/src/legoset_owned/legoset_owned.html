@@ -7,9 +7,9 @@
   <div id="controlls" class="w3-third w3-container">
     <div class="w3-card">
       <header class="w3-container w3-dark-grey">
-        Themes
+        <h2>Themes</h2>
       </header>
-      <ul class="w3-ul">
+      <ul class="w3-ul w3-hoverable ">
         <li (click)="clearTheme()">All</li>
         <li *ngFor="let thm of themes"
             (click)="setTheme(thm.id)">
@@ -21,10 +21,11 @@
     <hr />
     <button type="button" class="w3-btn w3-round-large w3-dark-grey"
             (click)="popUp()">
-      Add Set
+      Add/Re-Add Set
     </button>
   </div>
-  <div id="table" class="w3-rest">
+  <!--Body-->
+  <div id="table" class="set-body">
     <table class="w3-table-all w3-hoverable">
       <thead >
         <tr class="w3-grey">
@@ -32,16 +33,15 @@
           <th class="w3-text-white">Set Info</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody  style="overflow-y:auto;">
         <tr *ngFor="let set of legoSets" (click)="loadSet(set.set_num)">
           <td><img src="{{ set.set_img_url }}" class="set_img" /></td>
+
           <td>
             <span><b>{{ set.name }}</b> </span><br />
             <span>{{ set.theme[0].name }}</span> <br />
             <span>{{ set.set_num }}</span>
-
           </td>
-          
           
         </tr>
       </tbody>
@@ -49,7 +49,7 @@
   </div>
 </div>
 
-<legoset_add 
-             *ngIf="showPopUp"
-             (addSetEvent)="addedSet($event)">
+<legoset_add *ngIf="showPopUp"
+             (addSetEvent)="addedSet($event)"
+             (closeModalEvent)="closeModal()">
 </legoset_add>

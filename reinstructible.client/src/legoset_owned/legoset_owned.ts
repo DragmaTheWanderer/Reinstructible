@@ -73,7 +73,9 @@ export class LegoSet_owned implements OnInit {
   popUp() {
     this.showPopUp = !this.showPopUp;
   }
-
+  closeModal() {
+    this.showPopUp = false;
+  }
   clearTheme() {
     this.legoSets = this.legoSetsBase;
   }
