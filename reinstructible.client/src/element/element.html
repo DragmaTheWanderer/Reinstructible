@@ -1,68 +1,79 @@
-<h1 id="tableLabel">Lego Set Elements</h1>
-
-<p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-
-<div *ngIf="Loaded">
   <!--sidebar-->
-  <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%;">
-    <div class="w3-card-4">
-      <header class="w3-container w3-dark-grey">
-        <h2>Category(s)</h2>
-      </header>
-      <ul class="w3-ul w3-hoverable  ">
-        <li class="w3-left-align w3-white">
-          <button class="w3-button w3-round-large w3-green">All</button>
-          <button class="w3-button w3-round-large w3-gray w3-text-white w3-right"
-                  (click)="collapse('category')">
-            <span [innerHTML]="catergoryArrow"></span>
-          </button>
-        </li>
-      </ul>
-      <div *ngIf="!categoryCollapse">
-        <ul class="w3-ul w3-hoverable  ">
-          <li class="w3-left-align"
-              *ngFor="let option of partCategory">
-            <label>
-              <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
-              {{option.name}}
-            </label>
-          </li>
-        </ul>
-      </div>
-      <footer></footer>
-    </div>
-
-    <div class="w3-card-4">
-      <header class="w3-container w3-dark-grey">
-        <h2>Color(s)</h2>
-      </header>
-      <ul class="w3-ul w3-hoverable">
-        <li class="w3-left-align w3-white">
-          <button class="w3-button w3-round-large w3-green">All</button>
-          <button class="w3-button w3-round-large w3-gray w3-text-white w3-right"
-                  (click)="collapse('color')">
-            <span [innerHTML]="colorArrow"></span>
-          </button>
-        </li>
-      </ul>
-      <div *ngIf="!colorCollapse">
-        <ul class="w3-ul w3-hoverable">
-          <li class="w3-left-align"
-              *ngFor="let option of partColor">
-            <label>
-              <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
-              {{option.name
-              }}
-              </label>
-          </li>
-        </ul>
-      </div>
-      <footer></footer>
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%;">
+  <div class="w3-container">
+    <div class="w3-row>">
+      <a href="javascript:void(0)" (click)="openControlTab('category')">
+        <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding"
+             [ngClass]="borderColor('category')">Category</div>
+      </a>
+      <a href="javascript:void(0)" (click)="openControlTab('color')">
+        <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding"
+             [ngClass]="borderColor('color')">Color</div>
+      </a>
     </div>
   </div>
 
-  <!--Body-->
-  <div class="element-body">
+  @switch (selectedControllTab()) {
+
+  @case ('category') {
+  <!--Category-->
+  <div class="w3-card-4">
+    <header class="w3-container w3-dark-grey"></header>
+    <div>
+      <ul class="w3-ul w3-hoverable">
+        <li class="w3-left-align"
+            *ngFor="let option of partCategory"
+            (click)="onSelectedCategory(option)">
+          <label >
+            <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
+            {{option.name}}
+          </label>
+        </li>
+      </ul>
+    </div>
+    <footer></footer>
+  </div>
+  }
+
+  @case ('color') {
+  <!--Color-->
+  <div class="w3-card-4">
+    <div>
+      <ul class="w3-ul w3-hoverable">
+        <li class="w3-left-align"
+            *ngFor="let option of partColor"
+             (click)="onSelectedColor(option)">
+          <label>
+            <input class="w3-check" type="checkbox"
+                   [(ngModel)]="option.selected" />
+            {{option.name}}
+          </label>
+        </li>
+      </ul>
+    </div>
+    <footer></footer>
+  </div>
+  }
+ 
+  }
+  <div class="">
+    <div class=" w3-display-bottommiddle element-footer">
+      <button class="w3-btn w3-round-large w3-dark-grey" (click)="selectAll()">Select All</button>
+      <button class="w3-btn w3-round-large w3-dark-grey" (click)="clearSelections()">Clear</button>
+      <button class="w3-btn w3-round-large w3-dark-grey" (click)="toggleSelections()">Toggle</button>
+    </div>
+  </div>
+</div>
+
+<!--Body-->
+
+<div class="element-body">
+  <h1 id="tableLabel">Lego Set Elements</h1>
+
+  <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
+
+  <div *ngIf="Loaded">
+
     <table class="w3-table-all w3-hoverable">
       <thead>
         <tr class="w3-grey">
@@ -76,7 +87,7 @@
         <tr *ngFor="let item of elements">
           <td class="w3-jumbo"><b>{{ item.quantity }}</b></td>
           <td>
-              <img class="element-img" src="{{item.part_img_url}}" alt="Element {{item.element_id}}" (error)="item.part_img_url = item.alt_part_img_url">
+            <img class="element-img" src="{{item.part_img_url}}" alt="Element {{item.element_id}}" (error)="item.part_img_url = item.alt_part_img_url">
           </td>
           <td class="w3-left-align">{{ item.color.name }} {{ item.part.name }}</td>
           <td (click)="setStorage(item)">

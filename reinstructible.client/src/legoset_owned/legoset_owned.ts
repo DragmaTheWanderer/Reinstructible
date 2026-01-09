@@ -57,8 +57,12 @@ export class LegoSet_owned implements OnInit {
 
     this.http.get<ILegoSet[]>('/api/set', { params: params }).subscribe({
       next: (result) => {
-        this.legoSets = result;
         this.legoSetsBase = result;
+        this.legoSets = result;
+        if (this.selectedTheme != "All") {
+          this.legoSets = this.legoSetsBase.filter(x => x.theme[0].name === this.selectedTheme);
+        }
+
         this.themes = result.flatMap(t => t.theme)
           .sort((a,b) => a.name.localeCompare(b.name))
           .filter((item, index, self) =>

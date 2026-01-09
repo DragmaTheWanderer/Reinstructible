@@ -32,3 +32,15 @@ table {
     padding: 10px;
     border-bottom: 2px solid #ddd
   }
+
+.element-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  width: 100%
+}
+
+  .element-footer button {
+    text-wrap: auto;
+    width: 120px;
+  }

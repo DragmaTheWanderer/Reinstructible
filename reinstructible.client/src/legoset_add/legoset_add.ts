@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, OnInit, signal,Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, signal,Output, EventEmitter, viewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,7 +13,9 @@ import { ILegoSet, ITheme } from '../interfaces/rebrickable'
   templateUrl: './legoset_add.html',
   styleUrl: './legoset_add.css'
 })
-export class LegoSet_add implements OnInit {
+export class LegoSet_add implements OnInit, AfterViewInit {
+  @ViewChild('setNumberInput') inputElement!: ElementRef;
+
   public legoSets: ILegoSet[] = [];
   public setsLoaded: boolean = false;
   constructor(private http: HttpClient) {}
@@ -33,6 +35,10 @@ export class LegoSet_add implements OnInit {
 
   ngOnInit() {
     //this.getSet();
+  }
+  ngAfterViewInit() {
+    // Standard focus call
+    this.inputElement.nativeElement.focus();
   }
 
   getSet() {

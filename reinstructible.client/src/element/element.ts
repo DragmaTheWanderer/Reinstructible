@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { Storage } from '../storage/storage';
 import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, } from '../interfaces/rebrickable'
+import { filter } from 'rxjs';
 
 /**
  * Element component
@@ -52,18 +53,6 @@ export class Element implements OnInit, OnChanges {
   public Loaded: boolean = false;
 
   /**
-   * Currently selected category value from the category picker.
-   * Kept as `any` because the selection control returns an object with an `id` and `name`.
-   */
-  public selectedCategoryValue: any = null; // Bind the selected value here
-
-  /**
-   * Currently selected color value from the color picker.
-   * Kept as `any` because the selection control returns an object with an `id` and `name`.
-   */
-  public selectedColorValue: any = null; // Bind the selected value here
-
-  /**
    * Whether the storage popup/component is visible.
    */
   public storageVisable: boolean = false;
@@ -72,11 +61,6 @@ export class Element implements OnInit, OnChanges {
    * Element selected for editing/assigning storage.
    */
   public elementForStorage!: IElement;
-
-  /**
-   * Filter text input bound to an input control. Used when requesting elements from the API.
-   */
-  public filterValue: string = "";
 
   private downArrow: string = "&#x21E9;";
   private upArrow: string = "&#x21E7;";
@@ -146,19 +130,27 @@ export class Element implements OnInit, OnChanges {
     /*    this.getElement();*/
   }
 
-  /**
-   * Called when the category selection changes in the UI.
-   * Invokes the filter routine.
-   */
-  onCategorySelected(): void {
-    this.elementFilter();
-  }
 
   /**
-   * Called when the color selection changes in the UI.
+   * Called when the selection changes in the UI.
    * Invokes the filter routine.
    */
-  onColorSelected(): void {
+  onSelectedColor(selected: IColor): void {
+    //set the selected value for the color selected
+    this.partColor.forEach(color => {
+      if (color.id == selected.id) {
+        color.selected = !color.selected;
+      }
+    });
+    this.elementFilter();
+  }
+  onSelectedCategory(selected: IPartCategory): void {
+    //set the selected value for the color selected
+    this.partCategory.forEach(category => {
+      if (category.id == selected.id) {
+        category.selected = !category.selected;
+      }
+    });
     this.elementFilter();
   }
 
@@ -169,61 +161,97 @@ export class Element implements OnInit, OnChanges {
    * - If both are set, applies both filters (category then color).
    */
   elementFilter() {
-    let categoryValue = this.selectedCategoryValue;
-    let colorValue = this.selectedColorValue;
-    console.log(categoryValue);
-    console.log(colorValue);
-    if (categoryValue === null && colorValue === null) {
-      this.elements = this.elementsBase;
-    } else {
-      // Filter by category ID only
-      if (categoryValue !== null && colorValue === null) {
-        this.elements = this.elementsBase.filter(p => p.part.part_cat_id === categoryValue.id);
-      }
-      // Filter by color ID only
-      else if (categoryValue === null && colorValue !== null) {
-        this.elements = this.elementsBase.filter(p => p.color.id === colorValue.id);
-      }
-      // Filter by both category and color
-      else {
-        this.elements = this.elementsBase.filter(p => p.part.part_cat_id === categoryValue.id);
-        this.elements = this.elements.filter(p => p.color.id === colorValue.id);
-      }
-    }
+    //looks at the color list and category list then filters based on those lists
+    let filteredColor = this.partColor.filter(i => i.selected);
+    let colorIds = filteredColor.flatMap(tId => tId.id);
+    let filteredCategory = this.partCategory.filter(i => i.selected);
+    let categoryIds = filteredCategory.flatMap(cId => cId.id);
+
+    this.elements = this.elementsBase.filter(i => colorIds.includes(i.color.id)).filter(i => categoryIds.includes(i.part.part_cat_id));
   }
 
-  collapse(type: string) {
-    if (type == "color") {
-      this.colorCollapse = !this.colorCollapse;
-      this.colorArrow = this.downArrow;
-      if (!this.colorCollapse) {
-        this.categoryCollapse = true;
-        this.catergoryArrow = this.downArrow;
-        this.colorArrow = this.upArrow;
-      }
-    }
-    if (type == "category") {
-      this.categoryCollapse = !this.categoryCollapse;
-      this.catergoryArrow = this.downArrow;
-      if (!this.categoryCollapse) {
-        this.colorCollapse = true;
-        this.colorArrow = this.downArrow;
-        this.catergoryArrow = this.upArrow;
-      }
-    }
+  //collapse(type: string) {
+  //  if (type == "color") {
+  //    this.colorCollapse = !this.colorCollapse;
+  //    this.colorArrow = this.downArrow;
+  //    if (!this.colorCollapse) {
+  //      this.categoryCollapse = true;
+  //      this.catergoryArrow = this.downArrow;
+  //      this.colorArrow = this.upArrow;
+  //    }
+  //  }
+  //  if (type == "category") {
+  //    this.categoryCollapse = !this.categoryCollapse;
+  //    this.catergoryArrow = this.downArrow;
+  //    if (!this.categoryCollapse) {
+  //      this.colorCollapse = true;
+  //      this.colorArrow = this.downArrow;
+  //      this.catergoryArrow = this.upArrow;
+  //    }
+  //  }
+  //}
+
+  public selectedControllTab = signal<'category' | 'color' | string>('category');
+
+  openControlTab(type: string) {
+    this.selectedControllTab.set(type);
+  }
+  borderColor(type: string) {
+    let result = "w3-border-red";
+    if (type != this.selectedControllTab() ) result = "";
+    return (result);
+  }
+  selectedCard(type: string) {
+    let result = type === this.selectedControllTab();
+    return result; 
   }
 
+
+  selectAll() {
+    switch (this.selectedControllTab()) {
+      case "category":
+        this.partCategory.forEach(x=>x.selected = true)
+        break;
+      case "color":
+        this.partColor.forEach(x => x.selected = true)
+        break;
+    }
+    this.elementFilter();
+
+  }
+  clearSelections() {
+    switch (this.selectedControllTab()) {
+      case "category":
+        this.partCategory.forEach(x => x.selected = false)
+        break;
+      case "color":
+        this.partColor.forEach(x => x.selected = false)
+        break;
+    }
+    this.elementFilter();
+}
+  toggleSelections() {
+    switch (this.selectedControllTab()) {
+      case "category":
+        this.partCategory.forEach(x => x.selected = !x.selected)
+        break;
+      case "color":
+        this.partColor.forEach(x => x.selected = !x.selected)
+        break;
+    }
+    this.elementFilter();
+}
   /**
    * Loads elements from the server API using the current `filterValue` and `idValue`.
    * - On success: stores results in `elementsBase` and `elements`, then populates category and color lists.
    * - On error: writes to console and sets `Loaded` to false.
    */
   getElement() {
-    let filterValue: string = this.filterValue;
+   // let filterValue: string = this.filterValue;
     let idValue: string = this.idValue;
 
     let params = new HttpParams()
-      .set('filter', filterValue)
+      //.set('filter', filterValue)
       .set('id', idValue); // Convert non-string values if needed
 
     this.http.get<IElement[]>('/api/element', { params: params }).subscribe({
@@ -279,6 +307,8 @@ export class Element implements OnInit, OnChanges {
         complete: () => {
           // Sort the new list
           this.partCategory = cat.sort((a, b) => a.name.localeCompare(b.name));
+          //set the selected for each category to true so that they are all selected by default
+          this.partCategory.forEach(category => { category.selected = true; });
         }
       });
     });
@@ -306,6 +336,8 @@ export class Element implements OnInit, OnChanges {
     });
     // Sort the new list
     this.partColor = color.sort((a, b) => a.name.localeCompare(b.name));
+    //set the selected for each color to true so that they are all selected by default
+    this.partColor.forEach(color => { color.selected = true; });
 
     // The following commented code shows how to request color objects per id from the API.
     // It is retained for reference in case a switch to server-driven color lookup is desired.
