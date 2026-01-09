@@ -4,10 +4,17 @@
     text-align: center;
 }
 
-th, td {
+.sidebar-container{
+    height:100vh;
+}
+  .sidebar-container .w3-display-bottommiddle{
+      width: 100%;
+      margin-bottom: 40px;
+  }
+  th, td {
     padding-left: 1rem;
     padding-right: 1rem;
-}
+  }
 
 table {
     margin: 0 auto;
@@ -28,6 +35,20 @@ table {
 }
 
   .set-body th {
+    position: sticky;
+    top: 0;
+    background-color: #9e9e9e; /* Required to cover scrolling body text */
+    z-index: 2;
+    padding: 10px;
+    border-bottom: 2px solid #ddd
+  }
+
+.themes-body {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+  .themes-header {
     position: sticky;
     top: 0;
     background-color: #9e9e9e; /* Required to cover scrolling body text */

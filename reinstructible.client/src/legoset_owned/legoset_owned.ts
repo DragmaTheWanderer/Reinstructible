@@ -17,6 +17,8 @@ export class LegoSet_owned implements OnInit {
   public legoSets: ILegoSet[] = [];
   public legoSetsBase: ILegoSet[] = [];
   public themes: ITheme[] = []
+  public selectedTheme: string = "All";
+ 
   public setsLoaded: boolean = false;
   constructor(private http: HttpClient) {}
 
@@ -76,14 +78,20 @@ export class LegoSet_owned implements OnInit {
   closeModal() {
     this.showPopUp = false;
   }
+  selectedThemeCheck(value: string) {
+    let result = "";
+    if (value === this.selectedTheme) { result = "w3-green"; }
+    return result;
+  }
   clearTheme() {
     this.legoSets = this.legoSetsBase;
+    this.selectedTheme = "All";
   }
-  setTheme(id: number) {
+  setTheme(id: number, name: string) {
 
     //filter
     this.legoSets = this.legoSetsBase.filter(x => x.theme_id === id);
-
+    this.selectedTheme = name;
   }
   protected readonly title = signal('reinstructible.client');
 }

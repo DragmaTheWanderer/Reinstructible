@@ -25,8 +25,18 @@ namespace Reinstructible.Server.Controllers
         //CRUD Methods
         public async Task CreateSavedItem(Element element)
         {
-            DBModels.Inventory dbInventory = new(element);
-            _context.Inventory.Add(dbInventory);
+            var recordCheck = _context.Inventory.Where(x => x.set_num == element.set_num && x.element_id == element.element_id);
+            if (recordCheck.Any())
+            {
+                DBModels.Inventory dbInventory = recordCheck.FirstOrDefault()!;
+                dbInventory!.update(element);
+                _context.Inventory.Update(dbInventory);
+            }
+            else
+            {
+                DBModels.Inventory dbInventory = new(element);
+                _context.Inventory.Add(dbInventory);
+            }
             _context.SaveChanges();
         }
         public List<Element> ReadSavedItems()

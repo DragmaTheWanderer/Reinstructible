@@ -31,6 +31,19 @@ namespace Reinstructible.Server.DBModels
             this.quantity = vm.quantity;
             this.is_spare = vm.is_spare;
         }
+
+        internal void update(Models.Element vm)
+        {
+            if (!vm.is_spare)
+            {
+                this.quantity = vm.quantity;
+                this.is_spare = vm.is_spare;
+            }
+            else
+            {
+                this.quantity += vm.quantity;
+            }
+        }
     }
 }
 #pragma warning restore IDE1006 // Naming Styles

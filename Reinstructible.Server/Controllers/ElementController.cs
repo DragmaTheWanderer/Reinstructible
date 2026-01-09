@@ -64,6 +64,7 @@ namespace Reinstructible.Server.Controllers
 
             const string type = "sets";
             const string param = "parts";
+            const string minifigs = "minifigs";
             Element[]? result;
             var resultStr = await service.GetRecordByIdAsync(type, id, param);
             Elements? detail = JsonSerializer.Deserialize<Elements>(resultStr);
@@ -84,6 +85,21 @@ namespace Reinstructible.Server.Controllers
                 item.part_img_url = item.part!.part_img_url;
                 item.part_url = item.part!.part_url;
             }
+            //check minifig status,  then get the elements for the minifig and add to the list of elements to return
+            var minifigResultStr = await service.GetRecordByIdAsync(type, id, minifigs);
+            if (minifigResultStr != null) { 
+                Minifigs? minifigsResults = JsonSerializer.Deserialize<Minifigs>(minifigResultStr);
+                foreach(var item in minifigsResults!.results!)
+                {
+                    var minifigElementsString = await service.GetRecordByIdAsync(minifigs, item.set_num, param);
+                    Elements? minifigElements = JsonSerializer.Deserialize<Elements>(minifigElementsString);
+                    var minifigElementList = minifigElements!.results;
+                    foreach (var m in minifigElementList!) m.set_num = id;
+                    result = ConcatElements([.. result!], [.. minifigElementList!]);
+                }
+            }
+
+
             return result!;
         }
 
@@ -138,8 +154,9 @@ namespace Reinstructible.Server.Controllers
 
                     //ellement not saved,  save item
                     await CreateSavedItem(elem);
-                    await _inventoryController.CreateSavedItem(elem);
-                }
+                   
+                } 
+                await _inventoryController.CreateSavedItem(elem);
             }
         }
 
