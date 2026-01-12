@@ -12,37 +12,45 @@
       </a>
     </div>
   </div>
+  <div class="w3-container element-controll-container">
+    @switch (selectedControllTab()) {
 
-  @switch (selectedControllTab()) {
+    @case ('category') {
+    <!--Category-->
+    <filterComponent [type]="categoryOptionType"
+                     [options]="partCategoryOptions"
+                     (onOptionsSent)="partCatergoryFilter($event)"></filterComponent>
 
-  @case ('category') {
-  <!--Category-->
-  <div class="w3-card-4">
-    <header class="w3-container w3-dark-grey"></header>
-    <div>
-      <ul class="w3-ul w3-hoverable">
-        <li class="w3-left-align"
-            *ngFor="let option of partCategory"
-            (click)="onSelectedCategory(option)">
-          <label >
-            <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
-            {{option.name}}
-          </label>
-        </li>
-      </ul>
-    </div>
-    <footer></footer>
-  </div>
-  }
+    <!--<div class="w3-card-4">
+      <header class="w3-container w3-dark-grey"></header>
+      <div>
+        <ul class="w3-ul w3-hoverable">
+          <li class="w3-left-align"
+              *ngFor="let option of partCategory"
+              (click)="onSelectedCategory(option)">
+            <label>
+              <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
+              {{option.name}}
+            </label>
+          </li>
+        </ul>
+      </div>
+      <footer></footer>
+    </div>-->
+    }
 
-  @case ('color') {
-  <!--Color-->
-  <div class="w3-card-4">
+    @case ('color') {
+    <!--Color-->
+    <filterComponent [type]="colorOptionType"
+                     [options]="partColorOptions"
+                     (onOptionsSent)="partColorFilter($event)"></filterComponent>
+
+    <!--<div class="w3-card-4">
     <div>
       <ul class="w3-ul w3-hoverable">
         <li class="w3-left-align"
             *ngFor="let option of partColor"
-             (click)="onSelectedColor(option)">
+            (click)="onSelectedColor(option)">
           <label>
             <input class="w3-check" type="checkbox"
                    [(ngModel)]="option.selected" />
@@ -52,28 +60,29 @@
       </ul>
     </div>
     <footer></footer>
+  </div>-->
+    }
+
+    }
   </div>
-  }
- 
-  }
-  <div class="">
+  <!--<div class="w3-container">
     <div class=" w3-display-bottommiddle element-footer">
       <button class="w3-btn w3-round-large w3-dark-grey" (click)="selectAll()">Select All</button>
       <button class="w3-btn w3-round-large w3-dark-grey" (click)="clearSelections()">Clear</button>
       <button class="w3-btn w3-round-large w3-dark-grey" (click)="toggleSelections()">Toggle</button>
     </div>
-  </div>
+  </div>-->
 </div>
 
 <!--Body-->
 
-<div class="element-body">
+<div class="w3-container element-header">
   <h1 id="tableLabel">Lego Set Elements</h1>
 
   <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-
-  <div *ngIf="Loaded">
-
+</div>
+<div *ngIf="Loaded">
+  <div class="element-body">
     <table class="w3-table-all w3-hoverable">
       <thead>
         <tr class="w3-grey">
@@ -97,6 +106,7 @@
         </tr>
       </tbody>
     </table>
+    
   </div>
 </div>
 <storage *ngIf="storageVisable"

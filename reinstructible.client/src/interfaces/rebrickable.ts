@@ -52,6 +52,11 @@ interface IColor {
   is_trans: boolean;
   selected: boolean;
 }
+interface IFilterOptions {
+  id: number;
+  name: string;
+  selected: boolean;
+}
 interface ITheme {
   id: number;
   parent_id: number;
@@ -82,6 +87,9 @@ interface IStorage_updateList {
   bin: string;
   drawer: string;
 }
+
+
+
 export type {
   IColor,
   IElement,
@@ -93,4 +101,6 @@ export type {
   IStorage,
   IStorage_updateList,
   ISubInventory,
+
+  IFilterOptions,
 }

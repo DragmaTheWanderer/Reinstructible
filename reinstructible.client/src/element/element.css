@@ -13,8 +13,16 @@ table {
     margin: 0 auto;
 }
 
+.element-controll-container {
+  height: 88vh;
+  overflow: overlay;
+}
+
 .element-img {
   width: 75px;
+}
+.element-header {
+  margin-left: 25%;
 }
 .element-body {
   display: flex;
@@ -33,14 +41,4 @@ table {
     border-bottom: 2px solid #ddd
   }
 
-.element-footer {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 1rem;
-  width: 100%
-}
 
-  .element-footer button {
-    text-wrap: auto;
-    width: 120px;
-  }

@@ -4,8 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Storage } from '../storage/storage';
-import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, } from '../interfaces/rebrickable'
+import { FilterComponent } from './filter/filter';
+import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, IFilterOptions } from '../interfaces/rebrickable'
 import { filter } from 'rxjs';
+
 
 /**
  * Element component
@@ -20,7 +22,7 @@ import { filter } from 'rxjs';
 @Component({
   selector: 'element',
   standalone: true,
-  imports: [CommonModule, FormsModule, Storage],
+  imports: [CommonModule, FormsModule, Storage, FilterComponent],
   templateUrl: './element.html',
   styleUrl: './element.css'
 })
@@ -35,17 +37,7 @@ export class Element implements OnInit, OnChanges {
    */
   public elementsBase: IElement[] = [];
 
-  /**
-   * Computed list of unique part categories present in `elementsBase`.
-   * Used to populate category selection control.
-   */
-  public partCategory: IPartCategory[] = [];
-
-  /**
-   * Computed list of unique colors present in `elementsBase`.
-   * Used to populate color selection control.
-   */
-  public partColor: IColor[] = [];
+ 
 
   /**
    * Indicates whether the initial data load completed successfully.
@@ -75,6 +67,23 @@ export class Element implements OnInit, OnChanges {
    * Event emitted when an element is selected for storage. Parent uses this to open/initialize storage UI.
    */
   @Output() loadStorageEvent = new EventEmitter<IElement>();
+
+  /**
+  * Computed list of unique part categories present in `elementsBase`.
+  * Used to populate category selection control.
+  */
+  public partCategory: IPartCategory[] = [];
+  public partCategoryOptions: IFilterOptions[] = [];
+  //@Output() partCategoryEvent = new EventEmitter<IPartCategory[]>();
+  public categoryOptionType: string = "category";
+  /**
+   * Computed list of unique colors present in `elementsBase`.
+   * Used to populate color selection control.
+   */
+  public partColor: IColor[] = [];
+  public partColorOptions: IFilterOptions[] = [];
+  //@Output() partColorEvent = new EventEmitter<IColor[]>();
+  public colorOptionType: string = "color";
 
   constructor(private http: HttpClient) { }
 
@@ -131,43 +140,57 @@ export class Element implements OnInit, OnChanges {
   }
 
 
-  /**
-   * Called when the selection changes in the UI.
-   * Invokes the filter routine.
-   */
-  onSelectedColor(selected: IColor): void {
-    //set the selected value for the color selected
-    this.partColor.forEach(color => {
-      if (color.id == selected.id) {
-        color.selected = !color.selected;
-      }
-    });
-    this.elementFilter();
-  }
-  onSelectedCategory(selected: IPartCategory): void {
-    //set the selected value for the color selected
-    this.partCategory.forEach(category => {
-      if (category.id == selected.id) {
-        category.selected = !category.selected;
-      }
-    });
-    this.elementFilter();
-  }
+  ///**
+  // * Called when the selection changes in the UI.
+  // * Invokes the filter routine.
+  // */
+  //onSelectedColor(selected: IColor): void {
+  //  //set the selected value for the color selected
+  //  this.partColor.forEach(color => {
+  //    if (color.id == selected.id) {
+  //      color.selected = !color.selected;
+  //    }
+  //  });
+  //  this.elementFilter();
+  //}
+  //onSelectedCategory(selected: IPartCategory): void {
+  //  //set the selected value for the color selected
+  //  this.partCategory.forEach(category => {
+  //    if (category.id == selected.id) {
+  //      category.selected = !category.selected;
+  //    }
+  //  });
+  //  this.elementFilter();
+  //}
 
-  /**
-   * Applies the selected category and color filters to `elementsBase` and populates `elements`.
-   * - If both selectors are null, resets to `elementsBase`.
-   * - If only one selector is set, filters by that selector's id.
-   * - If both are set, applies both filters (category then color).
-   */
+  ///**
+  // * Applies the selected category and color filters to `elementsBase` and populates `elements`.
+  // * - If both selectors are null, resets to `elementsBase`.
+  // * - If only one selector is set, filters by that selector's id.
+  // * - If both are set, applies both filters (category then color).
+  // */
+  //elementFilter() {
+  //  //looks at the color list and category list then filters based on those lists
+  //  let filteredColor = this.partColor.filter(i => i.selected);
+  //  let colorIds = filteredColor.flatMap(tId => tId.id);
+  //  let filteredCategory = this.partCategory.filter(i => i.selected);
+  //  let categoryIds = filteredCategory.flatMap(cId => cId.id);
+
+  //  this.elements = this.elementsBase.filter(i => colorIds.includes(i.color.id)).filter(i => categoryIds.includes(i.part.part_cat_id));
+  //}
+  public colorIds: number[] = [];
+  public categoryIds: number[] = [];
+
+  partCatergoryFilter(values: number[]) {
+    this.categoryIds = values;
+    this.elementFilter();
+  }
+  partColorFilter(values: number[]) {
+    this.colorIds = values;
+    this.elementFilter();
+  }
   elementFilter() {
-    //looks at the color list and category list then filters based on those lists
-    let filteredColor = this.partColor.filter(i => i.selected);
-    let colorIds = filteredColor.flatMap(tId => tId.id);
-    let filteredCategory = this.partCategory.filter(i => i.selected);
-    let categoryIds = filteredCategory.flatMap(cId => cId.id);
-
-    this.elements = this.elementsBase.filter(i => colorIds.includes(i.color.id)).filter(i => categoryIds.includes(i.part.part_cat_id));
+    this.elements = this.elementsBase.filter(i => this.colorIds.includes(i.color.id)).filter(i => this.categoryIds.includes(i.part.part_cat_id));
   }
 
   //collapse(type: string) {
@@ -207,40 +230,41 @@ export class Element implements OnInit, OnChanges {
   }
 
 
-  selectAll() {
-    switch (this.selectedControllTab()) {
-      case "category":
-        this.partCategory.forEach(x=>x.selected = true)
-        break;
-      case "color":
-        this.partColor.forEach(x => x.selected = true)
-        break;
-    }
-    this.elementFilter();
+//  selectAll() {
+//    switch (this.selectedControllTab()) {
+//      case "category":
+//        this.partCategory.forEach(x=>x.selected = true)
+//        break;
+//      case "color":
+//        this.partColor.forEach(x => x.selected = true)
+//        break;
+//    }
+//    this.elementFilter();
 
-  }
-  clearSelections() {
-    switch (this.selectedControllTab()) {
-      case "category":
-        this.partCategory.forEach(x => x.selected = false)
-        break;
-      case "color":
-        this.partColor.forEach(x => x.selected = false)
-        break;
-    }
-    this.elementFilter();
-}
-  toggleSelections() {
-    switch (this.selectedControllTab()) {
-      case "category":
-        this.partCategory.forEach(x => x.selected = !x.selected)
-        break;
-      case "color":
-        this.partColor.forEach(x => x.selected = !x.selected)
-        break;
-    }
-    this.elementFilter();
-}
+//  }
+//  clearSelections() {
+//    switch (this.selectedControllTab()) {
+//      case "category":
+//        this.partCategory.forEach(x => x.selected = false)
+//        break;
+//      case "color":
+//        this.partColor.forEach(x => x.selected = false)
+//        break;
+//    }
+//    this.elementFilter();
+//}
+//  toggleSelections() {
+//    switch (this.selectedControllTab()) {
+//      case "category":
+//        this.partCategory.forEach(x => x.selected = !x.selected)
+//        break;
+//      case "color":
+//        this.partColor.forEach(x => x.selected = !x.selected)
+//        break;
+//    }
+//    this.elementFilter();
+//  }
+
   /**
    * Loads elements from the server API using the current `filterValue` and `idValue`.
    * - On success: stores results in `elementsBase` and `elements`, then populates category and color lists.
@@ -305,10 +329,13 @@ export class Element implements OnInit, OnChanges {
           console.error(error);
         },
         complete: () => {
-          // Sort the new list
-          this.partCategory = cat.sort((a, b) => a.name.localeCompare(b.name));
           //set the selected for each category to true so that they are all selected by default
           this.partCategory.forEach(category => { category.selected = true; });
+          // Sort the new list
+          this.partCategory = cat.sort((a, b) => a.name.localeCompare(b.name));
+          //map the partCategory to the partCategoryOptions list
+          this.partCategoryOptions = this.partCategory.map(cat => ({ id: cat.id, name: cat.name, selected: cat.selected }));
+          this.categoryIds = this.partCategory.map(cat => cat.id);
         }
       });
     });
@@ -341,6 +368,8 @@ export class Element implements OnInit, OnChanges {
 
     // The following commented code shows how to request color objects per id from the API.
     // It is retained for reference in case a switch to server-driven color lookup is desired.
+    this.partColorOptions = this.partColor.map(color => ({ id: color.id, name: color.name, selected: color.selected }));
+    this.colorIds = this.partColor.map(color => color.id);
   }
 
   /**
