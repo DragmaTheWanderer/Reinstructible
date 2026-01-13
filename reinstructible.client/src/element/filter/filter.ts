@@ -1,8 +1,7 @@
 import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {  IColor, IPartCategory, IFilterOptions } from '../../interfaces/rebrickable'
-import { filter } from 'rxjs';
+import { IFilterOptions } from '../../interfaces/rebrickable'
 
 @Component({
   selector: 'filterComponent',
@@ -18,14 +17,11 @@ export class FilterComponent implements OnInit, OnChanges {
 
   public onOptionsSent = output<any[]>();
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
   ngOnChanges(changes: SimpleChanges) {
     // `changes` parameter is intentionally unused beyond triggering the refresh.
     let change = changes;
   }
-
 
   onSelected(option: IFilterOptions) {
     option.selected = !option.selected; // toggle the selected state

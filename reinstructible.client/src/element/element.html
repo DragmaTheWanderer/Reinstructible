@@ -1,4 +1,4 @@
-  <!--sidebar-->
+<!--sidebar-->
 <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%;">
   <div class="w3-container">
     <div class="w3-row>">
@@ -20,23 +20,6 @@
     <filterComponent [type]="categoryOptionType"
                      [options]="partCategoryOptions"
                      (onOptionsSent)="partCatergoryFilter($event)"></filterComponent>
-
-    <!--<div class="w3-card-4">
-      <header class="w3-container w3-dark-grey"></header>
-      <div>
-        <ul class="w3-ul w3-hoverable">
-          <li class="w3-left-align"
-              *ngFor="let option of partCategory"
-              (click)="onSelectedCategory(option)">
-            <label>
-              <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
-              {{option.name}}
-            </label>
-          </li>
-        </ul>
-      </div>
-      <footer></footer>
-    </div>-->
     }
 
     @case ('color') {
@@ -44,34 +27,10 @@
     <filterComponent [type]="colorOptionType"
                      [options]="partColorOptions"
                      (onOptionsSent)="partColorFilter($event)"></filterComponent>
-
-    <!--<div class="w3-card-4">
-    <div>
-      <ul class="w3-ul w3-hoverable">
-        <li class="w3-left-align"
-            *ngFor="let option of partColor"
-            (click)="onSelectedColor(option)">
-          <label>
-            <input class="w3-check" type="checkbox"
-                   [(ngModel)]="option.selected" />
-            {{option.name}}
-          </label>
-        </li>
-      </ul>
-    </div>
-    <footer></footer>
-  </div>-->
     }
 
     }
   </div>
-  <!--<div class="w3-container">
-    <div class=" w3-display-bottommiddle element-footer">
-      <button class="w3-btn w3-round-large w3-dark-grey" (click)="selectAll()">Select All</button>
-      <button class="w3-btn w3-round-large w3-dark-grey" (click)="clearSelections()">Clear</button>
-      <button class="w3-btn w3-round-large w3-dark-grey" (click)="toggleSelections()">Toggle</button>
-    </div>
-  </div>-->
 </div>
 
 <!--Body-->
@@ -82,32 +41,9 @@
   <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
 </div>
 <div *ngIf="Loaded">
-  <div class="element-body">
-    <table class="w3-table-all w3-hoverable">
-      <thead>
-        <tr class="w3-grey">
-          <th class="w3-text-white">Quantity</th>
-          <th class="w3-text-white">Image</th>
-          <th class="w3-text-white">Part</th>
-          <th class="w3-text-white">Storage</th>
-        </tr>
-      </thead>
-      <tbody style="overflow-y:auto;">
-        <tr *ngFor="let item of elements">
-          <td class="w3-jumbo"><b>{{ item.quantity }}</b></td>
-          <td>
-            <img class="element-img" src="{{item.part_img_url}}" alt="Element {{item.element_id}}" (error)="item.part_img_url = item.alt_part_img_url">
-          </td>
-          <td class="w3-left-align">{{ item.color.name }} {{ item.part.name }}</td>
-          <td (click)="setStorage(item)">
-            {{ item.storage_location.bin }} <br />
-            {{ item.storage_location.drawer }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    
-  </div>
+  <bodyTable [elements]="elements"
+             (itemForStorage)="setStorage($event)"
+             ></bodyTable>
 </div>
 <storage *ngIf="storageVisable"
          (saveStorageEvent)="addedStorage($event)"

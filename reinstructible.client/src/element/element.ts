@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { Storage } from '../storage/storage';
 import { FilterComponent } from './filter/filter';
+import { BodyTable } from './body-table/BodyTable';
 import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, IFilterOptions } from '../interfaces/rebrickable'
 import { filter } from 'rxjs';
 
@@ -22,7 +23,7 @@ import { filter } from 'rxjs';
 @Component({
   selector: 'element',
   standalone: true,
-  imports: [CommonModule, FormsModule, Storage, FilterComponent],
+  imports: [CommonModule, FormsModule, Storage, FilterComponent, BodyTable,],
   templateUrl: './element.html',
   styleUrl: './element.css'
 })
@@ -74,7 +75,6 @@ export class Element implements OnInit, OnChanges {
   */
   public partCategory: IPartCategory[] = [];
   public partCategoryOptions: IFilterOptions[] = [];
-  //@Output() partCategoryEvent = new EventEmitter<IPartCategory[]>();
   public categoryOptionType: string = "category";
   /**
    * Computed list of unique colors present in `elementsBase`.
@@ -82,7 +82,6 @@ export class Element implements OnInit, OnChanges {
    */
   public partColor: IColor[] = [];
   public partColorOptions: IFilterOptions[] = [];
-  //@Output() partColorEvent = new EventEmitter<IColor[]>();
   public colorOptionType: string = "color";
 
   constructor(private http: HttpClient) { }
@@ -135,49 +134,8 @@ export class Element implements OnInit, OnChanges {
    * Angular lifecycle hook: called once after component creation.
    * The initial load is intentionally deferred to ngOnChanges so it will run when `idValue` is set.
    */
-  ngOnInit() {
-    /*    this.getElement();*/
-  }
+  ngOnInit() {}
 
-
-  ///**
-  // * Called when the selection changes in the UI.
-  // * Invokes the filter routine.
-  // */
-  //onSelectedColor(selected: IColor): void {
-  //  //set the selected value for the color selected
-  //  this.partColor.forEach(color => {
-  //    if (color.id == selected.id) {
-  //      color.selected = !color.selected;
-  //    }
-  //  });
-  //  this.elementFilter();
-  //}
-  //onSelectedCategory(selected: IPartCategory): void {
-  //  //set the selected value for the color selected
-  //  this.partCategory.forEach(category => {
-  //    if (category.id == selected.id) {
-  //      category.selected = !category.selected;
-  //    }
-  //  });
-  //  this.elementFilter();
-  //}
-
-  ///**
-  // * Applies the selected category and color filters to `elementsBase` and populates `elements`.
-  // * - If both selectors are null, resets to `elementsBase`.
-  // * - If only one selector is set, filters by that selector's id.
-  // * - If both are set, applies both filters (category then color).
-  // */
-  //elementFilter() {
-  //  //looks at the color list and category list then filters based on those lists
-  //  let filteredColor = this.partColor.filter(i => i.selected);
-  //  let colorIds = filteredColor.flatMap(tId => tId.id);
-  //  let filteredCategory = this.partCategory.filter(i => i.selected);
-  //  let categoryIds = filteredCategory.flatMap(cId => cId.id);
-
-  //  this.elements = this.elementsBase.filter(i => colorIds.includes(i.color.id)).filter(i => categoryIds.includes(i.part.part_cat_id));
-  //}
   public colorIds: number[] = [];
   public categoryIds: number[] = [];
 
@@ -193,27 +151,6 @@ export class Element implements OnInit, OnChanges {
     this.elements = this.elementsBase.filter(i => this.colorIds.includes(i.color.id)).filter(i => this.categoryIds.includes(i.part.part_cat_id));
   }
 
-  //collapse(type: string) {
-  //  if (type == "color") {
-  //    this.colorCollapse = !this.colorCollapse;
-  //    this.colorArrow = this.downArrow;
-  //    if (!this.colorCollapse) {
-  //      this.categoryCollapse = true;
-  //      this.catergoryArrow = this.downArrow;
-  //      this.colorArrow = this.upArrow;
-  //    }
-  //  }
-  //  if (type == "category") {
-  //    this.categoryCollapse = !this.categoryCollapse;
-  //    this.catergoryArrow = this.downArrow;
-  //    if (!this.categoryCollapse) {
-  //      this.colorCollapse = true;
-  //      this.colorArrow = this.downArrow;
-  //      this.catergoryArrow = this.upArrow;
-  //    }
-  //  }
-  //}
-
   public selectedControllTab = signal<'category' | 'color' | string>('category');
 
   openControlTab(type: string) {
@@ -228,42 +165,6 @@ export class Element implements OnInit, OnChanges {
     let result = type === this.selectedControllTab();
     return result; 
   }
-
-
-//  selectAll() {
-//    switch (this.selectedControllTab()) {
-//      case "category":
-//        this.partCategory.forEach(x=>x.selected = true)
-//        break;
-//      case "color":
-//        this.partColor.forEach(x => x.selected = true)
-//        break;
-//    }
-//    this.elementFilter();
-
-//  }
-//  clearSelections() {
-//    switch (this.selectedControllTab()) {
-//      case "category":
-//        this.partCategory.forEach(x => x.selected = false)
-//        break;
-//      case "color":
-//        this.partColor.forEach(x => x.selected = false)
-//        break;
-//    }
-//    this.elementFilter();
-//}
-//  toggleSelections() {
-//    switch (this.selectedControllTab()) {
-//      case "category":
-//        this.partCategory.forEach(x => x.selected = !x.selected)
-//        break;
-//      case "color":
-//        this.partColor.forEach(x => x.selected = !x.selected)
-//        break;
-//    }
-//    this.elementFilter();
-//  }
 
   /**
    * Loads elements from the server API using the current `filterValue` and `idValue`.
