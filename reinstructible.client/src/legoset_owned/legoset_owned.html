@@ -2,24 +2,8 @@
   <!--sidebar-->
   <div id="controlls" class="w3-third w3-container">
     <div class="w3-display-container sidebar-container">
-      <div class="w3-card">
-        <header class="w3-container w3-dark-grey themes-header">
-          <h2>Themes</h2>
-        </header>
-        <div class="themes-body">
-          <ul class="w3-ul w3-hoverable ">
-            <li (click)="clearTheme()"
-                [ngClass]="selectedThemeCheck('All')">All</li>
-            <li *ngFor="let thm of themes"
-                (click)="setTheme(thm.id, thm.name)"
-                [ngClass]="selectedThemeCheck(thm.name)">
-              {{thm.name}}
-            </li>
-          </ul>
-        </div>
-        <footer></footer>
-      </div>
-      
+    <setFilterComponent [options]="setThemeOptions"
+                        (onOptionsSent)="setTheme($event)"></setFilterComponent>      
       <div class="w3-display-bottommiddle">
         <hr />
         <button type="button" class="w3-btn w3-round-large w3-dark-grey"
@@ -36,8 +20,10 @@
     <p *ngIf="setsLoaded"><em>Select the set you want to see the inventory of.</em></p>
   </div>
   <!--Body-->
-
-  <div id="table" class="set-body">
+  <setTable [legoSets]="legoSets"
+            (setNumOut)="loadSet($event)"
+            ></setTable>
+  <!--<div id="table" class="set-body">
     <table class="w3-table-all w3-hoverable">
       <thead>
         <tr class="w3-grey">
@@ -58,7 +44,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </div>-->
 </div>
 
 <legoset_add *ngIf="showPopUp"

@@ -3,13 +3,15 @@ import { Component, OnInit, signal, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { ILegoSet, ITheme } from '../interfaces/rebrickable'
+import { ILegoSet, ITheme, IFilterOptions, } from '../interfaces/rebrickable'
 import { LegoSet_add } from '../legoset_add/legoset_add';
+import { SetFilterComponent } from './setFilter/setFilter';
+import { SetTable } from './setTable/setTable'
 
 @Component({
   selector: 'legoset_owned',
   standalone: true,
-  imports: [LegoSet_add, CommonModule, FormsModule],
+  imports: [LegoSet_add, SetFilterComponent, SetTable, CommonModule, FormsModule],
   templateUrl: './legoset_owned.html',
   styleUrl: './legoset_owned.css'
 })
@@ -17,6 +19,8 @@ export class LegoSet_owned implements OnInit {
   public legoSets: ILegoSet[] = [];
   public legoSetsBase: ILegoSet[] = [];
   public themes: ITheme[] = []
+  public setThemeOptions: IFilterOptions[] = [];
+
   public selectedTheme: string = "All";
  
   public setsLoaded: boolean = false;
@@ -27,6 +31,7 @@ export class LegoSet_owned implements OnInit {
   public paramValue: string = "LoadSets";
 
   public showPopUp: boolean = false;
+
 
   //setting up an emitter to send the setnumber to the events component.
   @Output() loadElementsEvent = new EventEmitter<string>();
@@ -67,7 +72,8 @@ export class LegoSet_owned implements OnInit {
           .sort((a,b) => a.name.localeCompare(b.name))
           .filter((item, index, self) =>
               index === self.findIndex((t) => (
-                t.id === item.id && t.name ===item.name)));
+                t.id === item.id && t.name === item.name)));
+        this.setThemeOptions = this.themes.map(t => ({ id: t.id, name: t.name, selected: false }));
         this.setsLoaded = true;
     },
       error: (error) => {
@@ -82,20 +88,15 @@ export class LegoSet_owned implements OnInit {
   closeModal() {
     this.showPopUp = false;
   }
-  selectedThemeCheck(value: string) {
-    let result = "";
-    if (value === this.selectedTheme) { result = "w3-green"; }
-    return result;
-  }
-  clearTheme() {
-    this.legoSets = this.legoSetsBase;
-    this.selectedTheme = "All";
-  }
-  setTheme(id: number, name: string) {
-
+  setTheme(value:string) {
     //filter
-    this.legoSets = this.legoSetsBase.filter(x => x.theme_id === id);
-    this.selectedTheme = name;
+    if (value === "All") {
+      this.legoSets = this.legoSetsBase;
+    } else {
+      this.legoSets = this.legoSetsBase.filter(x => x.theme[0].name === value);
+    }
+    
+    this.selectedTheme = value;
   }
   protected readonly title = signal('reinstructible.client');
 }
