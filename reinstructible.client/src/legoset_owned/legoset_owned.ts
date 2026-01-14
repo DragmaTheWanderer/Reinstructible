@@ -6,12 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { ILegoSet, ITheme, IFilterOptions, } from '../interfaces/rebrickable'
 import { LegoSet_add } from '../legoset_add/legoset_add';
 import { SetFilterComponent } from './setFilter/setFilter';
-import { SetTable } from './setTable/setTable'
+import { SetTable } from './setTable/setTable';
+import { SetCards } from './setCards/setCards';
 
 @Component({
   selector: 'legoset_owned',
   standalone: true,
-  imports: [LegoSet_add, SetFilterComponent, SetTable, CommonModule, FormsModule],
+  imports: [LegoSet_add, SetFilterComponent, SetTable, SetCards, CommonModule, FormsModule],
   templateUrl: './legoset_owned.html',
   styleUrl: './legoset_owned.css'
 })

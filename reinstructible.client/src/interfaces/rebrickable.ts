@@ -10,6 +10,10 @@ interface ILegoSet {
   set_element_count: number;
   set_element_storage_count: number;
 }
+interface ILegoSetCards {
+  grouping: string;
+  legoSets: ILegoSet[];
+}
 interface IElement {
   id: number;
   inv_part_id: number;
@@ -102,5 +106,6 @@ export type {
   IStorage_updateList,
   ISubInventory,
 
+  ILegoSetCards,
   IFilterOptions,
 }

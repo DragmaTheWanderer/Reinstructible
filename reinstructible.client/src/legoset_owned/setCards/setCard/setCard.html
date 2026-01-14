@@ -1,0 +1,16 @@
+<div class="w3-third w3-container w3-cell w3-round-large"
+     (click)="loadSet(legoSet()!.set_num)">
+  <div class="w3-card-4 ">
+    <header class="w3-dark-grey"><h2>{{ legoSet()!.name! }}</h2></header>
+    <div class="img-wrapper">
+      <img src="{{ legoSet()!.set_img_url! }}" class="set_img" />
+    </div>
+    <footer class="w3-dark-grey w3-padding-small">
+      <h3>
+        <span class="w3-left">{{legoSet()!.set_num! }}</span>
+        <span>&nbsp;</span>
+        <span class="w3-right">{{legoSet()!.theme![0].name! }}</span>
+      </h3>
+    </footer>
+  </div>
+</div>

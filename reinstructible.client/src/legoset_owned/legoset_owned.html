@@ -20,9 +20,14 @@
     <p *ngIf="setsLoaded"><em>Select the set you want to see the inventory of.</em></p>
   </div>
   <!--Body-->
-  <setTable [legoSets]="legoSets"
+  <!--<setTable [legoSets]="legoSets"
             (setNumOut)="loadSet($event)"
-            ></setTable>
+            ></setTable>-->
+  <setCards [legoSets]="legoSets"
+            [setThemes]="setThemeOptions"
+            [currentTheme]="selectedTheme"
+            (setNumOut)="loadSet($event)"
+            ></setCards>
   <!--<div id="table" class="set-body">
     <table class="w3-table-all w3-hoverable">
       <thead>

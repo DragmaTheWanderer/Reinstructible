@@ -9,8 +9,8 @@ import { ILegoSet, } from '../../interfaces/rebrickable'
   selector: 'setTable',
   standalone: true,
   imports: [CommonModule, FormsModule,],
-  templateUrl: './SetTable.html',
-  styleUrl: './SetTable.css'
+  templateUrl: './setTable.html',
+  styleUrl: './setTable.css'
 })
 
 export class SetTable {

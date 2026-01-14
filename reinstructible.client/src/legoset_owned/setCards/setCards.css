@@ -1,0 +1,11 @@
+.set-body {
+  display: flex;
+  flex-direction: column;
+  max-height: 75vh;
+  overflow-y: auto;
+  margin-left: 25%;
+}
+.set-row {
+    display: flex;
+    flex-direction:row;
+}
