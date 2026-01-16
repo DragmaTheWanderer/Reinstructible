@@ -31,6 +31,10 @@ interface IElement {
   sub_inventory: ISubInventory;
   selected: boolean;
 }
+interface IElementCards {
+  grouping: string;
+  elements: IElement[];
+}
 interface IPart {
   part_num: string;
   name: string;
@@ -107,5 +111,6 @@ export type {
   ISubInventory,
 
   ILegoSetCards,
+  IElementCards,
   IFilterOptions,
 }

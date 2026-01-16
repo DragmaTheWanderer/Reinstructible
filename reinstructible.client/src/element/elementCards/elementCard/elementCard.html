@@ -1,0 +1,26 @@
+<div class="w3-third w3-container w3-cell w3-round-large"
+     (click)="setStorage(element()!)">
+  <div class="w3-card-4 ">
+    <header class="w3-dark-grey">
+      <h3>{{ element()!.color.name }}</h3>
+    </header>
+    
+    <div class="w3-cell-row">
+      <div class=" w3-container w3-cell ">
+        <span class="w3-jumbo"><b>{{ element()!.quantity }}</b></span>
+      </div>
+      <div class=" w3-container w3-cell ">
+        <img src="{{ element()!.part_img_url! }}" class="set_img" />
+      </div>
+      <div class=" w3-container w3-cell ">
+        <div>{{ element()!.storage_location.bin }}</div>
+        <div>{{ element()!.storage_location.drawer }}</div>
+      </div>
+      
+    </div>
+
+    <footer class="w3-dark-grey w3-padding-small">
+      <h3>{{ element()!.part.name }}</h3>
+    </footer>
+  </div>
+</div>

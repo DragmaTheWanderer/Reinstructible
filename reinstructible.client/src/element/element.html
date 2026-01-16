@@ -41,12 +41,18 @@
   <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
 </div>
 <div *ngIf="Loaded">
-  <bodyTable [elements]="elements"
+  <!--<bodyTable [elements]="elements"
              (itemForStorage)="setStorage($event)"
-             ></bodyTable>
+             ></bodyTable>-->
+  <elementCards [elements] ="elements"
+                [groupColor] ="partColorOptions"
+                [groupCategory] ="partCategoryOptions"
+                (itemForStorage)="setStorage($event)">
+
+  </elementCards>
 </div>
 <storage *ngIf="storageVisable"
+         [elementValue]="elementForStorage"
          (saveStorageEvent)="addedStorage($event)"
-         (closeModalEvent)="setStorageHidden($event)"
-         [elementValue]="elementForStorage">
+         (closeModalEvent)="setStorageHidden($event)">
 </storage>

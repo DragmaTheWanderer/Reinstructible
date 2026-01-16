@@ -1,0 +1,12 @@
+.element-body {
+  display: flex;
+  flex-direction: column;
+  max-height: 75vh;
+  overflow-y: auto;
+  margin-left: 25%;
+}
+
+.element-row {
+  display: flex;
+  flex-direction: row;
+}

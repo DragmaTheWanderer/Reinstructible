@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { Storage } from '../storage/storage';
 import { FilterComponent } from './filter/filter';
+import { ElementCards } from './elementCards/elementCards'
 import { BodyTable } from './body-table/BodyTable';
 import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, IFilterOptions } from '../interfaces/rebrickable'
 import { filter } from 'rxjs';
@@ -23,7 +24,7 @@ import { filter } from 'rxjs';
 @Component({
   selector: 'element',
   standalone: true,
-  imports: [CommonModule, FormsModule, Storage, FilterComponent, BodyTable,],
+  imports: [CommonModule, FormsModule, Storage, FilterComponent, BodyTable, ElementCards,],
   templateUrl: './element.html',
   styleUrl: './element.css'
 })

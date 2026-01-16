@@ -1,0 +1,13 @@
+<div class="element-body">
+  <div *ngFor="let cardGroup of elementCards">
+    <div>{{ cardGroup.grouping}}</div>
+    <div class="w3-row">
+
+      <span *ngFor="let element of cardGroup.elements ">
+        <elementCard [element]="element"
+                     (itemForStorage)="setStorage($event)"></elementCard>
+      </span>
+    </div>
+  </div>
+
+</div>
