@@ -45,21 +45,27 @@ export class ElementCards implements OnInit, OnChanges {
   }
   formatByColor() {
     this.groupColor().forEach(c => {
-      let elementCard: IElementCards = {
-        grouping: c.name,
-        elements: this.elements().filter(e => e.color.id === c.id)
+      let elementsForGroup = this.elements().filter(e => e.color.id === c.id);
+      if (elementsForGroup.length > 0) {
+        let elementCard: IElementCards = {
+          grouping: c.name,
+          elements: elementsForGroup
+        }
+        this.elementCards.push(elementCard);
       }
-      this.elementCards.push(elementCard);
     });
 
   }
   formatByCategory() {
     this.groupCategory().forEach(c => {
-      let elementCard: IElementCards = {
-        grouping: c.name,
-        elements: this.elements().filter(e => e.part.part_cat_id === c.id)
+      let elementsForGroup = this.elements().filter(e => e.part.part_cat_id === c.id);
+      if (elementsForGroup.length > 0) {
+        let elementCard: IElementCards = {
+          grouping: c.name,
+          elements: elementsForGroup
+        }
+        this.elementCards.push(elementCard);
       }
-      this.elementCards.push(elementCard);
     });
 
   }

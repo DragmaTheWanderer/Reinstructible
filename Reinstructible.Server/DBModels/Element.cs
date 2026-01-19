@@ -29,6 +29,12 @@ namespace Reinstructible.Server.DBModels
             this.color_id = vm.color!.id;
             this.part_img_url = vm.part_img_url;
         }
+        public void UpdateFrom(Models.Element vm)
+        {
+            this.part_num_id = vm.part!.part_num;
+            this.color_id = vm.color!.id;
+            this.part_img_url = vm.part_img_url;
+        }
     }
 }
 #pragma warning restore IDE1006 // Naming Styles

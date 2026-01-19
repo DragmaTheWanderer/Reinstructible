@@ -50,10 +50,10 @@ namespace Reinstructible.Server.Controllers
             var result = await GetElementsByPartNumFromDB(partId);
             return result;
         }
-        private async Task<Element[]> GetElementsFromDB(string set_num)
+        private async Task<Element[]> GetElementsFromDB(string id)
         {
             Element[]? result;
-            var elementDB = GetSavedElementsBySetNumber(set_num);
+            var elementDB = GetSavedElementsBySetNumber(id);
             
             result = elementDB;
             return result!;
@@ -65,6 +65,8 @@ namespace Reinstructible.Server.Controllers
             const string type = "sets";
             const string param = "parts";
             const string minifigs = "minifigs";
+            const string elements = "elements";
+
             Element[]? result;
             var resultStr = await service.GetRecordByIdAsync(type, id, param);
             Elements? detail = JsonSerializer.Deserialize<Elements>(resultStr);
@@ -94,7 +96,14 @@ namespace Reinstructible.Server.Controllers
                     var minifigElementsString = await service.GetRecordByIdAsync(minifigs, item.set_num, param);
                     Elements? minifigElements = JsonSerializer.Deserialize<Elements>(minifigElementsString);
                     var minifigElementList = minifigElements!.results;
-                    foreach (var m in minifigElementList!) m.set_num = id;
+                    foreach (var m in minifigElementList!) { 
+                        var missingElementString = await service.GetRecordByIdAsync(elements, m.element_id!);
+                        Element missingElementProps = JsonSerializer.Deserialize<Element>(missingElementString!)!;
+                        m.set_num = id; 
+                        m.part_img_url = missingElementProps.part_img_url;
+                        m.alt_part_img_url = missingElementProps.alt_part_img_url;
+                        m.part_url = missingElementProps.part!.part_img_url;
+                    }
                     result = ConcatElements([.. result!], [.. minifigElementList!]);
                 }
             }
@@ -143,20 +152,22 @@ namespace Reinstructible.Server.Controllers
             {
                 
                 Element? elementTest = GetSavedElementByItem(elem);
-                if(elementTest == null)
+                //null elementID test
+                if (elem.element_id == null)
                 {
-                    //null elementID test
-                    if (elem.element_id == null)
-                    {
-                        //element id should be able to be obtained via the part# and Color#
-                        elem.element_id = elem.part!.part_num + "-" + elem.color!.id;
-                    }
-
+                    //element id should be able to be obtained via the part# and Color#
+                    elem.element_id = elem.part!.part_num + "-" + elem.color!.id;
+                }
+                if (elementTest == null)
+                {
                     //ellement not saved,  save item
                     await CreateSavedItem(elem);
-                   
                 } 
-                await _inventoryController.CreateSavedItem(elem);
+                else
+                {
+                    await UpdateSavedItem(elem);
+                }
+                    await _inventoryController.CreateSavedItem(elem);
             }
         }
 
@@ -226,9 +237,11 @@ namespace Reinstructible.Server.Controllers
             return result;
         }
 
-        public void UpdateSavedItem(Element element)
+        public async Task UpdateSavedItem(Element element)
         {
-            DBModels.Element dbElement = new(element);
+
+            DBModels.Element dbElement = _context.Elements.Where(x => x.element_id == element.element_id).FirstOrDefault()!;
+            dbElement.UpdateFrom(element);
             _context.Elements.Update(dbElement);
             _context.SaveChanges();
         }
