@@ -32,7 +32,7 @@ export class LegoSet_owned implements OnInit {
   public paramValue: string = "LoadSets";
 
   public showPopUp: boolean = false;
-
+  public displayMode: string = "TV";
 
   //setting up an emitter to send the setnumber to the events component.
   @Output() loadElementsEvent = new EventEmitter<string>();
@@ -83,8 +83,18 @@ export class LegoSet_owned implements OnInit {
       }
     });
   }
-  popUp() {
-    this.showPopUp = !this.showPopUp;
+  popUp(value: string) {
+    switch (value) {
+      case "CV":
+      case "TV":
+        this.displayMode = value;
+        break;
+      default:
+        this.showPopUp = !this.showPopUp;
+        break;
+
+    }
+    
   }
   closeModal() {
     this.showPopUp = false;

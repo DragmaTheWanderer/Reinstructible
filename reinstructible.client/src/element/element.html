@@ -19,6 +19,7 @@
     <!--Category-->
     <filterComponent [type]="categoryOptionType"
                      [options]="partCategoryOptions"
+                     (onDisplayMode)="setDisplayMode($event)"
                      (onOptionsSent)="partCatergoryFilter($event)"></filterComponent>
     }
 
@@ -26,6 +27,7 @@
     <!--Color-->
     <filterComponent [type]="colorOptionType"
                      [options]="partColorOptions"
+                     (onDisplayMode)="setDisplayMode($event)"
                      (onOptionsSent)="partColorFilter($event)"></filterComponent>
     }
 
@@ -41,15 +43,15 @@
   <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
 </div>
 <div *ngIf="Loaded">
-  <!--<bodyTable [elements]="elements"
-             (itemForStorage)="setStorage($event)"
-             ></bodyTable>-->
-  <elementCards [elements] ="elements"
-                [groupColor] ="partColorOptions"
-                [groupCategory] ="partCategoryOptions"
-                (itemForStorage)="setStorage($event)">
-
-  </elementCards>
+  @if (displayMode === 'TV'){
+  <bodyTable [elements]="elements"
+             (itemForStorage)="setStorage($event)"></bodyTable>
+  } @else if (displayMode === 'CV'){
+  <elementCards [elements]="elements"
+                [groupColor]="partColorOptions"
+                [groupCategory]="partCategoryOptions"
+                (itemForStorage)="setStorage($event)"></elementCards>
+  }
 </div>
 <storage *ngIf="storageVisable"
          [elementValue]="elementForStorage"

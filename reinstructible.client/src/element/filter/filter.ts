@@ -16,7 +16,10 @@ export class FilterComponent implements OnInit, OnChanges {
   public options = input<IFilterOptions[]>([]);
 
   public onOptionsSent = output<any[]>();
-
+  public onDisplayMode = output<string>();
+  constructor() {
+    this.onDisplayMode.emit('TV');
+  }
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges) {
     // `changes` parameter is intentionally unused beyond triggering the refresh.
@@ -43,6 +46,9 @@ export class FilterComponent implements OnInit, OnChanges {
   elementFilter() {
     let filteredIds = this.options().filter(f => f.selected).flatMap(o => o.id);
     this.onOptionsSent.emit(filteredIds); //emit the array
+  }
+  popUp(value: string) {
+    this.onDisplayMode.emit(value);
   }
 
   protected readonly title = signal('reinstructible.client');

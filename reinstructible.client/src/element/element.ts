@@ -50,6 +50,7 @@ export class Element implements OnInit, OnChanges {
    * Whether the storage popup/component is visible.
    */
   public storageVisable: boolean = false;
+  public displayMode: string = "TV";
 
   /**
    * Element selected for editing/assigning storage.
@@ -148,6 +149,9 @@ export class Element implements OnInit, OnChanges {
     this.colorIds = values;
     this.elementFilter();
   }
+  setDisplayMode(value: string) {
+    this.displayMode = value;
+  }
   elementFilter() {
     this.elements = this.elementsBase.filter(i => this.colorIds.includes(i.color.id)).filter(i => this.categoryIds.includes(i.part.part_cat_id));
   }
@@ -166,6 +170,7 @@ export class Element implements OnInit, OnChanges {
     let result = type === this.selectedControllTab();
     return result; 
   }
+  
 
   /**
    * Loads elements from the server API using the current `filterValue` and `idValue`.

@@ -5,7 +5,6 @@
   width: 100%
 }
 
-  .element-footer button {
-    text-wrap: auto;
-    width: 120px;
-  }
+span + .w3-right button {
+  margin-left: 5px;
+}

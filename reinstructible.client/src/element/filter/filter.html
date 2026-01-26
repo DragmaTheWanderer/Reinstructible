@@ -15,9 +15,26 @@
   <footer></footer>
 </div>
 <div class="w3-container">
-  <div class=" w3-display-bottommiddle element-footer">
-    <button class="w3-btn w3-round-large w3-dark-grey" (click)="selectAll()">Select All</button>
-    <button class="w3-btn w3-round-large w3-dark-grey" (click)="clearSelections()">Clear</button>
-    <button class="w3-btn w3-round-large w3-dark-grey" (click)="toggleSelections()">Toggle</button>
-  </div>
+  <span class="w3-display-bottommiddle element-footer ">
+    <span class="w3-left">
+      <button class="w3-btn w3-circle w3-large w3-dark-grey"
+              (click)="selectAll()">
+        <i class="fa-regular fa-square-check"></i></button>
+      <button class="w3-btn w3-circle w3-large w3-dark-grey"
+              (click)="clearSelections()">
+        <i class="fa-regular fa-square-full"></i></button>
+      <button class="w3-btn w3-circle w3-large w3-dark-grey"
+              (click)="toggleSelections()">
+        <i class="fa-regular fa-eye-slash"></i></button>
+    </span>
+    <span class="w3-right">
+      <button type="button" class="w3-btn w3-circle w3-large w3-dark-grey"
+              (click)="popUp('CV')">
+        <i class="fa-regular fa-clipboard"></i></button>
+      <button type="button" class="w3-btn w3-circle w3-large w3-dark-grey"
+              (click)="popUp('TV')">
+        <i class="fa-solid fa-border-all"></i></button>
+    </span>
+
+  </span>
 </div>

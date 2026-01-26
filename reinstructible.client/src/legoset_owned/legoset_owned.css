@@ -12,4 +12,6 @@
       margin-bottom: 40px;
   }
 
-
+span+.w3-right button{
+    margin-left:5px;
+}
