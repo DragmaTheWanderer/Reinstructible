@@ -4,6 +4,7 @@
       <tr class="w3-grey">
         <th class="w3-text-white">Image</th>
         <th class="w3-text-white">Set Info</th>
+        <th></th>
       </tr>
     </thead>
     <tbody style="overflow-y:auto;">
@@ -15,7 +16,10 @@
           <span>{{ set.theme[0].name }}</span> <br />
           <span>{{ set.set_num }}</span>
         </td>
-
+        <td>
+          <button class="w3-button w3-circle w3-padding-small w3-green add-set-button"
+                  (click)="addSet(set)">+</button>
+        </td>
       </tr>
     </tbody>
   </table>
