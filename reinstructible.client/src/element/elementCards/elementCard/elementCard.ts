@@ -28,4 +28,15 @@ export class elementCard implements OnInit {
   setStorage(value: IElement) {
     this.itemForStorage.emit(value);
   }
+
+  public elementSelectedClass: string = 'w3-yellow';
+  foundElement(element: IElement, e: Event) {
+    e.stopPropagation();
+    element.selected = !element.selected;
+  }
+  foundElementBackground(element: IElement) {
+    let result = '';
+    if (element.selected) { result = this.elementSelectedClass; }
+    return result;
+  }
 }

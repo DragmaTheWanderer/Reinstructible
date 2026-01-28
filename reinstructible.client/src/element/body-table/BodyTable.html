@@ -9,13 +9,15 @@
       </tr>
     </thead>
     <tbody style="overflow-y:auto;">
-      <tr *ngFor="let item of elements()">
+      <tr *ngFor="let item of elements()"
+          [ngClass]="foundElementBackground(item)"
+          (click)="foundElement(item, $event)">
         <td class="w3-jumbo"><b>{{ item.quantity }}</b></td>
         <td>
           <img class="element-img" src="{{item.part_img_url}}" alt="Element {{item.element_id}}" (error)="item.part_img_url = item.alt_part_img_url">
         </td>
         <td class="w3-left-align">{{ item.color.name }} {{ item.part.name }}</td>
-        <td (click)="setStorage(item)">
+        <td (click)="setStorage(item, $event)">
           {{ item.storage_location.bin }} <br />
           {{ item.storage_location.drawer }}
         </td>

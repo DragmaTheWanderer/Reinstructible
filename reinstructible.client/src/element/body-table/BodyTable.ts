@@ -25,10 +25,23 @@ export class BodyTable {
    */
   public elementForStorage!: IElement;
 
-  setStorage(value: IElement) {
-    this.itemForStorage.emit(value);
+  public elementSelectedClass: string = 'w3-yellow';
 
+  setStorage(value: IElement, e: Event) {
+    e.stopPropagation();
+    this.itemForStorage.emit(value);
   }
+
+  foundElement(element: IElement, e: Event) {
+    e.stopPropagation();
+    element.selected = !element.selected;
+  }
+  foundElementBackground(element: IElement) {
+    let result = '';
+    if (element.selected) { result = this.elementSelectedClass; }
+    return result;
+  }
+
 
   protected readonly title = signal('reinstructible.client');
 }

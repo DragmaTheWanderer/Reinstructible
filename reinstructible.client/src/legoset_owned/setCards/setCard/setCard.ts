@@ -22,9 +22,9 @@ export class SetCard {
     this.setNumOut.emit(value);
   }
 
-  addSet(value: ILegoSet) {
+  addSet(value: ILegoSet, e: Event) {
     console.log("add set clicked");
-    event?.stopPropagation();
+    e.stopPropagation();
     this.saveSet(value);
   }
   saveSet(legoSet: ILegoSet) {

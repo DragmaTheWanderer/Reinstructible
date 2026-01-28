@@ -1,5 +1,7 @@
 <div class="w3-third w3-container w3-cell w3-round-large  w3-hoverable">
-  <div class="w3-card-4">
+  <div class="w3-card-4"
+       [ngClass]="foundElementBackground(element()!)"
+       (click)="foundElement(element()!, $event)">
     <header class="w3-dark-grey">
       <h3>{{ element()!.color.name }}</h3>
     </header>
