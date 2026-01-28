@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output, } f
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IFilterOptions } from '../../interfaces/rebrickable'
+import { EDisplayGroup } from '../../interfaces/Enums'
 
 @Component({
   selector: 'filterComponent',
@@ -15,8 +16,13 @@ export class FilterComponent implements OnInit, OnChanges {
   public type = input<string>();
   public options = input<IFilterOptions[]>([]);
 
-  public onOptionsSent = output<any[]>();
+  public onOptionsSent = output<number[]>();
   public onDisplayMode = output<string>();
+  public onCurrentGrouping = output<EDisplayGroup>();
+
+  public currentGrouping :EDisplayGroup = EDisplayGroup.Color
+  
+  
   constructor() {
     this.onDisplayMode.emit('TV');
   }
@@ -42,6 +48,14 @@ export class FilterComponent implements OnInit, OnChanges {
   toggleSelections() {
     this.options().forEach(x => x.selected = !x.selected)
     this.elementFilter();
+  }
+  toggleGrouping() {
+    if (this.currentGrouping == Object.keys(EDisplayGroup).length / 2 - 1) {
+      this.currentGrouping = 0;
+    } else {
+      this.currentGrouping++;
+    }
+    this.onCurrentGrouping.emit(this.currentGrouping);
   }
   elementFilter() {
     let filteredIds = this.options().filter(f => f.selected).flatMap(o => o.id);

@@ -8,8 +8,7 @@ import { FilterComponent } from './filter/filter';
 import { ElementCards } from './elementCards/elementCards'
 import { BodyTable } from './body-table/BodyTable';
 import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, IFilterOptions } from '../interfaces/rebrickable'
-import { filter } from 'rxjs';
-
+import { EDisplayGroup } from '../interfaces/Enums'
 
 /**
  * Element component
@@ -51,6 +50,7 @@ export class Element implements OnInit, OnChanges {
    */
   public storageVisable: boolean = false;
   public displayMode: string = "TV";
+  public currentGrouping: EDisplayGroup = EDisplayGroup.Color;
 
   /**
    * Element selected for editing/assigning storage.
@@ -85,6 +85,7 @@ export class Element implements OnInit, OnChanges {
   public partColor: IColor[] = [];
   public partColorOptions: IFilterOptions[] = [];
   public colorOptionType: string = "color";
+
 
   constructor(private http: HttpClient) { }
 
@@ -151,6 +152,9 @@ export class Element implements OnInit, OnChanges {
   }
   setDisplayMode(value: string) {
     this.displayMode = value;
+  }
+  setCurrentGrouping(value: EDisplayGroup) {
+    this.currentGrouping = value;
   }
   elementFilter() {
     this.elements = this.elementsBase.filter(i => this.colorIds.includes(i.color.id)).filter(i => this.categoryIds.includes(i.part.part_cat_id));

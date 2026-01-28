@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { IElement, IElementCards, IFilterOptions } from '../../interfaces/rebrickable'
 import { elementCard } from './elementCard/elementCard';
+import { EDisplayGroup } from '../../interfaces/Enums'
+
 
 @Component({
   selector: 'elementCards',
@@ -17,7 +19,7 @@ export class ElementCards implements OnInit, OnChanges {
   public elementCards: IElementCards[] = [];
   public itemForStorage = output<IElement>();
 
-  public groupBy: string = "color";
+  public currentGrouping = input<EDisplayGroup>();
   public groupColor = input<IFilterOptions[]>([]);
   public groupCategory = input<IFilterOptions[]>([]);
   public groupAlpha: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
@@ -31,21 +33,25 @@ export class ElementCards implements OnInit, OnChanges {
   }
   formatElements() {
     this.elementCards = [];
-    switch (this.groupBy) {
-      case "color":
+    switch (this.currentGrouping()) {
+      case EDisplayGroup.Color:
         this.formatByColor();
         break;
-      case "category":
+      case EDisplayGroup.Category:
         this.formatByCategory();
         break;
-      case "alpha":
+      case EDisplayGroup.Alpha:
         this.formatByAlpha();
         break;
     }
   }
   formatByColor() {
     this.groupColor().forEach(c => {
-      let elementsForGroup = this.elements().filter(e => e.color.id === c.id);
+      let elementsForGroup = this.elements().filter(e => e.color.id === c.id)
+        .sort((a, b) => {
+          const elementComparison = a.color.name.localeCompare(b.color.name);
+          return elementComparison;
+        });
       if (elementsForGroup.length > 0) {
         let elementCard: IElementCards = {
           grouping: c.name,
@@ -58,7 +64,11 @@ export class ElementCards implements OnInit, OnChanges {
   }
   formatByCategory() {
     this.groupCategory().forEach(c => {
-      let elementsForGroup = this.elements().filter(e => e.part.part_cat_id === c.id);
+      let elementsForGroup = this.elements().filter(e => e.part.part_cat_id === c.id)
+        .sort((a, b) => {
+          const elementComparison = a.part.name.localeCompare(b.part.name);
+          return elementComparison || a.color.name.localeCompare(b.color.name);
+        });        ;
       if (elementsForGroup.length > 0) {
         let elementCard: IElementCards = {
           grouping: c.name,
@@ -70,6 +80,19 @@ export class ElementCards implements OnInit, OnChanges {
 
   }
   formatByAlpha() {
-
+    this.groupAlpha.forEach(a => {
+      let elementsForGroup = this.elements().filter(e => e.part.name.startsWith(a))
+        .sort((a, b) => {
+          const elementComparison = a.part.name.localeCompare(b.part.name);
+          return elementComparison || a.color.name.localeCompare(b.color.name);
+        });
+      if (elementsForGroup.length > 0) {
+        let elementCard: IElementCards = {
+          grouping: a,
+          elements: elementsForGroup
+        }
+        this.elementCards.push(elementCard);
+      }
+    })
   }
 }

@@ -20,6 +20,7 @@
     <filterComponent [type]="categoryOptionType"
                      [options]="partCategoryOptions"
                      (onDisplayMode)="setDisplayMode($event)"
+                     (onCurrentGrouping)="setCurrentGrouping($event)"
                      (onOptionsSent)="partCatergoryFilter($event)"></filterComponent>
     }
 
@@ -28,6 +29,7 @@
     <filterComponent [type]="colorOptionType"
                      [options]="partColorOptions"
                      (onDisplayMode)="setDisplayMode($event)"
+                     (onCurrentGrouping)="setCurrentGrouping($event)"
                      (onOptionsSent)="partColorFilter($event)"></filterComponent>
     }
 
@@ -45,11 +47,13 @@
 <div *ngIf="Loaded">
   @if (displayMode === 'TV'){
   <bodyTable [elements]="elements"
+             
              (itemForStorage)="setStorage($event)"></bodyTable>
   } @else if (displayMode === 'CV'){
   <elementCards [elements]="elements"
                 [groupColor]="partColorOptions"
                 [groupCategory]="partCategoryOptions"
+                [currentGrouping]="currentGrouping"
                 (itemForStorage)="setStorage($event)"></elementCards>
   }
 </div>
