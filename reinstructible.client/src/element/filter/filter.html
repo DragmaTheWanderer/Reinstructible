@@ -17,27 +17,33 @@
 <div class="w3-container">
   <span class="w3-display-bottommiddle element-footer ">
     <span class="w3-left">
-      <button class="w3-btn w3-circle w3-large w3-dark-grey"
-              (click)="selectAll()">
-        <i class="fa-regular fa-square-check"></i></button>
-      <button class="w3-btn w3-circle w3-large w3-dark-grey"
-              (click)="clearSelections()">
-        <i class="fa-regular fa-square-full"></i></button>
-      <button class="w3-btn w3-circle w3-large w3-dark-grey"
-              (click)="toggleSelections()">
-        <i class="fa-regular fa-eye-slash"></i></button>
-      <button class="w3-btn w3-circle w3-large w3-dark-grey"
-              (click)="toggleGrouping()">
-        <i class="fa-regular fa-share-from-square"></i></button>
+      <app-button icon="fa-regular fa-square-check" color="w3-dark-grey"
+                  toolTip="Select All" toolTipClass="btn-tooltip-left"
+                  (clickEvent)="selectAll()">
+      </app-button>
+      <app-button icon="fa-regular fa-square-full" color="w3-dark-grey"
+                  toolTip="Clear" toolTipClass="btn-tooltip-left"
+                  (clickEvent)="clearSelections()">
+      </app-button>
+      <app-button icon="fa-regular fa-eye-slash" color="w3-dark-grey"
+                  toolTip="Toggle" toolTipClass="btn-tooltip-left"
+                  (clickEvent)="toggleSelections()">
+      </app-button>
+      <app-button icon="fa-regular fa-share-from-square" color="w3-dark-grey"
+                  toolTip="{{currentGroupText}}" toolTipClass="btn-tooltip-left"
+                  (clickEvent)="toggleGrouping()">
+      </app-button>
     </span>
     <span class="w3-right">
-      <button type="button" class="w3-btn w3-circle w3-large w3-dark-grey"
-              (click)="popUp('CV')">
-        <i class="fa-regular fa-clipboard"></i></button>
-      <button type="button" class="w3-btn w3-circle w3-large w3-dark-grey"
-              (click)="popUp('TV')">
-        <i class="fa-solid fa-border-all"></i></button>
+      <app-button icon="fa-regular fa-clipboard" color="w3-dark-grey"
+                  toolTip="Card View" toolTipClass="btn-tooltip-right"
+                  (clickEvent)="popUp('CV')">
+      </app-button>
+      <app-button icon="fa-solid fa-border-all" color="w3-dark-grey"
+                  toolTip="Table View" toolTipClass="btn-tooltip-right"
+                  (clickEvent)="popUp('TV')">
+      </app-button>
     </span>
+</span>
 
-  </span>
 </div>

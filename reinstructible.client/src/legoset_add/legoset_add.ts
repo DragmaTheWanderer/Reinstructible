@@ -6,10 +6,14 @@ import { FormsModule } from '@angular/forms';
 
 import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 
+import { ButtonComponent } from '../shared/button/button.component';
+
+
 @Component({
   selector: 'legoset_add',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [ButtonComponent,
+    CommonModule, FormsModule],
   templateUrl: './legoset_add.html',
   styleUrl: './legoset_add.css'
 })

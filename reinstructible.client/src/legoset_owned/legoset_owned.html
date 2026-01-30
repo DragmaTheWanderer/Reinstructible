@@ -7,20 +7,20 @@
       <div class="w3-display-bottommiddle">
         <hr />
         <span class="w3-left">
-          <button type="button" class="w3-btn w3-round-large w3-dark-grey"
-                  (click)="popUp('New')">
-            Add/Re-Add Set
-          </button>
+          <app-button icon="fa-solid fa-plus" color="w3-green"
+                      toolTip="Add Set" toolTipClass="btn-tooltip-left"
+                      (clickEvent)="popUp('New')">
+          </app-button>
         </span>
         <span class="w3-right">
-          <button type="button" class="w3-btn w3-circle w3-large w3-dark-grey"
-                  (click)="popUp('CV')">
-            <i class="fa-regular fa-clipboard"></i>
-          </button>
-          <button type="button" class="w3-btn w3-circle w3-large w3-dark-grey"
-                  (click)="popUp('TV')">
-            <i class="fa-solid fa-border-all"></i>
-          </button>
+          <app-button icon="fa-regular fa-clipboard" color="w3-dark-grey"
+                      toolTip="Card View" toolTipClass="btn-tooltip-right"
+                      (clickEvent)="popUp('CV')">
+          </app-button>
+          <app-button icon="fa-solid fa-border-all" color="w3-dark-grey"
+                      toolTip="Table View" toolTipClass="btn-tooltip-right"
+                      (clickEvent)="popUp('TV')">
+          </app-button>
         </span>
       </div>
     </div>

@@ -46,9 +46,9 @@
 </div>
 <div *ngIf="Loaded">
   @if (displayMode === 'TV'){
-  <bodyTable [elements]="elements"
-             
-             (itemForStorage)="setStorage($event)"></bodyTable>
+  <elementTable [elements]="elements"
+             [currentGrouping]="currentGrouping"
+             (itemForStorage)="setStorage($event)"></elementTable>
   } @else if (displayMode === 'CV'){
   <elementCards [elements]="elements"
                 [groupColor]="partColorOptions"

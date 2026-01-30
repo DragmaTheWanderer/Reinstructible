@@ -33,10 +33,10 @@
       <tbody>
         <tr *ngFor="let set of legoSets">
           <td>
-            <button class="w3-button w3-circle w3-padding-small w3-green"
-                    (click)="addSet(set)">
-              +
-            </button>
+            <app-button icon="fa-solid fa-plus" color="w3-green"
+                        toolTip="Add Set" toolTipClass="btn-tooltip-left"
+                        (clickEvent)="addSet(set)">
+            </app-button>
           </td>
           <td>{{ set.set_num }}</td>
           <td>{{ set.name }}</td>

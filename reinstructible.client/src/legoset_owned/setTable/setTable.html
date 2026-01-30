@@ -16,9 +16,13 @@
           <span>{{ set.theme[0].name }}</span> <br />
           <span>{{ set.set_num }}</span>
         </td>
-        <td>
-          <button class="w3-button w3-circle w3-padding-small w3-green add-set-button"
-                  (click)="addSet(set, $event)">+</button>
+        <td class="w3-display-container">
+          <div class="w3-display-bottommiddle w3-padding">
+            <app-button icon="fa-solid fa-plus" color="w3-green"
+                        toolTip="Add Set" toolTipClass="btn-tooltip-right"
+                        (clickEvent)="addSet(set, $event)">
+            </app-button>
+          </div>
         </td>
       </tr>
     </tbody>

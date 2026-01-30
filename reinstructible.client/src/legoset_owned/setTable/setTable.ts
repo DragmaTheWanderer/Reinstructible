@@ -5,10 +5,12 @@ import { FormsModule } from '@angular/forms';
 
 import { ILegoSet, } from '../../interfaces/rebrickable'
 
+import { ButtonComponent } from '../../shared/button/button.component';
+
 @Component({
   selector: 'setTable',
   standalone: true,
-  imports: [CommonModule, FormsModule,],
+  imports: [ButtonComponent, CommonModule, FormsModule,],
   templateUrl: './setTable.html',
   styleUrl: './setTable.css'
 })

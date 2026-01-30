@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+/*@import url('https://www.w3schools.com/w3css/5/w3.css');*/
+@use '../Content/styles/w3.scss' as w3;
+
+html {
+  overflow: hidden;
+}
+
+.btn-tooltip-right {
+  @extend .w3-text, .w3-tag, .w3-small, .w3-round-xlarge;
+  position: absolute;
+  right: 0;
+  bottom: 25px;
+  white-space: nowrap;
+}
+
+.btn-tooltip-left {
+  @extend .w3-text, .w3-tag, .w3-small, .w3-round-xlarge;
+  position: absolute;
+  left: 0;
+  bottom: 25px;
+  white-space: nowrap;
+}
+
+.btn-base-button {
+  @extend .w3-button, .w3-circle, .w3-padding-small;
+  margin-left:2px;
+  margin-right:2px;
+}

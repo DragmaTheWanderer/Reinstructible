@@ -9,10 +9,14 @@ import { SetFilterComponent } from './setFilter/setFilter';
 import { SetTable } from './setTable/setTable';
 import { SetCards } from './setCards/setCards';
 
+import { ButtonComponent } from '../shared/button/button.component';
+
 @Component({
   selector: 'legoset_owned',
   standalone: true,
-  imports: [LegoSet_add, SetFilterComponent, SetTable, SetCards, CommonModule, FormsModule],
+  imports: [LegoSet_add, SetFilterComponent, SetTable, SetCards,
+    ButtonComponent,
+    CommonModule, FormsModule],
   templateUrl: './legoset_owned.html',
   styleUrl: './legoset_owned.css'
 })

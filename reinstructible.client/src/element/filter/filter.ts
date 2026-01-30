@@ -2,12 +2,16 @@ import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output, } f
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IFilterOptions } from '../../interfaces/rebrickable'
+
 import { EDisplayGroup } from '../../interfaces/Enums'
+
+import { ButtonComponent } from '../../shared/button/button.component';
+
 
 @Component({
   selector: 'filterComponent',
   standalone: true,
-  imports: [CommonModule, FormsModule,],
+  imports: [ButtonComponent, CommonModule, FormsModule,],
   templateUrl: './filter.html',
   styleUrl: './filter.css'
 })
@@ -21,7 +25,7 @@ export class FilterComponent implements OnInit, OnChanges {
   public onCurrentGrouping = output<EDisplayGroup>();
 
   public currentGrouping :EDisplayGroup = EDisplayGroup.Color
-  
+  public currentGroupText = EDisplayGroup[this.currentGrouping];
   
   constructor() {
     this.onDisplayMode.emit('TV');
@@ -55,7 +59,9 @@ export class FilterComponent implements OnInit, OnChanges {
     } else {
       this.currentGrouping++;
     }
+    this.currentGroupText = EDisplayGroup[this.currentGrouping];
     this.onCurrentGrouping.emit(this.currentGrouping);
+    
   }
   elementFilter() {
     let filteredIds = this.options().filter(f => f.selected).flatMap(o => o.id);

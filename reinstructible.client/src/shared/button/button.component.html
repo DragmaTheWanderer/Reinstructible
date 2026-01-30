@@ -1,0 +1,8 @@
+<span class="w3-tooltip">
+  <span [ngClass]="toolTipClass">{{toolTip}}</span>
+  <button type="button" class="btn-base-button"
+          [ngClass]="color"
+          (click)="onClick($event)">
+    <i [ngClass]="icon"></i>
+  </button>
+</span>

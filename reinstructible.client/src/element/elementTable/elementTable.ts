@@ -4,21 +4,24 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, } from '../../interfaces/rebrickable'
+import { EDisplayGroup } from '../../interfaces/Enums'
 
 @Component({
-  selector: 'bodyTable',
+  selector: 'elementTable',
   standalone: true,
   imports: [CommonModule, FormsModule, ],
-  templateUrl: './BodyTable.html',
-  styleUrl: './BodyTable.css'
+  templateUrl: './elementTable.html',
+  styleUrl: './elementTable.css'
 })
 
-export class BodyTable {
+export class ElementTable {
    /**
    * Currently displayed elements after applying filters.
    */
   public elements = input<IElement[]>([]);
+  public elementsDisp: IElement[] = [];
   public itemForStorage = output<IElement>();
+  public currentGrouping = input<EDisplayGroup>();
 
   /**
    * Element selected for editing/assigning storage.
@@ -26,6 +29,26 @@ export class BodyTable {
   public elementForStorage!: IElement;
 
   public elementSelectedClass: string = 'w3-yellow';
+
+  ngOnInit() { this.formatElements(); }
+  ngOnChanges() { this.formatElements(); }
+
+  formatElements() {
+    this.elementsDisp = [];
+    switch (this.currentGrouping()) {
+      case EDisplayGroup.Color:
+        this.elementsDisp = this.elements().sort((a, b) => a.color.name.localeCompare(b.color.name) || a.part.name.localeCompare(b.part.name));
+        break;
+      case EDisplayGroup.Category:
+        this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name) || a.color.name.localeCompare(b.color.name));
+        break;
+      case EDisplayGroup.Alpha:
+        this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name) || a.color.name.localeCompare(b.color.name));
+        break;
+    }
+  }
+
+
 
   setStorage(value: IElement, e: Event) {
     e.stopPropagation();
