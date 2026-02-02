@@ -20,18 +20,27 @@ namespace Reinstructible.Server.Controllers
             const string type = "part_categories";
             PartCategory[]? result;
             var service = new RebrickableAPIService(_httpClientFactory);
-
-            if (string.IsNullOrWhiteSpace(id))
+            //check to see if the category is in the DB first
+            var dbCategory = await GetSavedCategoryByID(int.TryParse(id, out var parsedId) ? parsedId : 0);
+            if (dbCategory != null)
             {
-                var resultStr = await service.GetRecordsAsync(type);
-                PartCategorys? detail = JsonSerializer.Deserialize<PartCategorys>(resultStr);
-                result = detail!.results!;
+                result = [dbCategory];
             }
             else
             {
-                var resultStr = await service.GetRecordByIdAsync(type, id);
-                PartCategory? detail = JsonSerializer.Deserialize<PartCategory>(resultStr);
-                result = [detail!];
+
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    var resultStr = await service.GetRecordsAsync(type);
+                    PartCategorys? detail = JsonSerializer.Deserialize<PartCategorys>(resultStr);
+                    result = detail!.results!;
+                }
+                else
+                {
+                    var resultStr = await service.GetRecordByIdAsync(type, id);
+                    PartCategory? detail = JsonSerializer.Deserialize<PartCategory>(resultStr);
+                    result = [detail!];
+                }
             }
             return result;
         }
@@ -40,7 +49,7 @@ namespace Reinstructible.Server.Controllers
         {
             //check each ID to see if we have a category
             foreach (var id in Ids) {
-                PartCategory? partCategory = GetSavedCategoryByID(id);
+                PartCategory? partCategory = await GetSavedCategoryByID(id);
                 if (partCategory == null) {
                     //no category saved,  get from Rebrickable API
                     PartCategory[] partCategories = await GetAsync(id.ToString());
@@ -69,7 +78,7 @@ namespace Reinstructible.Server.Controllers
 
             return result;
         }
-        public PartCategory? GetSavedCategoryByID(int Id)
+        public async Task<PartCategory?> GetSavedCategoryByID(int Id)
         {
             PartCategory? result = null;
             var dbPartCategory = _context.PartCategorys.Where(x => x.id == Id);

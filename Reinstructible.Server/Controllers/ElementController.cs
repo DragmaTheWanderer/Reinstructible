@@ -96,8 +96,15 @@ namespace Reinstructible.Server.Controllers
                     var minifigElementsString = await service.GetRecordByIdAsync(minifigs, item.set_num, param);
                     Elements? minifigElements = JsonSerializer.Deserialize<Elements>(minifigElementsString);
                     var minifigElementList = minifigElements!.results;
-                    foreach (var m in minifigElementList!) { 
-                        var missingElementString = await service.GetRecordByIdAsync(elements, m.element_id!);
+                    foreach (var m in minifigElementList!) {
+                        //check if the element ID is missing,  if not then search by it, if it is then try by part and color?
+                        string missingElementString = "";
+                        if (m.element_id != null) { 
+                            missingElementString = await service.GetRecordByIdAsync(elements, m.element_id!); 
+                        } else
+                        {
+                            continue;
+                        }
                         Element missingElementProps = JsonSerializer.Deserialize<Element>(missingElementString!)!;
                         m.set_num = id; 
                         m.part_img_url = missingElementProps.part_img_url;

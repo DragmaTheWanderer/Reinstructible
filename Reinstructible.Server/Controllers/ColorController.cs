@@ -20,22 +20,35 @@ namespace Reinstructible.Server.Controllers
             const string type = "colors";
             Color[]? result;
             var service = new RebrickableAPIService(_httpClientFactory);
-
-            if (string.IsNullOrWhiteSpace(id))
+            //check to see if the category is in the DB first
+            var dbColor = await GetColorByIdFromDB(id);
+            if (dbColor != null)
             {
-                var resultStr = await service.GetRecordsAsync(type);
-                Colors? detail = JsonSerializer.Deserialize<Colors>(resultStr);
-                result = detail!.results!;
+                result = [dbColor];
             }
             else
             {
-                var resultStr = await service.GetRecordByIdAsync(type, id);
-                Color? detail = JsonSerializer.Deserialize<Color>(resultStr);
-                result = [detail!];
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    var resultStr = await service.GetRecordsAsync(type);
+                    Colors? detail = JsonSerializer.Deserialize<Colors>(resultStr);
+                    result = detail!.results!;
+                }
+                else
+                {
+                    var resultStr = await service.GetRecordByIdAsync(type, id);
+                    Color? detail = JsonSerializer.Deserialize<Color>(resultStr);
+                    result = [detail!];
+                }
             }
             return result;
         }
 
+        private async Task<Color?> GetColorByIdFromDB(string id)
+        {
+            Color? result = GetSavedColorById(int.Parse(id));
+            return result;
+        }
         public async Task SaveColors(Color[] colors)
         {
             //Check each color to see if it has been saved

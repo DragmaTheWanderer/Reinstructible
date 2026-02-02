@@ -34,11 +34,21 @@ namespace Reinstructible.Server.HTTPRequest
             var pathFinal = string.Format(pathId, type, id);
             // Create the client using the named configuration
             var client = _httpClientFactory.CreateClient("RebrickableApi");
+            HttpResponseMessage response;
+            try
+            {
+                response = await client.GetAsync(pathFinal);
+                response.EnsureSuccessStatusCode();
 
-            var response = await client.GetAsync(pathFinal);
-            response.EnsureSuccessStatusCode();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
             return await response.Content.ReadAsStringAsync();
+
         }
 
         public async Task<string> GetRecordByIdAsync(string type, string id, string param)
