@@ -37,12 +37,12 @@
   <!--Body-->
   @if (displayMode === 'TV'){
   <setTable [legoSets]="legoSets"
-            (setNumOut)="loadSet($event)"></setTable>
+            (legoSetOut)="loadSet($event)"></setTable>
   } @else if (displayMode === 'CV'){
   <setCards [legoSets]="legoSets"
             [setThemes]="setThemeOptions"
             [currentTheme]="selectedTheme"
-            (setNumOut)="loadSet($event)"></setCards>
+            (legoSetOut)="loadSet($event)"></setCards>
   } @else {
   <p><em>Please select a display mode.</em></p>
   }

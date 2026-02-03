@@ -17,14 +17,14 @@ import { ButtonComponent } from '../../shared/button/button.component';
 
 export class SetTable {
   public legoSets = input<ILegoSet[]>([]);
-  public setNumOut = output<string>();
+  public legoSetOut = output<ILegoSet>();
 
   public setsLoading: boolean = false;
 
   constructor(private http: HttpClient) { }
 
-  loadSet(value: string) {
-    this.setNumOut.emit(value);
+  loadSet(value: ILegoSet) {
+    this.legoSetOut.emit(value);
   }
   addSet(value: ILegoSet, e: Event) {
     console.log("add set clicked");

@@ -18,7 +18,7 @@ export class SetCards implements OnInit, OnChanges {
   public setThemes = input<IFilterOptions[]>([]);
   public setAlpha: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
   public legoSetCards: ILegoSetCards[] = [];
-  public setNumOut = output<string>();
+  public legoSetOut = output<ILegoSet>();
 
   public setGroup: string = "theme";
 
@@ -28,8 +28,8 @@ export class SetCards implements OnInit, OnChanges {
   ngOnChanges() {
     this.formatLegoSets();
   }
-  loadSet(value: string) {
-    this.setNumOut.emit(value);
+  loadSet(value: ILegoSet) {
+    this.legoSetOut.emit(value);
   }
 
   formatLegoSets() {

@@ -5,7 +5,7 @@
      
         <span *ngFor="let legoSet of cardGroup.legoSets ">
           <setCard [legoSet]="legoSet"
-                   (setNumOut)="loadSet($event)"></setCard>
+                   (legoSetOut)="loadSet($event)"></setCard>
         </span>
       </div>
     </div>

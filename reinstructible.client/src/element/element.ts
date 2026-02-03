@@ -7,7 +7,7 @@ import { Storage } from '../storage/storage';
 import { FilterComponent } from './filter/filter';
 import { ElementCards } from './elementCards/elementCards'
 import { ElementTable } from './elementTable/elementTable';
-import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, IFilterOptions } from '../interfaces/rebrickable'
+import { ILegoSet, IElement, IColor, IPartCategory, IStorage_updateList, IFilterOptions } from '../interfaces/rebrickable'
 import { EDisplayGroup } from '../interfaces/Enums'
 
 /**
@@ -64,7 +64,11 @@ export class Element implements OnInit, OnChanges {
   public colorArrow: string = this.downArrow;
   public catergoryArrow: string = this.downArrow;
   // Input: optional id used when querying the backend for elements.
-  @Input() idValue: string = "";
+  /**
+   * Optional input containing set metadata. Defaults to an object with `id: 0` to avoid runtime errors
+   * if the parent does not provide a `legoSet`. Use `Partial<ILegoSet>` to allow missing properties.
+   */
+  @Input() legoSet: Partial<ILegoSet> = { id: 0 };
 
   /**
    * Event emitted when an element is selected for storage. Parent uses this to open/initialize storage UI.
@@ -183,7 +187,7 @@ export class Element implements OnInit, OnChanges {
    */
   getElement() {
    // let filterValue: string = this.filterValue;
-    let idValue: string = this.idValue;
+    let idValue: string = (this.legoSet?.set_num ?? 0).toString();
 
     let params = new HttpParams()
       //.set('filter', filterValue)

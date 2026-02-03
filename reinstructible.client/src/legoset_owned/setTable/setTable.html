@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody style="overflow-y:auto;">
-      <tr *ngFor="let set of legoSets()" (click)="loadSet(set.set_num)">
+      <tr *ngFor="let set of legoSets()" (click)="loadSet(set)">
         <td><img src="{{ set.set_img_url }}" class="set_img" /></td>
 
         <td>

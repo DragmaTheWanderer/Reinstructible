@@ -2,6 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { ILegoSet,  } from '../interfaces/rebrickable'
+
+
 import { LegoSet_owned } from '../legoset_owned/legoset_owned';
 import { Element } from '../element/element';
 
@@ -30,6 +33,7 @@ export class App implements OnInit {
   };
   public ElementVisable: boolean = false;
   public SetVisable: boolean = true;
+  public legoSet: Partial<ILegoSet> = { id: 0 };
   public setNum: string = "";
 
   constructor(private http: HttpClient) {}
@@ -51,13 +55,11 @@ export class App implements OnInit {
     });
   }
 
-  loadElements(set_num: string) {
-    this.setNum = set_num
+  loadElements(legoSet: ILegoSet ) {
+    
+    this.legoSet = legoSet;
     this.SetVisable = false;
     this.ElementVisable = true;
-
-    
-    //pass the setnum on
   }
 
   protected readonly title = signal('reinstructible.client');

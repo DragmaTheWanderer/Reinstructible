@@ -14,14 +14,14 @@ import { ILegoSet } from '../../../interfaces/rebrickable'
 
 export class SetCard {
   public legoSet = input<ILegoSet | null>(null);
-  public setNumOut = output<string>();
+  public legoSetOut = output<ILegoSet>();
 
   public setsLoading: boolean = false;
   constructor(private http: HttpClient) { }
 
-  loadSet(value: string) {
+  loadSet(value: ILegoSet) {
     console.log("loadSet Clicked");
-    this.setNumOut.emit(value);
+    this.legoSetOut.emit(value);
   }
 
   addSet(value: ILegoSet, e: Event) {

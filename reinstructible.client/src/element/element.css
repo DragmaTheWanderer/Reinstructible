@@ -12,6 +12,9 @@ th, td {
 table {
     margin: 0 auto;
 }
+.title-img{
+    height:75px;
+}
 
 .element-controll-container {
   height: 88vh;
@@ -21,5 +24,6 @@ table {
 .element-header {
   margin-left: 25%;
 }
+
 
 

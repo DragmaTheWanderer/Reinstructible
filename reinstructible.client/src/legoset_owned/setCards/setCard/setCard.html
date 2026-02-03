@@ -1,6 +1,6 @@
 <div class="overlay" *ngIf="setsLoading"><span class="loader"></span></div>
 <div class="w3-third w3-container w3-cell w3-round-large"
-     (click)="loadSet(legoSet()!.set_num)">
+     (click)="loadSet(legoSet()!)">
   <div class="w3-card-4 ">
     <header class="w3-dark-grey"><h2>{{ legoSet()!.name! }}</h2></header>
     <div class="img-wrapper w3-display-container">

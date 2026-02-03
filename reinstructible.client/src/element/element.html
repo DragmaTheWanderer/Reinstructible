@@ -42,7 +42,8 @@
 <!--Body-->
 
 <div class="w3-container element-header">
-  <h1 id="tableLabel">Lego Set Elements</h1>
+  <span class="w3-left"><img class="title-img" src="{{legoSet!.set_img_url!}}" /></span>
+  <span class="w3-middle"><h1 id="tableLabel">{{legoSet!.name}} Elements</h1></span>
 
   <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
 </div>

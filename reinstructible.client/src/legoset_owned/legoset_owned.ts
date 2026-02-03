@@ -39,8 +39,8 @@ export class LegoSet_owned implements OnInit {
   public displayMode: string = "TV";
 
   //setting up an emitter to send the setnumber to the events component.
-  @Output() loadElementsEvent = new EventEmitter<string>();
-  loadSet(value: string) {
+  @Output() loadElementsEvent = new EventEmitter<ILegoSet>();
+  loadSet(value: ILegoSet) {
     this.loadElementsEvent.emit(value);
   }
 
@@ -68,7 +68,7 @@ export class LegoSet_owned implements OnInit {
     this.http.get<ILegoSet[]>('/api/set', { params: params }).subscribe({
       next: (result) => {
         this.legoSetsBase = result;
-        this.legoSets = result;
+        this.legoSets = result.sort((a, b) => a.name.localeCompare(b.name));
         if (this.selectedTheme != "All") {
           this.legoSets = this.legoSetsBase.filter(x => x.theme[0].name === this.selectedTheme);
         }
