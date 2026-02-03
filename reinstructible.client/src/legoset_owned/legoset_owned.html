@@ -1,4 +1,7 @@
-<div class="w3-row w3-container" *ngIf="setsLoaded">
+<!--Loader-->
+<div class="overlay" *ngIf="!setsLoaded"><span class="loader"></span></div>
+
+<div class="w3-row w3-container">
   <!--sidebar-->
   <div id="controlls" class="w3-third w3-container">
     <div class="w3-display-container sidebar-container">
@@ -28,7 +31,7 @@
   <!--Header-->
   <div>
     <h1 id="tableLabel">Owned Lego Sets</h1>
-    <p *ngIf="!setsLoaded"><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
+    <p *ngIf="!setsLoaded"><em>Loading... Please refresh once the ASP.NET backend has started, if the loader does not stop.</em></p>
     <p *ngIf="setsLoaded"><em>Select the set you want to see the inventory of.</em></p>
   </div>
   <!--Body-->
@@ -41,7 +44,7 @@
             [currentTheme]="selectedTheme"
             (setNumOut)="loadSet($event)"></setCards>
   } @else {
-    <p><em>Please select a display mode.</em></p>
+  <p><em>Please select a display mode.</em></p>
   }
 </div>
 

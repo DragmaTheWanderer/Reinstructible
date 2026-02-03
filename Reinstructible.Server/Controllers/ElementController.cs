@@ -96,20 +96,38 @@ namespace Reinstructible.Server.Controllers
                     var minifigElementsString = await service.GetRecordByIdAsync(minifigs, item.set_num, param);
                     Elements? minifigElements = JsonSerializer.Deserialize<Elements>(minifigElementsString);
                     var minifigElementList = minifigElements!.results;
-                    foreach (var m in minifigElementList!) {
-                        //check if the element ID is missing,  if not then search by it, if it is then try by part and color?
-                        string missingElementString = "";
-                        if (m.element_id != null) { 
-                            missingElementString = await service.GetRecordByIdAsync(elements, m.element_id!); 
-                        } else
+                    foreach (var m in minifigElementList!)
+                    {
+                        //check if item is in the DB then check the API if needed to get the missing properties
+                        //set setnum of element to parent setnum
+                        m.set_num = id;
+                        var dbElement = GetSavedElementByItem(m);
+                        if (dbElement != null)
                         {
-                            continue;
+                            m.part_img_url = dbElement.part_img_url;
+                            m.alt_part_img_url = dbElement.alt_part_img_url;
+                            m.part_url = dbElement.part_url;
+                            m.set_num = id;
+                            continue; //skip to next item
                         }
-                        Element missingElementProps = JsonSerializer.Deserialize<Element>(missingElementString!)!;
-                        m.set_num = id; 
-                        m.part_img_url = missingElementProps.part_img_url;
-                        m.alt_part_img_url = missingElementProps.alt_part_img_url;
-                        m.part_url = missingElementProps.part!.part_img_url;
+                        else
+                        {
+                            //check if the element ID is missing,  if not then search by it, if it is then try by part and color?
+                            string missingElementString = "";
+                            if (m.element_id != null)
+                            {
+                                missingElementString = await service.GetRecordByIdAsync(elements, m.element_id!);
+                            }
+                            else
+                            {
+                                missingElementString = await service.GetRecordPartByColor(m.part.part_num!, m.color!.id.ToString());
+                            }
+                            Element missingElementProps = JsonSerializer.Deserialize<Element>(missingElementString!)!;
+                            m.set_num = id;
+                            m.part_img_url = missingElementProps.part_img_url;
+                            m.alt_part_img_url = missingElementProps.alt_part_img_url;
+                            m.part_url = missingElementProps.part?.part_img_url ?? m.part_url;
+                        }
                     }
                     result = ConcatElements([.. result!], [.. minifigElementList!]);
                 }

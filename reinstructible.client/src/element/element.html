@@ -1,3 +1,5 @@
+<!--Loader-->
+<div class="overlay" *ngIf="!Loaded"><span class="loader"></span></div>
 <!--sidebar-->
 <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%;">
   <div class="w3-container">
@@ -47,8 +49,8 @@
 <div *ngIf="Loaded">
   @if (displayMode === 'TV'){
   <elementTable [elements]="elements"
-             [currentGrouping]="currentGrouping"
-             (itemForStorage)="setStorage($event)"></elementTable>
+                [currentGrouping]="currentGrouping"
+                (itemForStorage)="setStorage($event)"></elementTable>
   } @else if (displayMode === 'CV'){
   <elementCards [elements]="elements"
                 [groupColor]="partColorOptions"

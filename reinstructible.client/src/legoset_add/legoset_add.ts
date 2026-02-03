@@ -27,6 +27,7 @@ export class LegoSet_add implements OnInit, AfterViewInit {
   public filterValue: string = "";
   public idValue: string = "";
   public paramValue: string = "AddSets";
+  public setsLoading: boolean = false;
 
   @Output() addSetEvent = new EventEmitter<ILegoSet>();
   addSet(value: ILegoSet) {
@@ -68,7 +69,7 @@ export class LegoSet_add implements OnInit, AfterViewInit {
 
   saveSet(legoSet: ILegoSet){
     let result = {};
-    let loading = true;
+    this.setsLoading = true;
     let error = "";
 
     const httpOptions = {
@@ -86,12 +87,12 @@ export class LegoSet_add implements OnInit, AfterViewInit {
     this.http.post('/api/set', jsonString, httpOptions).subscribe({
       next: (res) => {
         result = res;
-        loading = false;
+        this.setsLoading = false;
         this.addSetEvent.emit(legoSet);
       },
       error: (error) => {
         console.error(error);
-        error = 'Failed to create post'; loading = false;
+        error = 'Failed to create post'; this.setsLoading = false;
       }
     });
   }

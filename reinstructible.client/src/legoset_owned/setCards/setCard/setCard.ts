@@ -15,6 +15,8 @@ import { ILegoSet } from '../../../interfaces/rebrickable'
 export class SetCard {
   public legoSet = input<ILegoSet | null>(null);
   public setNumOut = output<string>();
+
+  public setsLoading: boolean = false;
   constructor(private http: HttpClient) { }
 
   loadSet(value: string) {
@@ -29,7 +31,7 @@ export class SetCard {
   }
   saveSet(legoSet: ILegoSet) {
     let result = {};
-    let loading = true;
+    this.setsLoading = true;
     let error = "";
 
     const httpOptions = {
@@ -47,12 +49,12 @@ export class SetCard {
     this.http.post('/api/set', jsonString, httpOptions).subscribe({
       next: (res) => {
         result = res;
-        loading = false;
+        this.setsLoading = false;
         //this.addSetEvent.emit(legoSet);
       },
       error: (error) => {
         console.error(error);
-        error = 'Failed to create post'; loading = false;
+        error = 'Failed to create post'; this.setsLoading = false;
       }
     });
   }

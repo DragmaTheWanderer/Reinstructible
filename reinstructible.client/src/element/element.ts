@@ -195,7 +195,7 @@ export class Element implements OnInit, OnChanges {
         this.elements = result;
         this.getCategory();
         this.getColor();
-        this.Loaded = true;
+       
       },
       error: (error) => {
         console.error(error);
@@ -247,6 +247,7 @@ export class Element implements OnInit, OnChanges {
           //map the partCategory to the partCategoryOptions list
           this.partCategoryOptions = this.partCategory.map(cat => ({ id: cat.id, name: cat.name, selected: cat.selected }));
           this.categoryIds = this.partCategory.map(cat => cat.id);
+          this.Loaded = true;
         }
       });
     });
