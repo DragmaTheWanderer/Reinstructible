@@ -12,18 +12,18 @@
         <span class="w3-left">
           <app-button icon="fa-solid fa-plus" color="w3-green"
                       toolTip="Add Set" toolTipClass="btn-tooltip-left"
-                      (clickEvent)="popUp('New')">
-          </app-button>
+                      (clickEvent)="popUp('New')"></app-button>
+          <app-button icon="fa-solid fa-box-archive" color="w3-dark-grey"
+                      toolTip="Load All Elements For Storage Check" toolTipClass="btn-tooltip-left"
+                      (clickEvent)="loadElements()"></app-button>
         </span>
         <span class="w3-right">
           <app-button icon="fa-regular fa-clipboard" color="w3-dark-grey"
                       toolTip="Card View" toolTipClass="btn-tooltip-right"
-                      (clickEvent)="popUp('CV')">
-          </app-button>
+                      (clickEvent)="popUp('CV')"></app-button>
           <app-button icon="fa-solid fa-border-all" color="w3-dark-grey"
                       toolTip="Table View" toolTipClass="btn-tooltip-right"
-                      (clickEvent)="popUp('TV')">
-          </app-button>
+                      (clickEvent)="popUp('TV')"></app-button>
         </span>
       </div>
     </div>

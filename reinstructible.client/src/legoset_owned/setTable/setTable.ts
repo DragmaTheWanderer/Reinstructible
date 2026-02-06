@@ -26,6 +26,7 @@ export class SetTable {
   loadSet(value: ILegoSet) {
     this.legoSetOut.emit(value);
   }
+  
   addSet(value: ILegoSet, e: Event) {
     console.log("add set clicked");
     e.stopPropagation();

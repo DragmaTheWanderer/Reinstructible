@@ -62,6 +62,7 @@ namespace Reinstructible.Server.Models
         public Element(DBModels.Element dbe, Color color, Part part, Storage storage)
         {
             this.element_id = dbe.element_id;
+            this.alt_part_img_url = string.Format("https://cdn.rebrickable.com/media/parts/elements/{0}.jpg", dbe.element_id);
             this.color = color;
             this.part = part;
             this.part_img_url = dbe.part_img_url;

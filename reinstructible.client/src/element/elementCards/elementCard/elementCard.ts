@@ -25,7 +25,8 @@ export class elementCard implements OnInit {
       .replace(' with', '<br>with');
   }
 
-  setStorage(value: IElement) {
+  setStorage(value: IElement, e: Event) {
+    e.stopPropagation();
     this.itemForStorage.emit(value);
   }
 

@@ -190,8 +190,14 @@ export class Element implements OnInit, OnChanges {
     let idValue: string = (this.legoSet?.set_num ?? 0).toString();
 
     let params = new HttpParams()
-      //.set('filter', filterValue)
-      .set('id', idValue); // Convert non-string values if needed
+      .set('id', idValue)
+      .set('param','loadSetElements');
+    // Convert non-string values if needed
+    if (this.legoSet.name == 'All') {
+      params = new HttpParams()
+        .set('id', idValue)
+        .set('param', 'storageCheck');
+    }
 
     this.http.get<IElement[]>('/api/element', { params: params }).subscribe({
       next: (result) => {

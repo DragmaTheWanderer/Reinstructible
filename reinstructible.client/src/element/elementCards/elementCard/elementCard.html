@@ -14,7 +14,7 @@
         <img src="{{ element()!.part_img_url! }}" class="set_img" />
       </div>
       <div class=" w3-container w3-cell "
-           (click)="setStorage(element()!)">
+           (click)="setStorage(element()!, $event)">
         <div>{{ element()!.storage_location.bin }}</div>
         <div>{{ element()!.storage_location.drawer }}</div>
       </div>
