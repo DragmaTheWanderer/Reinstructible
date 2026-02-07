@@ -23,20 +23,24 @@ namespace Reinstructible.Server.Controllers
         public async Task<IActionResult> PostAsync([FromBody] JsonElement storageItem)
         {
             //deserilaze the storage item
-            var storage = JsonSerializer.Deserialize<Storage>(storageItem);
+            //var storage = JsonSerializer.Deserialize<Storage>(storageItem);
             // if the element Id is null then it is an all
-            var storageAll = JsonSerializer.Deserialize<StorageAll>(storageItem);
-            if (storage.element_id != null)
+            List<StorageAll> storageAll = JsonSerializer.Deserialize<List<StorageAll>>(storageItem)!;
+            foreach (var storage in storageAll)
             {
-                await upsertStorage(storage);
-            } 
-            else
-            {
-                foreach (var id in storageAll!.element_ids!)
-                {
-                    var store = new Storage(id, storageAll.bin, storageAll.drawer);
-                    await upsertStorage(store);
-                }
+
+                //if (storage.element_ids != null)
+                //{
+                //    await upsertStorage(storage);
+                //}
+                //else
+                //{
+                    foreach (var id in storage!.element_ids!)
+                    {
+                        var store = new Storage(id, storage.bin, storage.drawer);
+                        await upsertStorage(store);
+                    }
+                //}
             }
             return Ok(storageItem);
 

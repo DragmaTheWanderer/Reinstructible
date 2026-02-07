@@ -81,7 +81,7 @@ export class Storage implements OnInit, OnChanges {
 
     this.http.get<IElement[]>('/api/element', { params: params }).subscribe({
       next: (result) => {
-        this.elementList = result;
+        this.elementList = result.sort((a, b) => a.color.name.localeCompare(b.color.name));
         this.storageLoaded = true;
 
         //get the selected element and remove it from the rest of the list.
@@ -100,17 +100,36 @@ export class Storage implements OnInit, OnChanges {
     let result = {};
     let loading = true;
     let error = "";
+
     const data: IStorage_updateList = {
       bin: item.storage_location.bin,
       drawer: item.storage_location.drawer,
-      element_ids: []
+      element_ids: [item.storage_location.element_id]
     }
-    data.element_ids.push(item.storage_location.element_id);
+    let dataList: IStorage_updateList[] = [data];
+    //change the data to an arra of data to allow all th eelements to get saved
     this.elementList.forEach((elem, index) => {
-      let element_id = elem.storage_location.element_id;
-      data.element_ids.push(element_id);
-    })
-    const jsonString = JSON.stringify(data);
+      //loop through the list and get the storage location
+      let bin = elem.storage_location.bin;
+      let drawer = elem.storage_location.drawer;
+      let elemId = elem.storage_location.element_id;
+
+      //check datalist and add to the list as approp
+      const testitem = dataList.find(x => x.bin == bin && x.drawer == drawer);
+      if (testitem != undefined) {
+        testitem.element_ids.push(elemId);
+      } else {
+        const data: IStorage_updateList = {
+          bin: bin,
+          drawer: drawer,
+          element_ids: [elemId]
+        }
+        dataList.push(data);
+      }
+
+    });
+
+    const jsonString = JSON.stringify(dataList);
 
     this.http.post('/api/storage', jsonString, this.httpOptions).subscribe({
       next: (res) => {
