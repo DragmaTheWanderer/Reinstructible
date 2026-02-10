@@ -21,6 +21,7 @@ export class FilterComponent implements OnInit, OnChanges {
   public options = input<IFilterOptions[]>([]);
 
   public onOptionsSent = output<number[]>();
+  public onOptionsStringSent = output<string[]>();
   public onDisplayMode = output<string>();
   public onCurrentGrouping = output<EDisplayGroup>();
 
@@ -64,8 +65,15 @@ export class FilterComponent implements OnInit, OnChanges {
     
   }
   elementFilter() {
-    let filteredIds = this.options().filter(f => f.selected).flatMap(o => o.id);
-    this.onOptionsSent.emit(filteredIds); //emit the array
+    //this determins if the option is numeric or string based.
+    if (this.options()[0].id != -1) {
+      let filteredIds = this.options().filter(f => f.selected).flatMap(o => o.id);
+      this.onOptionsSent.emit(filteredIds); //emit the array
+    } else {
+      let filteredStringIds = this.options().filter(f => f.selected).flatMap(o => o.name);
+      this.onOptionsStringSent.emit(filteredStringIds); //emit the array
+    }
+
   }
   popUp(value: string) {
     this.onDisplayMode.emit(value);

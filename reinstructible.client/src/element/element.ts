@@ -90,6 +90,14 @@ export class Element implements OnInit, OnChanges {
   public partColorOptions: IFilterOptions[] = [];
   public colorOptionType: string = "color";
 
+  /**
+   * Computed list of storage bin options in `elementsBase`.
+   * Used to populate Storage selection control.
+   */
+  public partStorage: string[] = [];
+  public partStorageOptions: IFilterOptions[] = [];
+  public storageOptionType: string = "storage";
+
 
   constructor(private http: HttpClient) { }
 
@@ -145,6 +153,7 @@ export class Element implements OnInit, OnChanges {
 
   public colorIds: number[] = [];
   public categoryIds: number[] = [];
+  public storageBins: string[] = [];
 
   partCatergoryFilter(values: number[]) {
     this.categoryIds = values;
@@ -154,6 +163,12 @@ export class Element implements OnInit, OnChanges {
     this.colorIds = values;
     this.elementFilter();
   }
+
+  partStorageFilter(values: string[]) {
+    this.storageBins = values;
+    this.elementFilter();
+  }
+
   setDisplayMode(value: string) {
     this.displayMode = value;
   }
@@ -161,10 +176,13 @@ export class Element implements OnInit, OnChanges {
     this.currentGrouping = value;
   }
   elementFilter() {
-    this.elements = this.elementsBase.filter(i => this.colorIds.includes(i.color.id)).filter(i => this.categoryIds.includes(i.part.part_cat_id));
+    this.elements = this.elementsBase.filter(i => this.colorIds.includes(i.color.id))
+      .filter(i => this.categoryIds.includes(i.part.part_cat_id))
+      .filter(i => this.storageBins.includes(i.storage_location.bin))
+       ;
   }
 
-  public selectedControllTab = signal<'category' | 'color' | string>('category');
+  public selectedControllTab = signal<'category' | 'color' | 'storage' | string>('category');
 
   openControlTab(type: string) {
     this.selectedControllTab.set(type);
@@ -205,7 +223,7 @@ export class Element implements OnInit, OnChanges {
         this.elements = result;
         this.getCategory();
         this.getColor();
-       
+        this.getStorage();
       },
       error: (error) => {
         console.error(error);
@@ -293,7 +311,40 @@ export class Element implements OnInit, OnChanges {
     this.partColorOptions = this.partColor.map(color => ({ id: color.id, name: color.name, selected: color.selected }));
     this.colorIds = this.partColor.map(color => color.id);
   }
+  /**
+ * Builds `partStorage` by:
+ * - Scanning `elementsBase` for unique Storage bins (by name).
+ * - Sorting the resulting storage list by name.
+ *
+ * the current implementation derives storage objects directly from `elementsBase`.
+ */
+  getStorage() {
+    this.partStorage = [];
 
+    // Filter and sort the unique color objects of elements in a set
+    const storageBins = [...new Set(this.elementsBase.map(s => s.storage_location.bin)
+                                                     .filter(x => x != 'Unassigned')
+                                                     .sort((a, b) => a.localeCompare(b))
+    )];
+
+    // The following commented code shows how to request color objects per id from the API.
+    // It is retained for reference in case a switch to server-driven color lookup is desired.
+    this.partStorageOptions.push({
+      id: -1,
+      name: 'Unassigned',
+      selected: true
+    });
+    
+    storageBins.forEach(bin => (
+      this.partStorageOptions.push({
+        id: bin == 'Unassigned' ? -1 : Number(bin),
+        name: bin,
+        selected: true
+      })
+    ))
+
+    this.storageBins = storageBins;
+  }
   /**
    * Simple reactive title signal used by the template (keeps string in a signal).
    */

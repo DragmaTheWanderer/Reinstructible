@@ -5,12 +5,16 @@
   <div class="w3-container">
     <div class="w3-row>">
       <a href="javascript:void(0)" (click)="openControlTab('category')">
-        <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding"
+        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
              [ngClass]="borderColor('category')">Category</div>
       </a>
       <a href="javascript:void(0)" (click)="openControlTab('color')">
-        <div class="w3-half tablink w3-bottombar w3-hover-light-grey w3-padding"
+        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
              [ngClass]="borderColor('color')">Color</div>
+      </a>
+      <a href="javascript:void(0)" (click)="openControlTab('storage')">
+        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
+             [ngClass]="borderColor('storage')">Storage</div>
       </a>
     </div>
   </div>
@@ -34,7 +38,14 @@
                      (onCurrentGrouping)="setCurrentGrouping($event)"
                      (onOptionsSent)="partColorFilter($event)"></filterComponent>
     }
-
+    @case ('storage') {
+      <!--Storage-->
+      <filterComponent [type]="storageOptionType"
+                       [options]="partStorageOptions"
+                       (onDisplayMode)="setDisplayMode($event)"
+                       (onCurrentGrouping)="setCurrentGrouping($event)"
+                       (onOptionsStringSent)="partStorageFilter($event)"></filterComponent>
+      }
     }
   </div>
 </div>
@@ -56,6 +67,7 @@
   <elementCards [elements]="elements"
                 [groupColor]="partColorOptions"
                 [groupCategory]="partCategoryOptions"
+                [groupStorage]="partStorageOptions"
                 [currentGrouping]="currentGrouping"
                 (itemForStorage)="setStorage($event)"></elementCards>
   }

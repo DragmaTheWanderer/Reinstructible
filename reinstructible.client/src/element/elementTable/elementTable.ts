@@ -42,6 +42,13 @@ export class ElementTable {
       case EDisplayGroup.Category:
         this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name) || a.color.name.localeCompare(b.color.name));
         break;
+      case EDisplayGroup.Storage:
+        this.elementsDisp = this.elements().sort((a, b) =>
+          a.storage_location.bin.localeCompare(b.storage_location.bin)
+          || a.storage_location.drawer.localeCompare(b.storage_location.drawer)
+          || a.part.name.localeCompare(b.part.name)
+          || a.color.name.localeCompare(b.color.name));
+        break;
       case EDisplayGroup.Alpha:
         this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name) || a.color.name.localeCompare(b.color.name));
         break;
