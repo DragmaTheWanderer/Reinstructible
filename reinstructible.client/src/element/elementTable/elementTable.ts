@@ -3,8 +3,10 @@ import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output } fr
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IElement, IPart, IColor, IPartCategory, IStorage_updateList, } from '../../interfaces/rebrickable'
+import { IElement, IElementCards, IFilterOptions, } from '../../interfaces/rebrickable'
 import { EDisplayGroup } from '../../interfaces/Enums'
+import sorting from '../../Utilities/sorting';
+
 
 @Component({
   selector: 'elementTable',
@@ -20,7 +22,14 @@ export class ElementTable {
    */
   public elements = input<IElement[]>([]);
   public elementsDisp: IElement[] = [];
+
+  public elementGrouped: IElementCards[] = [];
   public itemForStorage = output<IElement>();
+
+  public groupColor = input<IFilterOptions[]>([]);
+  public groupCategory = input<IFilterOptions[]>([]);
+  public groupStorage = input<IFilterOptions[]>([]);
+
   public currentGrouping = input<EDisplayGroup>();
 
   /**
@@ -37,20 +46,37 @@ export class ElementTable {
     this.elementsDisp = [];
     switch (this.currentGrouping()) {
       case EDisplayGroup.Color:
-        this.elementsDisp = this.elements().sort((a, b) => a.color.name.localeCompare(b.color.name) || a.part.name.localeCompare(b.part.name));
+        this.elementGrouped = sorting.groupByColor(this.elements(), this.groupColor());
+        this.elementsDisp = this.elements().sort((a, b) => a.color.name.localeCompare(b.color.name)
+          || a.part.name.localeCompare(b.part.name));
         break;
       case EDisplayGroup.Category:
-        this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name) || a.color.name.localeCompare(b.color.name));
+        this.elementGrouped = sorting.groupByCategory(this.elements(), this.groupCategory());
+        this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name)
+          || a.color.name.localeCompare(b.color.name));
         break;
       case EDisplayGroup.Storage:
-        this.elementsDisp = this.elements().sort((a, b) =>
+        this.elementGrouped = sorting.groupByStorage(this.elements(), this.groupStorage());
+        //set up 2 groups, then sort each group, then concat the 2 for the display
+        let unassigned = this.elements().filter(x => x.storage_location.bin == 'Unassigned')
+          .sort((a, b) =>
+          a.storage_location.bin.localeCompare(b.storage_location.bin)
+          || a.storage_location.drawer.localeCompare(b.storage_location.drawer)
+          || a.part.name.localeCompare(b.part.name)
+          || a.color.name.localeCompare(b.color.name));;
+        let assigned = this.elements().filter(x => x.storage_location.bin != 'Unassigned').sort((a, b) =>
           a.storage_location.bin.localeCompare(b.storage_location.bin)
           || a.storage_location.drawer.localeCompare(b.storage_location.drawer)
           || a.part.name.localeCompare(b.part.name)
           || a.color.name.localeCompare(b.color.name));
+
+        this.elementsDisp = unassigned;
+        this.elementsDisp.push(...assigned);
         break;
       case EDisplayGroup.Alpha:
-        this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name) || a.color.name.localeCompare(b.color.name));
+        this.elementGrouped = sorting.groupByAlpha(this.elements());
+        this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name)
+          || a.color.name.localeCompare(b.color.name));
         break;
     }
   }

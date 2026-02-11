@@ -8,8 +8,9 @@
         <th class="w3-text-white">Storage</th>
       </tr>
     </thead>
-    <tbody style="overflow-y:auto;">
-      <tr *ngFor="let item of elements()"
+    <tbody *ngFor="let group of elementGrouped"
+           style="overflow-y:auto;">
+      <tr *ngFor="let item of group.elements"
           [ngClass]="foundElementBackground(item)"
           (click)="foundElement(item, $event)">
         <td class="w3-jumbo"><b>{{ item.quantity }}</b></td>
@@ -22,6 +23,7 @@
           {{ item.storage_location.drawer }}
         </td>
       </tr>
+      
     </tbody>
   </table>
 

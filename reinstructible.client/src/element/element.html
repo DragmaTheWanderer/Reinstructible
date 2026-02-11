@@ -61,6 +61,9 @@
 <div *ngIf="Loaded">
   @if (displayMode === 'TV'){
   <elementTable [elements]="elements"
+                [groupColor]="partColorOptions"
+                [groupCategory]="partCategoryOptions"
+                [groupStorage]="partStorageOptions"
                 [currentGrouping]="currentGrouping"
                 (itemForStorage)="setStorage($event)"></elementTable>
   } @else if (displayMode === 'CV'){
@@ -74,6 +77,7 @@
 </div>
 <storage *ngIf="storageVisable"
          [elementValue]="elementForStorage"
+
          (saveStorageEvent)="addedStorage($event)"
          (closeModalEvent)="setStorageHidden($event)">
 </storage>
