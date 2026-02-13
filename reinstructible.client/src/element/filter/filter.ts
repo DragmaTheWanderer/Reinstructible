@@ -66,14 +66,16 @@ export class FilterComponent implements OnInit, OnChanges {
   }
   elementFilter() {
     //this determins if the option is numeric or string based.
-    if (this.options()[0].id != -1) {
-      let filteredIds = this.options().filter(f => f.selected).flatMap(o => o.id);
-      this.onOptionsSent.emit(filteredIds); //emit the array
-    } else {
-      let filteredStringIds = this.options().filter(f => f.selected).flatMap(o => o.name);
-      this.onOptionsStringSent.emit(filteredStringIds); //emit the array
+    switch (this.currentGrouping) {
+      case EDisplayGroup.Storage:
+        let filteredStringIds = this.options().filter(f => f.selected).flatMap(o => o.name);
+        this.onOptionsStringSent.emit(filteredStringIds); //emit the array
+        break;
+      default:
+        let filteredIds = this.options().filter(f => f.selected).flatMap(o => o.id);
+        this.onOptionsSent.emit(filteredIds); //emit the array
+        break;
     }
-
   }
   popUp(value: string) {
     this.onDisplayMode.emit(value);

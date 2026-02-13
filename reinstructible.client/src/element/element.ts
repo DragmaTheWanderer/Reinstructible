@@ -134,14 +134,38 @@ export class Element implements OnInit, OnChanges {
    */
   addedStorage(newStorages: IStorage_updateList) {
     // Close popup and update existing elements
+    let oldBin = ''
     newStorages.element_ids.forEach((elementId, index) => {
       this.elements.forEach((eleItem, index2) => {
         if (eleItem.element_id == elementId) {
+          oldBin = eleItem.storage_location.bin;
           eleItem.storage_location.bin = newStorages.bin;
           eleItem.storage_location.drawer = newStorages.drawer;
         }
       });
     });
+    // update the storage filter for if a storage group is removed (count = 0)
+    if (this.currentGrouping == EDisplayGroup.Storage) {
+      //check if there are no more elements in the current listing in the bin
+      const reassignedBin = this.partStorageOptions.filter(x => x.name == oldBin);
+      const newAssignedBin = this.partStorageOptions.filter(x => x.name == newStorages.bin);
+
+      if (reassignedBin.length > 0) {
+        //remove old bin from the part storage options list
+        this.partStorageOptions = this.partStorageOptions.filter(x => x.name != oldBin);
+      }
+      if (newAssignedBin.length == 0) {
+        //add new bin to the part storage options list
+        this.partStorageOptions.push({
+          id: newStorages.bin == 'Unassigned' ? -1 : Number(newStorages.bin),
+          name: newStorages.bin,
+          selected: true
+        })
+        this.partStorageOptions.sort((a, b) => a.name.localeCompare(b.name));
+      }
+    }
+
+
     this.storageVisable = false;
   }
 
@@ -175,8 +199,10 @@ export class Element implements OnInit, OnChanges {
   setCurrentGrouping(value: EDisplayGroup) {
     this.currentGrouping = value;
   }
+
   elementFilter() {
-    this.elements = this.elementsBase.filter(i => this.colorIds.includes(i.color.id))
+    this.elements = this.elementsBase
+      .filter(i => this.colorIds.includes(i.color.id))
       .filter(i => this.categoryIds.includes(i.part.part_cat_id))
       .filter(i => this.storageBins.includes(i.storage_location.bin))
        ;
@@ -327,14 +353,19 @@ export class Element implements OnInit, OnChanges {
                                                      .sort((a, b) => a.localeCompare(b))
     )];
 
+    const unassignedBin = [...new Set(this.elementsBase.map(s => s.storage_location.bin)
+                                                       .filter(x => x == 'Unassigned'))];
     // The following commented code shows how to request color objects per id from the API.
     // It is retained for reference in case a switch to server-driven color lookup is desired.
-    this.partStorageOptions.push({
-      id: -1,
-      name: 'Unassigned',
-      selected: true
-    });
-    
+
+    if (unassignedBin.length > 0) {
+      this.partStorageOptions.push({
+        id: -1,
+        name: 'Unassigned',
+        selected: true
+      });
+    }
+
     storageBins.forEach(bin => (
       this.partStorageOptions.push({
         id: bin == 'Unassigned' ? -1 : Number(bin),
