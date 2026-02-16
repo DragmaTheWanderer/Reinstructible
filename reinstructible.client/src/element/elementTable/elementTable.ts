@@ -20,6 +20,7 @@ export class ElementTable {
    /**
    * Currently displayed elements after applying filters.
    */
+  public currentGrouping = input<EDisplayGroup>();
   public elements = input<IElement[]>([]);
   public elementsDisp: IElement[] = [];
 
@@ -30,7 +31,6 @@ export class ElementTable {
   public groupCategory = input<IFilterOptions[]>([]);
   public groupStorage = input<IFilterOptions[]>([]);
 
-  public currentGrouping = input<EDisplayGroup>();
 
   /**
    * Element selected for editing/assigning storage.
@@ -39,8 +39,12 @@ export class ElementTable {
 
   public elementSelectedClass: string = 'w3-yellow';
 
-  ngOnInit() { this.formatElements(); }
-  ngOnChanges() { this.formatElements(); }
+  ngOnInit() {
+    this.formatElements();
+  }
+  ngOnChanges() {
+    this.formatElements();
+  }
 
   formatElements() {
     this.elementsDisp = [];

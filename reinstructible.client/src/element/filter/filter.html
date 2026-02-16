@@ -33,15 +33,25 @@
                   toolTip="{{currentGroupText}}" toolTipClass="btn-tooltip-left"
                   (clickEvent)="toggleGrouping()">
       </app-button>
+
+      <app-button icon="fa-solid fa-floppy-disk" color="w3-light-blue"
+                  toolTip="Save Current" toolTipClass="btn-tooltip-left"
+                  (clickEvent)="fileSave()">
+      </app-button>
+      <app-button icon="fa-regular fa-floppy-disk" color="w3-light-blue"
+                  toolTip="Load old" toolTipClass="btn-tooltip-left"
+                  (clickEvent)="fileLoad()">
+      </app-button>
+
     </span>
     <span class="w3-right">
       <app-button icon="fa-regular fa-clipboard" color="w3-dark-grey"
                   toolTip="Card View" toolTipClass="btn-tooltip-right"
-                  (clickEvent)="popUp('CV')">
+                  (clickEvent)="setDisplayMode(enumDisplayMode.CV)">
       </app-button>
       <app-button icon="fa-solid fa-border-all" color="w3-dark-grey"
                   toolTip="Table View" toolTipClass="btn-tooltip-right"
-                  (clickEvent)="popUp('TV')">
+                  (clickEvent)="setDisplayMode(enumDisplayMode.TV)">
       </app-button>
     </span>
 </span>

@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit, OnChanges, signal, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,8 +7,9 @@ import { Storage } from '../storage/storage';
 import { FilterComponent } from './filter/filter';
 import { ElementCards } from './elementCards/elementCards'
 import { ElementTable } from './elementTable/elementTable';
-import { ILegoSet, IElement, IColor, IPartCategory, IStorage_updateList, IFilterOptions } from '../interfaces/rebrickable'
-import { EDisplayGroup } from '../interfaces/Enums'
+import { ILegoSet, IElement, IColor, IPartCategory, IStorage_updateList, IFilterOptions, IElementOptions } from '../interfaces/rebrickable';
+import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from '../interfaces/Enums';
+import fileUtil from '../Utilities/file';
 
 /**
  * Element component
@@ -28,6 +29,7 @@ import { EDisplayGroup } from '../interfaces/Enums'
   styleUrl: './element.css'
 })
 export class Element implements OnInit, OnChanges {
+  enumDisplyMode: typeof EDisplayMode = EDisplayMode;
   /**
    * Currently displayed elements after applying filters.
    */
@@ -49,21 +51,15 @@ export class Element implements OnInit, OnChanges {
    * Whether the storage popup/component is visible.
    */
   public storageVisable: boolean = false;
-  public displayMode: string = "TV";
-  public currentGrouping: EDisplayGroup = EDisplayGroup.Color;
+ 
+  
+  //public currentGrouping: EDisplayGroup = EDisplayGroup.Color;
 
   /**
    * Element selected for editing/assigning storage.
    */
   public elementForStorage!: IElement;
 
-  private downArrow: string = "&#x21E9;";
-  private upArrow: string = "&#x21E7;";
-  public colorCollapse: boolean = true;
-  public categoryCollapse: boolean = true;
-  public colorArrow: string = this.downArrow;
-  public catergoryArrow: string = this.downArrow;
-  // Input: optional id used when querying the backend for elements.
   /**
    * Optional input containing set metadata. Defaults to an object with `id: 0` to avoid runtime errors
    * if the parent does not provide a `legoSet`. Use `Partial<ILegoSet>` to allow missing properties.
@@ -81,14 +77,14 @@ export class Element implements OnInit, OnChanges {
   */
   public partCategory: IPartCategory[] = [];
   public partCategoryOptions: IFilterOptions[] = [];
-  public categoryOptionType: string = "category";
+  public categoryOptionType: EFilterType = EFilterType.category;
   /**
    * Computed list of unique colors present in `elementsBase`.
    * Used to populate color selection control.
    */
   public partColor: IColor[] = [];
   public partColorOptions: IFilterOptions[] = [];
-  public colorOptionType: string = "color";
+  public colorOptionType: EFilterType = EFilterType.color;
 
   /**
    * Computed list of storage bin options in `elementsBase`.
@@ -96,7 +92,7 @@ export class Element implements OnInit, OnChanges {
    */
   public partStorage: string[] = [];
   public partStorageOptions: IFilterOptions[] = [];
-  public storageOptionType: string = "storage";
+  public storageOptionType: EFilterType = EFilterType.storage;
 
 
   constructor(private http: HttpClient) { }
@@ -145,7 +141,7 @@ export class Element implements OnInit, OnChanges {
       });
     });
     // update the storage filter for if a storage group is removed (count = 0)
-    if (this.currentGrouping == EDisplayGroup.Storage) {
+    if (this.options.currentGrouping == EDisplayGroup.Storage) {
       //check if there are no more elements in the current listing in the bin
       const reassignedBin = this.partStorageOptions.filter(x => x.name == oldBin);
       const newAssignedBin = this.partStorageOptions.filter(x => x.name == newStorages.bin);
@@ -193,11 +189,17 @@ export class Element implements OnInit, OnChanges {
     this.elementFilter();
   }
 
-  setDisplayMode(value: string) {
-    this.displayMode = value;
+  public options: IElementOptions = {
+    currentGrouping: EDisplayGroup.Color,
+    displayMode: EDisplayMode.TV,
+    filterType: EFilterType.category
+  };
+
+  setDisplayMode(value: EDisplayMode) {
+    this.options.displayMode = value;
   }
   setCurrentGrouping(value: EDisplayGroup) {
-    this.currentGrouping = value;
+    this.options.currentGrouping = value;
   }
 
   elementFilter() {
@@ -208,17 +210,20 @@ export class Element implements OnInit, OnChanges {
        ;
   }
 
-  public selectedControllTab = signal<'category' | 'color' | 'storage' | string>('category');
+  public selectedControllTab = signal<EFilterType>(EFilterType.category);
+  //public selectedControllTab = signal<'category' | 'color' | 'storage' | string>('category');
 
-  openControlTab(type: string) {
-    this.selectedControllTab.set(type);
+  openControlTab(type: EFilterType) {
+    this.options.filterType = type;
+    this.selectedControllTab.set(this.options.filterType);
+    
   }
-  borderColor(type: string) {
+  borderColor(type: EFilterType) {
     let result = "w3-border-red";
     if (type != this.selectedControllTab() ) result = "";
     return (result);
   }
-  selectedCard(type: string) {
+  selectedCard(type: EFilterType) {
     let result = type === this.selectedControllTab();
     return result; 
   }
@@ -246,7 +251,7 @@ export class Element implements OnInit, OnChanges {
     this.http.get<IElement[]>('/api/element', { params: params }).subscribe({
       next: (result) => {
         this.elementsBase = result;
-        this.elements = result;
+        this.elements = this.elementsBase;
         this.getCategory();
         this.getColor();
         this.getStorage();
@@ -374,7 +379,61 @@ export class Element implements OnInit, OnChanges {
       })
     ))
 
-    this.storageBins = storageBins;
+    this.storageBins = [...unassignedBin, ...storageBins];
+  }
+
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+    observe: 'response' as 'response', // To get the full HttpResponse
+  };
+
+  triggerFileOption(value: EFileOption) {
+    switch (value) {
+      case EFileOption.Load:
+        //load legoset
+        fileUtil.loadLegoSetFile(this.http, "legoSet.rb", this.legoSet);
+
+        //load elements
+        fileUtil.loadElementsFile(this.http, "elementsBase.rb", this.elementsBase);
+        fileUtil.loadElementsFile(this.http, "elements.rb", this.elements);
+
+        //load filter option groups
+        fileUtil.loadpartCategoryOptionsFile(this.http, "partCategoryOptions.rb", this.partCategoryOptions);
+        fileUtil.loadpartCategoryOptionsFile(this.http, "partColorOptions.rb", this.partColorOptions);
+        fileUtil.loadpartCategoryOptionsFile(this.http, "partStorageOptions.rb", this.partStorageOptions);
+
+        //load current options
+        fileUtil.loadOptionsFile(this.http, "options.rb", this.options);
+
+        //load filter ids
+        fileUtil.loadNumberFilteredFile(this.http, "colorIds.rb", this.colorIds);
+        fileUtil.loadNumberFilteredFile(this.http, "categoryIds.rb", this.categoryIds);
+        fileUtil.loadStringFilteredFile(this.http, "storageBins.rb", this.storageBins);
+
+        break;
+      case EFileOption.Save:
+        //save legoset
+        fileUtil.saveFile(this.http, "legoSet.rb", JSON.stringify(this.legoSet));
+
+        //save elements and option groups
+        fileUtil.saveFile(this.http, "elementsBase.rb", JSON.stringify(this.elementsBase));
+        fileUtil.saveFile(this.http, "elements.rb", JSON.stringify(this.elements));
+        fileUtil.saveFile(this.http, "partCategoryOptions.rb", JSON.stringify(this.partCategoryOptions));
+        fileUtil.saveFile(this.http, "partColorOptions.rb", JSON.stringify(this.partColorOptions));
+        fileUtil.saveFile(this.http, "partStorageOptions.rb", JSON.stringify(this.partStorageOptions));
+
+        //save filtered ids
+        fileUtil.saveFile(this.http, "categoryIds.rb", JSON.stringify(this.categoryIds));
+        fileUtil.saveFile(this.http, "colorIds.rb", JSON.stringify(this.colorIds));
+        fileUtil.saveFile(this.http, "storageBins.rb", JSON.stringify(this.storageBins));
+
+        //save current options
+        fileUtil.saveFile(this.http, "options.rb", JSON.stringify(this.options));
+        //fileUtil.saveFile(this.http, ".rb", JSON.stringify(this.));
+        break;
+    }
   }
   /**
    * Simple reactive title signal used by the template (keeps string in a signal).

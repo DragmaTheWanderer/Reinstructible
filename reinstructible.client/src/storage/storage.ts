@@ -107,7 +107,7 @@ export class Storage implements OnInit, OnChanges {
       element_ids: [item.storage_location.element_id]
     }
     let dataList: IStorage_updateList[] = [data];
-    //change the data to an arra of data to allow all th eelements to get saved
+    //change the data to an arra of data to allow all the elements to get saved
     this.elementList.forEach((elem, index) => {
       //loop through the list and get the storage location
       let bin = elem.storage_location.bin;

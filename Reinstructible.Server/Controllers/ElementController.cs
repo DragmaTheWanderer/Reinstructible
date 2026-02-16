@@ -190,11 +190,9 @@ namespace Reinstructible.Server.Controllers
                 
                 Element? elementTest = GetSavedElementByItem(elem);
                 //null elementID test
-                if (elem.element_id == null)
-                {
-                    //element id should be able to be obtained via the part# and Color#
-                    elem.element_id = elem.part!.part_num + "-" + elem.color!.id;
-                }
+                //element id should be able to be obtained via the part# and Color#
+                elem.element_id ??= elem.part!.part_num + "-" + elem.color!.id;
+
                 if (elementTest == null)
                 {
                     //ellement not saved,  save item

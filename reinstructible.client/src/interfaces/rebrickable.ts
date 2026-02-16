@@ -1,3 +1,5 @@
+import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from './Enums';
+
 interface ILegoSet {
   id: number;
   set_num: string;
@@ -96,7 +98,11 @@ interface IStorage_updateList {
   drawer: string;
 }
 
-
+interface IElementOptions {
+  currentGrouping: EDisplayGroup;
+  filterType: EFilterType;
+  displayMode: EDisplayMode;
+}
 
 export type {
   IColor,
@@ -113,6 +119,7 @@ export type {
   ILegoSetCards,
   IElementCards,
   IFilterOptions,
+  IElementOptions
 }
 
 

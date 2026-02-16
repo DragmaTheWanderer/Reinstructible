@@ -1,9 +1,10 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IFilterOptions } from '../../interfaces/rebrickable'
 
-import { EDisplayGroup } from '../../interfaces/Enums'
+import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from '../../interfaces/Enums'
 
 import { ButtonComponent } from '../../shared/button/button.component';
 
@@ -17,19 +18,24 @@ import { ButtonComponent } from '../../shared/button/button.component';
 })
 
 export class FilterComponent implements OnInit, OnChanges {
-  public type = input<string>();
+  enumDisplayMode: typeof EDisplayMode = EDisplayMode;
+
+  public filterType = input<EFilterType>();
   public options = input<IFilterOptions[]>([]);
 
   public onOptionsSent = output<number[]>();
   public onOptionsStringSent = output<string[]>();
-  public onDisplayMode = output<string>();
+  public onDisplayMode = output<EDisplayMode>();
   public onCurrentGrouping = output<EDisplayGroup>();
+
+  public onFileOption = output<EFileOption>();
+
 
   public currentGrouping :EDisplayGroup = EDisplayGroup.Color
   public currentGroupText = EDisplayGroup[this.currentGrouping];
   
   constructor() {
-    this.onDisplayMode.emit('TV');
+    this.onDisplayMode.emit(EDisplayMode.TV);
   }
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges) {
@@ -66,8 +72,8 @@ export class FilterComponent implements OnInit, OnChanges {
   }
   elementFilter() {
     //this determins if the option is numeric or string based.
-    switch (this.currentGrouping) {
-      case EDisplayGroup.Storage:
+    switch (this.filterType()) {
+      case EFilterType.storage:
         let filteredStringIds = this.options().filter(f => f.selected).flatMap(o => o.name);
         this.onOptionsStringSent.emit(filteredStringIds); //emit the array
         break;
@@ -77,7 +83,21 @@ export class FilterComponent implements OnInit, OnChanges {
         break;
     }
   }
-  popUp(value: string) {
+
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+    observe: 'response' as 'response', // To get the full HttpResponse
+  };
+
+  fileSave() {
+    this.onFileOption.emit(EFileOption.Save);
+  }
+  fileLoad() {
+    this.onFileOption.emit(EFileOption.Load);
+  }
+  setDisplayMode(value: EDisplayMode) {
     this.onDisplayMode.emit(value);
   }
 

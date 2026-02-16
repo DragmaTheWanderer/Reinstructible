@@ -4,48 +4,51 @@
 <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%;">
   <div class="w3-container">
     <div class="w3-row>">
-      <a href="javascript:void(0)" (click)="openControlTab('category')">
+      <a href="javascript:void(0)" (click)="openControlTab(categoryOptionType)">
         <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-             [ngClass]="borderColor('category')">Category</div>
+             [ngClass]="borderColor(categoryOptionType)">Category</div>
       </a>
-      <a href="javascript:void(0)" (click)="openControlTab('color')">
+      <a href="javascript:void(0)" (click)="openControlTab(colorOptionType)">
         <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-             [ngClass]="borderColor('color')">Color</div>
+             [ngClass]="borderColor(colorOptionType)">Color</div>
       </a>
-      <a href="javascript:void(0)" (click)="openControlTab('storage')">
+      <a href="javascript:void(0)" (click)="openControlTab(storageOptionType)">
         <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-             [ngClass]="borderColor('storage')">Storage</div>
+             [ngClass]="borderColor(storageOptionType)">Storage</div>
       </a>
     </div>
   </div>
   <div class="w3-container element-controll-container">
     @switch (selectedControllTab()) {
 
-    @case ('category') {
+    @case (categoryOptionType) {
     <!--Category-->
-    <filterComponent [type]="categoryOptionType"
+    <filterComponent [filterType]="categoryOptionType"
                      [options]="partCategoryOptions"
                      (onDisplayMode)="setDisplayMode($event)"
+                     (onFileOption)="triggerFileOption($event)"
                      (onCurrentGrouping)="setCurrentGrouping($event)"
                      (onOptionsSent)="partCatergoryFilter($event)"></filterComponent>
     }
 
-    @case ('color') {
+    @case (colorOptionType) {
     <!--Color-->
-    <filterComponent [type]="colorOptionType"
+    <filterComponent [filterType]="colorOptionType"
                      [options]="partColorOptions"
+                     (onFileOption)="triggerFileOption($event)"
                      (onDisplayMode)="setDisplayMode($event)"
                      (onCurrentGrouping)="setCurrentGrouping($event)"
                      (onOptionsSent)="partColorFilter($event)"></filterComponent>
     }
-    @case ('storage') {
-      <!--Storage-->
-      <filterComponent [type]="storageOptionType"
-                       [options]="partStorageOptions"
-                       (onDisplayMode)="setDisplayMode($event)"
-                       (onCurrentGrouping)="setCurrentGrouping($event)"
-                       (onOptionsStringSent)="partStorageFilter($event)"></filterComponent>
-      }
+    @case (storageOptionType) {
+    <!--Storage-->
+    <filterComponent [filterType]="storageOptionType"
+                     [options]="partStorageOptions"
+                     (onFileOption)="triggerFileOption($event)"
+                     (onDisplayMode)="setDisplayMode($event)"
+                     (onCurrentGrouping)="setCurrentGrouping($event)"
+                     (onOptionsStringSent)="partStorageFilter($event)"></filterComponent>
+    }
     }
   </div>
 </div>
@@ -59,19 +62,19 @@
   <p *ngIf="!Loaded"><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
 </div>
 <div *ngIf="Loaded">
-  @if (displayMode === 'TV'){
+  @if (options.displayMode === enumDisplyMode.TV){
   <elementTable [elements]="elements"
                 [groupColor]="partColorOptions"
                 [groupCategory]="partCategoryOptions"
                 [groupStorage]="partStorageOptions"
-                [currentGrouping]="currentGrouping"
+                [currentGrouping]="options.currentGrouping"
                 (itemForStorage)="setStorage($event)"></elementTable>
-  } @else if (displayMode === 'CV'){
+  } @else if (options.displayMode === enumDisplyMode.CV){
   <elementCards [elements]="elements"
                 [groupColor]="partColorOptions"
                 [groupCategory]="partCategoryOptions"
                 [groupStorage]="partStorageOptions"
-                [currentGrouping]="currentGrouping"
+                [currentGrouping]="options.currentGrouping"
                 (itemForStorage)="setStorage($event)"></elementCards>
   }
 </div>

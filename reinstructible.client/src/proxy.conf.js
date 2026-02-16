@@ -10,6 +10,7 @@ const PROXY_CONFIG = [
       "/api/teststring",
       "/api/color",
       "/api/element",
+      "/api/file",
       "/api/parts",
       "/api/partcategory",
       "/api/set",
