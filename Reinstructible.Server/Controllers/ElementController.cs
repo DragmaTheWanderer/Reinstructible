@@ -22,10 +22,10 @@ namespace Reinstructible.Server.Controllers
         private readonly StorageController _storageController = new(httpClientFactory, context);
 
         [HttpGet]
-        public async Task<Element[]> GetAsync(string id = "", string partId = "", string colorId = "", string param = "")
+        public async Task<List<Element>> GetAsync(string id = "", string partId = "", string colorId = "", string param = "")
         {
 
-            Element[]? result = param switch
+            List<Element>? result = param switch
             {
                 "storage" => await GetElementsForStorage(partId, colorId),
                 "storageCheck" => await GetElementsForStorageCheck(),
@@ -35,9 +35,9 @@ namespace Reinstructible.Server.Controllers
             return result;
         }
 
-        private async Task<Element[]> GetInventory(string id)
+        private async Task<List<Element>> GetInventory(string id)
         {
-            Element[]? result;
+            List<Element>? result;
             //get parts from DB
             result = await GetElementsFromDB(id);
             //get parts from Reinstructiable
@@ -45,21 +45,21 @@ namespace Reinstructible.Server.Controllers
             return result;
         }
 
-        private async Task<Element[]?> GetElementsForStorage(string partId, string colorId)
+        private async Task<List<Element>?> GetElementsForStorage(string partId, string colorId)
         {
 
             var result = await GetElementsByPartNumFromDB(partId);
             return result;
         }
-        private async Task<Element[]> GetElementsFromDB(string id)
+        private async Task<List<Element>> GetElementsFromDB(string id)
         {
-            Element[]? result;
+            List<Element>? result;
             var elementDB = GetSavedElementsBySetNumber(id);
             
             result = elementDB;
             return result!;
         }
-        private async Task<Element[]> GetElementsFromAPI(string id)
+        private async Task<List<Element>> GetElementsFromAPI(string id)
         {
             var service = new RebrickableAPIService(_httpClientFactory);
 
@@ -68,10 +68,10 @@ namespace Reinstructible.Server.Controllers
             const string minifigs = "minifigs";
             const string elements = "elements";
 
-            Element[]? result;
+            List<Element>? result;
             var resultStr = await service.GetRecordByIdAsync(type, id, param);
             Elements? detail = JsonSerializer.Deserialize<Elements>(resultStr);
-            result = detail!.results;
+            result = [.. detail!.results!];
 
             while (detail.next != null)
             {
@@ -133,11 +133,10 @@ namespace Reinstructible.Server.Controllers
                     result = ConcatElements([.. result!], [.. minifigElementList!]);
                 }
             }
-
-
-            return result!;
+            result = [.. result.OrderByDescending(o => o.element_id)];
+            return result;
         }
-        private async Task<Element[]?> GetElementsForStorageCheck()
+        private async Task<List<Element>?> GetElementsForStorageCheck()
         { //this will get all elements from the DB to check for storage locations
             List<Element> result = [];
             var elemDB = _context.Elements
@@ -158,7 +157,7 @@ namespace Reinstructible.Server.Controllers
                 return [.. result];
         }
 
-        private async Task<Element[]> GetElementsByPartNumFromDB(string partId)
+        private async Task<List<Element>> GetElementsByPartNumFromDB(string partId)
         {
             List<Element> result = [];
             var elemDb = _context.Elements.Where(x => x.part_num_id == partId).ToArray();
@@ -173,7 +172,7 @@ namespace Reinstructible.Server.Controllers
         {
 
             //get the elements to save (this is coming from the initall set saving
-            Element[]? elements = await GetElementsFromAPI(set_num);
+            List<Element>? elements = await GetElementsFromAPI(set_num);
             
             //get all the colors, partCategory, and  parts in seperate condenced lists then check on them befor saving the element 
             Color[]? colors = elements.Select(c => c.color).DistinctBy(c1=>c1!.id).OrderBy(c2=>c2!.name).ToArray()!;
@@ -185,9 +184,22 @@ namespace Reinstructible.Server.Controllers
             await _colorController.SaveColors(colors);
             //check if each element is in the DB before adding
 
-            foreach(var elem in elements)
+            //concat the elements and sum the quantities together (minifig, and extra parts.)
+            for(var i=elements.Count-2; i>=0; i--)
             {
                 
+                var elemA = elements[i];
+                var elemB = elements[i+1];
+                if (elemA.element_id == elemB.element_id)
+                {
+                    elemA.quantity += elemB.quantity;
+                    elements.Remove(elemB);
+                }
+            }
+
+            foreach (var elem in elements)
+            {
+
                 Element? elementTest = GetSavedElementByItem(elem);
                 //null elementID test
                 //element id should be able to be obtained via the part# and Color#
@@ -197,12 +209,12 @@ namespace Reinstructible.Server.Controllers
                 {
                     //ellement not saved,  save item
                     await CreateSavedItem(elem);
-                } 
+                }
                 else
                 {
                     await UpdateSavedItem(elem);
                 }
-                    await _inventoryController.CreateSavedItem(elem);
+                await _inventoryController.CreateSavedItem(elem);
             }
         }
 
@@ -237,7 +249,7 @@ namespace Reinstructible.Server.Controllers
 
             return result;
         }
-        public Element[]? GetSavedElementsBySetNumber(string set_num)
+        public List<Element>? GetSavedElementsBySetNumber(string set_num)
         {
             List<Element>? result = [];
             var dbInventory = _context.Inventory.Where(x => x.set_num == set_num);
@@ -289,17 +301,16 @@ namespace Reinstructible.Server.Controllers
         }
         private Element FillElementColorStoragePart(DBModels.Element elem)
         {
-            Element result = new();
             //makes sure to add the part, color, storage classes to the element
             var colorDB = _colorController.GetSavedColorById(elem.color_id);
             var partDB = _partController.GetSavedPartById(elem.part_num_id!);
             var storageDB = _storageController.GetStorageByElementID(elem.element_id!);
 
-            result = new Element(elem, colorDB!, partDB!, storageDB!);
+            Element result = new(elem, colorDB!, partDB!, storageDB!);
 
             return result;
         }
-        private static Element[] ConcatElements(List<Element> OrigList, List<Element> NewList)
+        private static List<Element> ConcatElements(List<Element> OrigList, List<Element> NewList)
         {
             OrigList.AddRange(NewList);
             return [.. OrigList];

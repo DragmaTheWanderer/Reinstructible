@@ -121,6 +121,8 @@ export class Element implements OnInit, OnChanges {
   }
   setStorageHidden(value: boolean) {
     this.storageVisable = false;
+    //resort and filter
+    this.elementFilter();
   }
 
 
@@ -163,6 +165,7 @@ export class Element implements OnInit, OnChanges {
 
 
     this.storageVisable = false;
+    this.elementFilter();
   }
 
   /**
@@ -242,12 +245,24 @@ export class Element implements OnInit, OnChanges {
       .set('id', idValue)
       .set('param','loadSetElements');
     // Convert non-string values if needed
-    if (this.legoSet.name == 'All') {
-      params = new HttpParams()
-        .set('id', idValue)
-        .set('param', 'storageCheck');
+    switch (this.legoSet.name) {
+      case "All":
+        //load all saved elements for a storage check or to assist with returning.
+        params = new HttpParams()
+          .set('id', idValue)
+          .set('param', 'storageCheck');
+        this.LoadElementsFromDB(params);
+        break;
+      case "File":
+        this.triggerFileOption(EFileOption.Load);
+        break;
+      default:
+        this.LoadElementsFromDB(params);
+        break;
     }
+  }
 
+  private LoadElementsFromDB(params: HttpParams) {
     this.http.get<IElement[]>('/api/element', { params: params }).subscribe({
       next: (result) => {
         this.elementsBase = result;
@@ -390,6 +405,7 @@ export class Element implements OnInit, OnChanges {
   };
 
   triggerFileOption(value: EFileOption) {
+    this.Loaded = false;
     switch (value) {
       case EFileOption.Load:
         //load legoset
@@ -411,7 +427,6 @@ export class Element implements OnInit, OnChanges {
         fileUtil.loadNumberFilteredFile(this.http, "colorIds.rb", this.colorIds);
         fileUtil.loadNumberFilteredFile(this.http, "categoryIds.rb", this.categoryIds);
         fileUtil.loadStringFilteredFile(this.http, "storageBins.rb", this.storageBins);
-
         break;
       case EFileOption.Save:
         //save legoset
@@ -434,6 +449,7 @@ export class Element implements OnInit, OnChanges {
         //fileUtil.saveFile(this.http, ".rb", JSON.stringify(this.));
         break;
     }
+    this.Loaded = true;
   }
   /**
    * Simple reactive title signal used by the template (keeps string in a signal).

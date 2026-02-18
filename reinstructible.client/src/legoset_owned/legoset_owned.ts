@@ -47,6 +47,10 @@ export class LegoSet_owned implements OnInit {
     let value = <ILegoSet>{ name: 'All', set_num:'-1' };
     this.loadElementsEvent.emit(value);
   }
+  fileLoad(){
+    let value = <ILegoSet>{ name: 'File', set_num: '-2' };
+    this.loadElementsEvent.emit(value);
+  }
   addedSet(newSet: ILegoSet) {
     this.showPopUp = false;
     this.getSets();

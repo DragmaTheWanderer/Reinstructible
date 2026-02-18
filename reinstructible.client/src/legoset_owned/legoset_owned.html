@@ -16,6 +16,10 @@
           <app-button icon="fa-solid fa-box-archive" color="w3-dark-grey"
                       toolTip="Load All Elements For Storage Check" toolTipClass="btn-tooltip-left"
                       (clickEvent)="loadElements()"></app-button>
+          <app-button icon="fa-regular fa-floppy-disk" color="w3-light-blue"
+                      toolTip="Load currently working on" toolTipClass="btn-tooltip-left"
+                      (clickEvent)="fileLoad()">
+          </app-button>
         </span>
         <span class="w3-right">
           <app-button icon="fa-regular fa-clipboard" color="w3-dark-grey"
