@@ -88,11 +88,12 @@ namespace Reinstructible.Server.Controllers
                 item.part_img_url = item.part!.part_img_url;
                 item.part_url = item.part!.part_url;
             }
+
             //check minifig status,  then get the elements for the minifig and add to the list of elements to return
             var minifigResultStr = await service.GetRecordByIdAsync(type, id, minifigs);
             if (minifigResultStr != null) { 
                 Minifigs? minifigsResults = JsonSerializer.Deserialize<Minifigs>(minifigResultStr);
-                foreach(var item in minifigsResults!.results!)
+                foreach (var item in minifigsResults!.results!)
                 {
                     var minifigElementsString = await service.GetRecordByIdAsync(minifigs, item.set_num, param);
                     Elements? minifigElements = JsonSerializer.Deserialize<Elements>(minifigElementsString);
@@ -109,6 +110,7 @@ namespace Reinstructible.Server.Controllers
                             m.alt_part_img_url = dbElement.alt_part_img_url;
                             m.part_url = dbElement.part_url;
                             m.set_num = id;
+                            m.quantity = m.quantity * item.quantity;
                             continue; //skip to next item
                         }
                         else
@@ -128,12 +130,17 @@ namespace Reinstructible.Server.Controllers
                             m.part_img_url = missingElementProps.part_img_url;
                             m.alt_part_img_url = missingElementProps.alt_part_img_url;
                             m.part_url = missingElementProps.part?.part_img_url ?? m.part_url;
+                            m.quantity = m.quantity * item.quantity;
                         }
+                        
                     }
+
                     result = ConcatElements([.. result!], [.. minifigElementList!]);
+
+
                 }
             }
-            result = [.. result.OrderByDescending(o => o.element_id)];
+            //result = [.. result.OrderByDescending(o => o.element_id)];
             return result;
         }
         private async Task<List<Element>?> GetElementsForStorageCheck()
@@ -182,28 +189,42 @@ namespace Reinstructible.Server.Controllers
             await _partCategoryController.SaveCategories(partCategoryIds);
             await _partController.SaveParts(parts);
             await _colorController.SaveColors(colors);
-            //check if each element is in the DB before adding
+            
 
-            //concat the elements and sum the quantities together (minifig, and extra parts.)
-            for(var i=elements.Count-2; i>=0; i--)
+            foreach(var elem in elements.Where(i=>i.element_id == null))
             {
-                
-                var elemA = elements[i];
-                var elemB = elements[i+1];
-                if (elemA.element_id == elemB.element_id)
-                {
-                    elemA.quantity += elemB.quantity;
-                    elements.Remove(elemB);
-                }
+                //null elementID test
+                //element id should be able to be obtained via the part# and Color#
+                 elem.element_id ??= elem.part!.part_num + "-" + elem.color!.id;
             }
+            //concat the elements and sum the quantities together (minifig, and extra parts.)
+            var groupedElements = (from ol in elements
+                                   group ol by ol.element_id
+                                   into grp
+                                   select new Element
+                                   {
+                                       element_id = grp.Key,
+                                       quantity = grp.Sum(i => i.quantity),
+                                       part = grp.Select(i => i.part).FirstOrDefault(),
+                                       alt_part_img_url = grp.Select(i => i.alt_part_img_url).FirstOrDefault(),
+                                       color = grp.Select(i => i.color).FirstOrDefault(),
+                                       id = grp.Select(i => i.id).FirstOrDefault(),
+                                       inv_part_id = grp.Select(i => i.inv_part_id).FirstOrDefault(),
+                                       is_spare = grp.Select(i => i.is_spare).FirstOrDefault(),
+                                       num_sets = grp.Select(i => i.num_sets).FirstOrDefault(),
+                                       part_img_url = grp.Select(i => i.part_img_url).FirstOrDefault(),
+                                       part_url = grp.Select(i => i.part_url).FirstOrDefault(),
+                                       set_num = grp.Select(i => i.set_num).FirstOrDefault(),
+                                       storage_location = grp.Select(i => i.storage_location).FirstOrDefault()
+                                   }
+                ).ToList();
 
-            foreach (var elem in elements)
+            //check if each element is in the DB before adding
+            foreach (var elem in groupedElements)
             {
 
                 Element? elementTest = GetSavedElementByItem(elem);
-                //null elementID test
-                //element id should be able to be obtained via the part# and Color#
-                elem.element_id ??= elem.part!.part_num + "-" + elem.color!.id;
+               
 
                 if (elementTest == null)
                 {

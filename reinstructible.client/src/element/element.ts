@@ -70,7 +70,7 @@ export class Element implements OnInit, OnChanges {
    * Event emitted when an element is selected for storage. Parent uses this to open/initialize storage UI.
    */
   @Output() loadStorageEvent = new EventEmitter<IElement>();
-
+  //@Output() loadCurrentGrouping = new EventEmitter<EDisplayGroup>();
   /**
   * Computed list of unique part categories present in `elementsBase`.
   * Used to populate category selection control.
@@ -143,25 +143,25 @@ export class Element implements OnInit, OnChanges {
       });
     });
     // update the storage filter for if a storage group is removed (count = 0)
-    if (this.options.currentGrouping == EDisplayGroup.Storage) {
-      //check if there are no more elements in the current listing in the bin
-      const reassignedBin = this.partStorageOptions.filter(x => x.name == oldBin);
-      const newAssignedBin = this.partStorageOptions.filter(x => x.name == newStorages.bin);
+    //if (this.options.currentGrouping == EDisplayGroup.Storage) {
+    //check if there are no more elements in the current listing in the bin
+    const reassignedBin = this.elements.filter(x => x.storage_location.bin == oldBin);
+    const newAssignedBin = this.partStorageOptions.filter(x => x.name == newStorages.bin);
 
-      if (reassignedBin.length > 0) {
-        //remove old bin from the part storage options list
-        this.partStorageOptions = this.partStorageOptions.filter(x => x.name != oldBin);
-      }
-      if (newAssignedBin.length == 0) {
-        //add new bin to the part storage options list
-        this.partStorageOptions.push({
-          id: newStorages.bin == 'Unassigned' ? -1 : Number(newStorages.bin),
-          name: newStorages.bin,
-          selected: true
-        })
-        this.partStorageOptions.sort((a, b) => a.name.localeCompare(b.name));
-      }
+    if (reassignedBin.length == 0) {
+      //remove old bin from the part storage options list
+      this.partStorageOptions = this.partStorageOptions.filter(x => x.name != oldBin);
     }
+    if (newAssignedBin.length == 0) {
+      //add new bin to the part storage options list
+      this.partStorageOptions.push({
+        id: newStorages.bin == 'Unassigned' ? -1 : Number(newStorages.bin),
+        name: newStorages.bin,
+        selected: true
+      })
+      this.partStorageOptions.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    //}
 
 
     this.storageVisable = false;
@@ -202,6 +202,8 @@ export class Element implements OnInit, OnChanges {
     this.options.displayMode = value;
   }
   setCurrentGrouping(value: EDisplayGroup) {
+    //this.options.displayMode (no need for change)
+    this.categoryOptionType = this.options.filterType
     this.options.currentGrouping = value;
   }
 
@@ -404,52 +406,56 @@ export class Element implements OnInit, OnChanges {
     observe: 'response' as 'response', // To get the full HttpResponse
   };
 
-  triggerFileOption(value: EFileOption) {
+  async triggerFileOption(value: EFileOption) {
     this.Loaded = false;
     switch (value) {
       case EFileOption.Load:
         //load legoset
-        fileUtil.loadLegoSetFile(this.http, "legoSet.rb", this.legoSet);
+        await fileUtil.loadLegoSetFile(this.http, "legoSet.rb", this.legoSet);
 
         //load elements
-        fileUtil.loadElementsFile(this.http, "elementsBase.rb", this.elementsBase);
-        fileUtil.loadElementsFile(this.http, "elements.rb", this.elements);
+        await fileUtil.loadElementsFile(this.http, "elementsBase.rb", this.elementsBase);
+        await fileUtil.loadElementsFile(this.http, "elements.rb", this.elements);
 
         //load filter option groups
-        fileUtil.loadpartCategoryOptionsFile(this.http, "partCategoryOptions.rb", this.partCategoryOptions);
-        fileUtil.loadpartCategoryOptionsFile(this.http, "partColorOptions.rb", this.partColorOptions);
-        fileUtil.loadpartCategoryOptionsFile(this.http, "partStorageOptions.rb", this.partStorageOptions);
+        await fileUtil.loadpartCategoryOptionsFile(this.http, "partCategoryOptions.rb", this.partCategoryOptions);
+        await fileUtil.loadpartCategoryOptionsFile(this.http, "partStorageOptions.rb", this.partStorageOptions);
+        await fileUtil.loadpartCategoryOptionsFile(this.http, "partColorOptions.rb", this.partColorOptions);
+               
+        //load filter ids
+        await fileUtil.loadNumberFilteredFile(this.http, "colorIds.rb", this.colorIds);
+        await fileUtil.loadNumberFilteredFile(this.http, "categoryIds.rb", this.categoryIds);
+        await fileUtil.loadStringFilteredFile(this.http, "storageBins.rb", this.storageBins);
 
         //load current options
-        fileUtil.loadOptionsFile(this.http, "options.rb", this.options);
+        await fileUtil.loadOptionsFile(this.http, "options.rb", this.options);
+        //ensure the options are updating the correct paramaters
+        this.selectedControllTab.set(this.options.filterType);
+        this.openControlTab(this.options.filterType);
 
-        //load filter ids
-        fileUtil.loadNumberFilteredFile(this.http, "colorIds.rb", this.colorIds);
-        fileUtil.loadNumberFilteredFile(this.http, "categoryIds.rb", this.categoryIds);
-        fileUtil.loadStringFilteredFile(this.http, "storageBins.rb", this.storageBins);
         break;
       case EFileOption.Save:
         //save legoset
-        fileUtil.saveFile(this.http, "legoSet.rb", JSON.stringify(this.legoSet));
+        await fileUtil.saveFile(this.http, "legoSet.rb", JSON.stringify(this.legoSet));
 
         //save elements and option groups
-        fileUtil.saveFile(this.http, "elementsBase.rb", JSON.stringify(this.elementsBase));
-        fileUtil.saveFile(this.http, "elements.rb", JSON.stringify(this.elements));
-        fileUtil.saveFile(this.http, "partCategoryOptions.rb", JSON.stringify(this.partCategoryOptions));
-        fileUtil.saveFile(this.http, "partColorOptions.rb", JSON.stringify(this.partColorOptions));
-        fileUtil.saveFile(this.http, "partStorageOptions.rb", JSON.stringify(this.partStorageOptions));
+        await fileUtil.saveFile(this.http, "elementsBase.rb", JSON.stringify(this.elementsBase));
+        await fileUtil.saveFile(this.http, "elements.rb", JSON.stringify(this.elements));
+        await fileUtil.saveFile(this.http, "partCategoryOptions.rb", JSON.stringify(this.partCategoryOptions));
+        await fileUtil.saveFile(this.http, "partColorOptions.rb", JSON.stringify(this.partColorOptions));
+        await fileUtil.saveFile(this.http, "partStorageOptions.rb", JSON.stringify(this.partStorageOptions));
 
         //save filtered ids
-        fileUtil.saveFile(this.http, "categoryIds.rb", JSON.stringify(this.categoryIds));
-        fileUtil.saveFile(this.http, "colorIds.rb", JSON.stringify(this.colorIds));
-        fileUtil.saveFile(this.http, "storageBins.rb", JSON.stringify(this.storageBins));
+        await fileUtil.saveFile(this.http, "categoryIds.rb", JSON.stringify(this.categoryIds));
+        await fileUtil.saveFile(this.http, "colorIds.rb", JSON.stringify(this.colorIds));
+        await fileUtil.saveFile(this.http, "storageBins.rb", JSON.stringify(this.storageBins));
 
         //save current options
-        fileUtil.saveFile(this.http, "options.rb", JSON.stringify(this.options));
+        await fileUtil.saveFile(this.http, "options.rb", JSON.stringify(this.options));
         //fileUtil.saveFile(this.http, ".rb", JSON.stringify(this.));
         break;
     }
-    this.Loaded = true;
+   this.Loaded = true;
   }
   /**
    * Simple reactive title signal used by the template (keeps string in a signal).

@@ -51,8 +51,8 @@ namespace Reinstructible.Server.Controllers
             //save the current model being worked on in its state.
 
 
-            var fileName = data["params"]![2]![0]!["Value"];
-            var jsonString = data["params"]![2]![1]!["Value"];
+            var fileName = data["fileName"];
+            var jsonString = data["jsonString"];
 
 
             //Save the Jason String locally

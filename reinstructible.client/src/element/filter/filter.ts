@@ -22,6 +22,7 @@ export class FilterComponent implements OnInit, OnChanges {
 
   public filterType = input<EFilterType>();
   public options = input<IFilterOptions[]>([]);
+  public inCurrentGrouping = input<EDisplayGroup>(EDisplayGroup.Category);
 
   public onOptionsSent = output<number[]>();
   public onOptionsStringSent = output<string[]>();
@@ -31,8 +32,8 @@ export class FilterComponent implements OnInit, OnChanges {
   public onFileOption = output<EFileOption>();
 
 
-  public currentGrouping :EDisplayGroup = EDisplayGroup.Color
-  public currentGroupText = EDisplayGroup[this.currentGrouping];
+  public currentGrouping: EDisplayGroup = this.inCurrentGrouping();
+  public currentGroupText = EDisplayGroup[this.inCurrentGrouping()];
   
   constructor() {
     this.onDisplayMode.emit(EDisplayMode.TV);
@@ -41,6 +42,8 @@ export class FilterComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     // `changes` parameter is intentionally unused beyond triggering the refresh.
     let change = changes;
+    this.currentGrouping = this.inCurrentGrouping();
+    this.currentGroupText = EDisplayGroup[this.inCurrentGrouping()];
   }
 
   onSelected(option: IFilterOptions) {

@@ -22,33 +22,36 @@
     @switch (selectedControllTab()) {
 
     @case (categoryOptionType) {
-    <!--Category-->
-    <filterComponent [filterType]="categoryOptionType"
-                     [options]="partCategoryOptions"
-                     (onDisplayMode)="setDisplayMode($event)"
-                     (onFileOption)="triggerFileOption($event)"
-                     (onCurrentGrouping)="setCurrentGrouping($event)"
-                     (onOptionsSent)="partCatergoryFilter($event)"></filterComponent>
-    }
+      <!--Category-->
+      <filterComponent [filterType]="categoryOptionType"
+                       [options]="partCategoryOptions"
+                       [inCurrentGrouping] ="options.currentGrouping"
+                       (onDisplayMode)="setDisplayMode($event)"
+                       (onFileOption)="triggerFileOption($event)"
+                       (onCurrentGrouping)="setCurrentGrouping($event)"
+                       (onOptionsSent)="partCatergoryFilter($event)"></filterComponent>
+      }
 
     @case (colorOptionType) {
-    <!--Color-->
-    <filterComponent [filterType]="colorOptionType"
-                     [options]="partColorOptions"
-                     (onFileOption)="triggerFileOption($event)"
-                     (onDisplayMode)="setDisplayMode($event)"
-                     (onCurrentGrouping)="setCurrentGrouping($event)"
-                     (onOptionsSent)="partColorFilter($event)"></filterComponent>
-    }
+      <!--Color-->
+      <filterComponent [filterType]="colorOptionType"
+                       [options]="partColorOptions"
+                       [inCurrentGrouping] ="options.currentGrouping"
+                       (onFileOption)="triggerFileOption($event)"
+                       (onDisplayMode)="setDisplayMode($event)"
+                       (onCurrentGrouping)="setCurrentGrouping($event)"
+                       (onOptionsSent)="partColorFilter($event)"></filterComponent>
+      }
     @case (storageOptionType) {
-    <!--Storage-->
-    <filterComponent [filterType]="storageOptionType"
-                     [options]="partStorageOptions"
-                     (onFileOption)="triggerFileOption($event)"
-                     (onDisplayMode)="setDisplayMode($event)"
-                     (onCurrentGrouping)="setCurrentGrouping($event)"
-                     (onOptionsStringSent)="partStorageFilter($event)"></filterComponent>
-    }
+      <!--Storage-->
+      <filterComponent [filterType]="storageOptionType"
+                       [options]="partStorageOptions"
+                       [inCurrentGrouping] ="options.currentGrouping"
+                       (onFileOption)="triggerFileOption($event)"
+                       (onDisplayMode)="setDisplayMode($event)"
+                       (onCurrentGrouping)="setCurrentGrouping($event)"
+                       (onOptionsStringSent)="partStorageFilter($event)"></filterComponent>
+      }
     }
   </div>
 </div>

@@ -7,39 +7,31 @@ import updateInterfaces from '../Utilities/updateInterfaces';
 @Injectable({
   providedIn: 'root'
 })
-export default class fileUtil{
-  private static http: HttpClient;
-  //constructor(http: HttpClient) { // OK: constructor injection
-  //  http = http;
-  //}
-  private static httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-    observe: 'response' as 'response', // To get the full HttpResponse
-  };
+export default class fileUtil {
 
+  static async saveFile(http: HttpClient, fileName: string, jsonString: string): Promise<boolean> {
+    const params = {
+      'fileName': fileName,
+      'jsonString': jsonString
+    };
 
-  static saveFile(http: HttpClient, fileName: string, jsonString: string) {
-
-    let params = new HttpParams()
-      .set('fileName', fileName)
-      .set('jsonString', jsonString);
-
-    //send the controller a jsonstring to save
-    http.post('/api/file', { params: params }, this.httpOptions).subscribe({
-      next: (res) => {
-        let result = res;
-        //loading = false;
+    const response = await fetch('/api/file', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      error: (error) => {
-        console.error(error);
-        error = 'Failed to create file'; //loading = false;
-      }
+      body: JSON.stringify(params),
     });
+    let result = true;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+      result = false;
+    }
+
+    return result;
   }
 
-  static loadFile(http: HttpClient, fileName: string) {
+  static async loadFile(http: HttpClient, fileName: string) {
     let params = new HttpParams()
       .set('fileName', fileName);
 
@@ -53,100 +45,106 @@ export default class fileUtil{
     });
   }
 
-  static loadLegoSetFile(http: HttpClient, fileName: string, legoSet: Partial<ILegoSet>) {
-
-    let params = new HttpParams()
-      .set('fileName', fileName);
-
-    http.get<ILegoSet>('/api/file', { params: params }).subscribe({
-      next: (res) => {
-        updateInterfaces.updateLegoSet(legoSet, res);
-      },
-      error: (error) => {
-        console.error(error);
-      }
+  static async loadLegoSetFile(http: HttpClient, fileName: string, array: Partial<ILegoSet>): Promise<boolean> {
+    const param = new URLSearchParams({
+      'fileName': fileName
     });
-
+    const URL = '/api/file?' + param.toString()
+    const response = await fetch(URL);
+    const data: ILegoSet = await response.json()
+    let result = true;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+      result = false;
+    } else {
+      updateInterfaces.updateLegoSet(array, data);
+    }
+    return result;
   }
 
-  static loadElementsFile(http: HttpClient, fileName: string, array: IElement[]) {
-
-    let params = new HttpParams()
-      .set('fileName', fileName);
-
-    http.get < IElement[] >('/api/file', { params: params }).subscribe({
-      next: (res) => {
-        updateInterfaces.updateElementArray(array, res);
-      },
-      error: (error) => {
-        console.error(error);
-      }
+  static async loadElementsFile(http: HttpClient, fileName: string, array: IElement[]) {
+    const param = new URLSearchParams({
+      'fileName': fileName
     });
-
+    const URL = '/api/file?' + param.toString()
+    const response = await fetch(URL);
+    const data: IElement[] = await response.json()
+    let result = true;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+      result = false;
+    } else {
+      updateInterfaces.updateElementArray(array, data);
+    }
+    return result;
   }
 
-  static loadpartCategoryOptionsFile(http: HttpClient, fileName: string, array: IFilterOptions[]) {
 
-    let params = new HttpParams()
-      .set('fileName', fileName);
-
-    http.get<IFilterOptions[]>('/api/file', { params: params }).subscribe({
-      next: (res) => {
-        updateInterfaces.updateFilterOptionsArray(array, res);
-      },
-      error: (error) => {
-        console.error(error);
-      }
+  static async loadpartCategoryOptionsFile(http: HttpClient, fileName: string, array: IFilterOptions[]) {
+    const param = new URLSearchParams({
+      'fileName': fileName
     });
-
+    const URL = '/api/file?' + param.toString()
+    const response = await fetch(URL);
+    const data: IFilterOptions[] = await response.json()
+    let result = true;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+      result = false;
+    } else {
+      updateInterfaces.updateFilterOptionsArray(array, data);
+    }
+    return result;
   }
 
-  static loadNumberFilteredFile(http: HttpClient, fileName: string, array: number[]) {
-
-    let params = new HttpParams()
-      .set('fileName', fileName);
-
-    http.get<number[]>('/api/file', { params: params }).subscribe({
-      next: (res) => {
-        updateInterfaces.updateNumberFilteredArray(array, res);
-      },
-      error: (error) => {
-        console.error(error);
-      }
+  static async loadNumberFilteredFile(http: HttpClient, fileName: string, array: number[]) {
+    const param = new URLSearchParams({
+      'fileName': fileName
     });
-
+    const URL = '/api/file?' + param.toString()
+    const response = await fetch(URL);
+    const data: number[] = await response.json()
+    let result = true;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+      result = false;
+    } else {
+      updateInterfaces.updateNumberFilteredArray(array, data);
+    }
+    return result;
   }
 
-  static loadStringFilteredFile(http: HttpClient, fileName: string, array: string[]) {
-
-    let params = new HttpParams()
-      .set('fileName', fileName);
-
-    http.get<string[]>('/api/file', { params: params }).subscribe({
-      next: (res) => {
-        updateInterfaces.updateStringFilteredArray(array, res);
-      },
-      error: (error) => {
-        console.error(error);
-      }
+  static async loadStringFilteredFile(http: HttpClient, fileName: string, array: string[]) {
+    const param = new URLSearchParams({
+      'fileName': fileName
     });
-
+    const URL = '/api/file?' + param.toString()
+    const response = await fetch(URL);
+    const data: string[] = await response.json()
+    let result = true;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+      result = false;
+    } else {
+      updateInterfaces.updateStringFilteredArray(array, data);
+    }
+    return result;
   }
 
-  static loadOptionsFile(http: HttpClient, fileName: string, options: IElementOptions) {
-
-    let params = new HttpParams()
-      .set('fileName', fileName);
-
-    http.get<IElementOptions>('/api/file', { params: params }).subscribe({
-      next: (res) => {
-        updateInterfaces.updateOptions(options, res);
-      },
-      error: (error) => {
-        console.error(error);
-      }
+  static async loadOptionsFile(http: HttpClient, fileName: string, array: IElementOptions) {
+    const param = new URLSearchParams({
+      'fileName': fileName
     });
-
+    const URL = '/api/file?' + param.toString()
+    const response = await fetch(URL);
+    const data: IElementOptions = await response.json()
+    let result = true;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+      result = false;
+    } else {
+      updateInterfaces.updateOptions(array, data);
+    }
+    return result;
   }
-
 }
