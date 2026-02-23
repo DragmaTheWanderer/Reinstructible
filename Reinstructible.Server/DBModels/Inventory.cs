@@ -34,15 +34,15 @@ namespace Reinstructible.Server.DBModels
 
         internal void update(Models.Element vm)
         {
-            if (!vm.is_spare)
-            {
+            //if (!vm.is_spare)
+            //{
+            //    this.quantity = vm.quantity;
+            //    this.is_spare = vm.is_spare;
+            //}
+            //else
+            //{
                 this.quantity = vm.quantity;
-                this.is_spare = vm.is_spare;
-            }
-            else
-            {
-                this.quantity += vm.quantity;
-            }
+            //}
         }
     }
 }
