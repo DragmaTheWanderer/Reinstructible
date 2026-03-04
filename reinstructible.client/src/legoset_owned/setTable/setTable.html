@@ -10,8 +10,13 @@
     </thead>
     <tbody style="overflow-y:auto;">
       <tr *ngFor="let set of legoSets()" (click)="loadSet(set)">
-        <td><img src="{{ set.set_img_url }}" class="set_img" /></td>
-
+        <td>
+        <!--<img src="{{ set.set_img_url }}" class="set_img" /></td>-->
+          <app-image img_url="{{ set.set_img_url }}"
+                      alt_img_url=""
+                      id="{{set.set_num}}"
+                      imgClass="set_img">
+          </app-image>
         <td>
           <span><b>{{ set.name }}</b> </span><br />
           <span>{{ set.theme[0].name }}</span> <br />

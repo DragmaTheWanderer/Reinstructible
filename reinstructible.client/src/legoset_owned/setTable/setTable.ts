@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { ILegoSet, } from '../../interfaces/rebrickable'
 
 import { ButtonComponent } from '../../shared/button/button.component';
+import { ImageComponent } from '../../shared/image/image.component';
 
 @Component({
   selector: 'setTable',
   standalone: true,
-  imports: [ButtonComponent, CommonModule, FormsModule,],
+  imports: [ButtonComponent, ImageComponent, CommonModule, FormsModule,],
   templateUrl: './setTable.html',
   styleUrl: './setTable.css'
 })

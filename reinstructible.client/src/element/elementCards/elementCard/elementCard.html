@@ -11,7 +11,12 @@
         <span class="w3-jumbo"><b>{{ element()!.quantity }}</b></span>
       </div>
       <div class=" w3-container w3-cell ">
-        <img src="{{ element()!.part_img_url! }}" class="set_img" />
+        <!--<img src="{{ element()!.part_img_url! }}" class="set_img" />-->
+        <app-image img_url="{{ element()!.part_img_url }}"
+                   alt_img_url="{{element()!.alt_part_img_url}}"
+                   id="{{element()!.element_id}}"
+                   imgClass="element-img">
+        </app-image>
       </div>
       <div class=" w3-container w3-cell "
            (click)="setStorage(element()!, $event)">

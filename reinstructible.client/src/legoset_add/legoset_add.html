@@ -43,7 +43,14 @@
           </td>
           <td>{{ set.set_num }}</td>
           <td>{{ set.name }}</td>
-          <td><img class="set_img" src="{{ set.set_img_url }}" /></td>
+          <td>
+            <!--<img class="set_img" src="{{ set.set_img_url }}" />-->
+            <app-image img_url="{{ set.set_img_url }}"
+                       alt_img_url=""
+                       id="{{set.set_num}}"
+                       imgClass="set_img">
+            </app-image>
+          </td>
         </tr>
       </tbody>
     </table>

@@ -7,11 +7,13 @@ import { IElement, IElementCards, IFilterOptions, } from '../../interfaces/rebri
 import { EDisplayGroup } from '../../interfaces/Enums'
 import sorting from '../../Utilities/sorting';
 
+import { ImageComponent } from '../../shared/image/image.component';
+
 
 @Component({
   selector: 'elementTable',
   standalone: true,
-  imports: [CommonModule, FormsModule, ],
+  imports: [ImageComponent, CommonModule, FormsModule, ],
   templateUrl: './elementTable.html',
   styleUrl: './elementTable.css'
 })

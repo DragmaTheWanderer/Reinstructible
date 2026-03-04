@@ -3,11 +3,12 @@ import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ILegoSet } from '../../../interfaces/rebrickable'
+import { ImageComponent } from '../../../shared/image/image.component';
 
 @Component({
   selector: 'setCard',
   standalone: true,
-  imports: [CommonModule,],
+  imports: [ImageComponent, CommonModule,],
   templateUrl: './setCard.html',
   styleUrl: './setCard.css'
 })

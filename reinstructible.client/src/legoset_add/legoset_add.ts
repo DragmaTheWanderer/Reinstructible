@@ -7,12 +7,13 @@ import { FormsModule } from '@angular/forms';
 import { ILegoSet, ITheme } from '../interfaces/rebrickable'
 
 import { ButtonComponent } from '../shared/button/button.component';
+import { ImageComponent } from '../shared/image/image.component';
 
 
 @Component({
   selector: 'legoset_add',
   standalone: true,
-  imports: [ButtonComponent,
+  imports: [ButtonComponent, ImageComponent,
     CommonModule, FormsModule],
   templateUrl: './legoset_add.html',
   styleUrl: './legoset_add.css'

@@ -5,11 +5,14 @@ import { FormsModule } from '@angular/forms';
 
 import { IElement, IStorage_updateList } from '../interfaces/rebrickable';
 
+import { ImageComponent } from '../shared/image/image.component';
+
+
 @Component({
     selector: 'storage',
     templateUrl: './storage.html',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [ImageComponent, CommonModule, FormsModule],
     styleUrl: './storage.css'
 })
 export class Storage implements OnInit, OnChanges {

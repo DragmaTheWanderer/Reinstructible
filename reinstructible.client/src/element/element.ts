@@ -11,6 +11,8 @@ import { ILegoSet, IElement, IColor, IPartCategory, IStorage_updateList, IFilter
 import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from '../interfaces/Enums';
 import fileUtil from '../Utilities/file';
 
+import { ImageComponent } from '../shared/image/image.component';
+
 /**
  * Element component
  *
@@ -24,7 +26,7 @@ import fileUtil from '../Utilities/file';
 @Component({
   selector: 'element',
   standalone: true,
-  imports: [CommonModule, FormsModule, Storage, FilterComponent, ElementTable, ElementCards,],
+  imports: [CommonModule, FormsModule, Storage, FilterComponent, ElementTable, ElementCards, ImageComponent],
   templateUrl: './element.html',
   styleUrl: './element.css'
 })
@@ -145,7 +147,7 @@ export class Element implements OnInit, OnChanges {
     // update the storage filter for if a storage group is removed (count = 0)
     //if (this.options.currentGrouping == EDisplayGroup.Storage) {
     //check if there are no more elements in the current listing in the bin
-    const reassignedBin = this.elements.filter(x => x.storage_location.bin == oldBin);
+    const reassignedBin = this.elementsBase.filter(x => x.storage_location.bin == oldBin);
     const newAssignedBin = this.partStorageOptions.filter(x => x.name == newStorages.bin);
 
     if (reassignedBin.length == 0) {

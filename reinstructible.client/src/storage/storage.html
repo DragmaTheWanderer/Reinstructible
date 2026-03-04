@@ -18,7 +18,14 @@
         <tbody>
           <tr class="selected-row">
             <td><input class="w3-check" type="checkbox" [(ngModel)]="selectedElement.selected" disabled /></td>
-            <td><img src="{{ selectedElement.part_img_url }}" class="element-img" /></td>
+            <td>
+              <!--<img class="element-img" src="{{selectedElement.part_img_url}}" alt="Element {{selectedElement.element_id}}" (error)="selectedElement.part_img_url = selectedElement.alt_part_img_url">-->
+              <app-image img_url="{{ selectedElement.part_img_url }}"
+                         alt_img_url="{{selectedElement.alt_part_img_url}}"
+                         id="{{selectedElement.element_id}}"
+                         imgClass="element-img">
+              </app-image>
+            </td>
             <td class="w3-left-align">{{ selectedElement.color.name }}<br /> {{ selectedElement.part.name }}</td>
             <td>
               <input class="w3-input w3-border w3-round storage-input" type="text" [(ngModel)]="selectedElement.storage_location.bin" placeholder="Bin Id" />
@@ -27,7 +34,14 @@
           </tr>
           <tr *ngFor="let item of elementList">
             <td><input class="w3-check" type="checkbox" [(ngModel)]="item.selected" /></td>
-            <td><img src="{{ item.part_img_url }}" class="element-img" /></td>
+            <td>
+              <!--<img src="{{ item.part_img_url }}" class="element-img" />-->
+              <app-image img_url="{{ item.part_img_url }}"
+                         alt_img_url="{{item.alt_part_img_url}}"
+                         id="{{item.element_id}}"
+                         imgClass="element-img">
+              </app-image>
+            </td>
             <td class="w3-left-align">{{ item.color.name }}<br /> {{ item.part.name }}</td>
             <td>
               <input class="w3-input w3-border w3-round storage-input" type="text" [(ngModel)]="item.storage_location.bin" placeholder="Bin Id" />

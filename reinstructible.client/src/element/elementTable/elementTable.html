@@ -15,7 +15,12 @@
           (click)="foundElement(item, $event)">
         <td class="w3-jumbo"><b>{{ item.quantity }}</b></td>
         <td>
-          <img class="element-img" src="{{item.part_img_url}}" alt="Element {{item.element_id}}" (error)="item.part_img_url = item.alt_part_img_url">
+          <!--<img class="element-img" src="{{item.part_img_url}}" alt="Element {{item.element_id}}" (error)="item.part_img_url = item.alt_part_img_url">-->
+          <app-image img_url="{{ item.part_img_url }}"
+                     alt_img_url="{{item.alt_part_img_url}}"
+                     id="{{item.element_id}}"
+                     imgClass="element-img">
+          </app-image>
         </td>
         <td class="w3-left-align">{{ item.color.name }} {{ item.part.name }}</td>
         <td (click)="setStorage(item, $event)">

@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { IElement } from '../../../interfaces/rebrickable'
 
+import { ImageComponent } from '../../../shared/image/image.component';
+
 @Component({
   selector: 'elementCard',
   standalone: true,
-  imports: [CommonModule,],
+  imports: [ImageComponent, CommonModule,],
   templateUrl: './elementCard.html',
   styleUrl: './elementCard.css'
 })
