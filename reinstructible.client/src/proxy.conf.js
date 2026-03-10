@@ -15,6 +15,7 @@ const PROXY_CONFIG = [
       "/api/partcategory",
       "/api/set",
       "/api/storage",
+      "/api/subbuild"
     ],
     target,
     secure: false,

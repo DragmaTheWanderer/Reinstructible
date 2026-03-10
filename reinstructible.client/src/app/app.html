@@ -23,8 +23,14 @@
   </tbody>
 </table>-->
 <legoset_owned *ngIf="SetVisable"
-               (loadElementsEvent)="loadElements($event)">
+               (loadElementsEvent)="loadElements($event)"
+               (subSetBuildEvent)="subSetBuild($event)"
+               >
 </legoset_owned>
 <element *ngIf="ElementVisable"
          [legoSet]="legoSet">
 </element>
+<subBuild *ngIf="SubSetBuildVisible"
+          [legoSet]="legoSet"
+          >
+</subBuild>

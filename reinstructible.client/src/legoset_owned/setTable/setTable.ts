@@ -19,7 +19,7 @@ import { ImageComponent } from '../../shared/image/image.component';
 export class SetTable {
   public legoSets = input<ILegoSet[]>([]);
   public legoSetOut = output<ILegoSet>();
-
+  public subSetBuildOut = output<ILegoSet>();
   public setsLoading: boolean = false;
 
   constructor(private http: HttpClient) { }
@@ -27,12 +27,16 @@ export class SetTable {
   loadSet(value: ILegoSet) {
     this.legoSetOut.emit(value);
   }
-  
+  setSubBuild(value: ILegoSet, e: Event) {
+    this.subSetBuildOut.emit(value);
+  }
+
   addSet(value: ILegoSet, e: Event) {
     console.log("add set clicked");
     e.stopPropagation();
     this.saveSet(value);
   }
+  
   saveSet(legoSet: ILegoSet) {
     let result = {};
     this.setsLoading = true;

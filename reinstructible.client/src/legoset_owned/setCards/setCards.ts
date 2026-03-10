@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ILegoSet, ILegoSetCards, IFilterOptions } from '../../interfaces/rebrickable'
+import { ILegoSet, ILegoSetGroup, IFilterOptions } from '../../interfaces/rebrickable'
 import { SetCard } from './setCard/setCard';
 
 @Component({
@@ -17,7 +17,7 @@ export class SetCards implements OnInit, OnChanges {
   public currentTheme = input<string>();
   public setThemes = input<IFilterOptions[]>([]);
   public setAlpha: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-  public legoSetCards: ILegoSetCards[] = [];
+  public legoSetCards: ILegoSetGroup[] = [];
   public legoSetOut = output<ILegoSet>();
 
   public setGroup: string = "theme";
@@ -38,14 +38,14 @@ export class SetCards implements OnInit, OnChanges {
     if (this.setGroup === "theme") {
       if (this.currentTheme() === "All") {
         this.setThemes().forEach(t => {
-          let legoSetCard: ILegoSetCards = {
+          let legoSetCard: ILegoSetGroup = {
             grouping: t.name,
             legoSets: this.legoSets().filter(s => s.theme_id === t.id)
           }
           this.legoSetCards.push(legoSetCard);
         });
       } else {
-        let legoSetCard: ILegoSetCards = {
+        let legoSetCard: ILegoSetGroup = {
           grouping: this.currentTheme()!,
           legoSets: this.legoSets().filter(s => s.theme[0].name === this.currentTheme())
         }

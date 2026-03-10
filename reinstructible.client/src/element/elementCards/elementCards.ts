@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { IElement, IElementCards, IFilterOptions } from '../../interfaces/rebrickable'
+import { IElement, IElementGroup, IFilterOptions } from '../../interfaces/rebrickable'
 import { elementCard } from './elementCard/elementCard';
 import { EDisplayGroup } from '../../interfaces/Enums';
 import sorting from '../../Utilities/sorting';
@@ -17,7 +17,7 @@ import sorting from '../../Utilities/sorting';
 
 export class ElementCards implements OnInit, OnChanges {
   public elements = input<IElement[]>([]);
-  public elementCards: IElementCards[] = [];
+  public elementCards: IElementGroup[] = [];
   public itemForStorage = output<IElement>();
 
   public currentGrouping = input<EDisplayGroup>();

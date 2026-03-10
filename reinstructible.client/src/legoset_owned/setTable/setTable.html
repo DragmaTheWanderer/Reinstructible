@@ -24,10 +24,16 @@
         </td>
         <td class="w3-display-container">
           <div class="w3-display-bottommiddle w3-padding">
-            <app-button icon="fa-solid fa-plus" color="w3-green"
-                        toolTip="Add Set" toolTipClass="btn-tooltip-right"
-                        (clickEvent)="addSet(set, $event)">
-            </app-button>
+            <span>
+              <app-button icon="fa-solid fa-magnifying-glass-plus" color="w3-green"
+                          toolTip="Set Sub-build" toolTipClass="btn-tooltip-right"
+                          (clickEvent)="setSubBuild(set, $event)">
+              </app-button>
+              <app-button icon="fa-solid fa-plus" color="w3-green"
+                          toolTip="Reload Set" toolTipClass="btn-tooltip-right"
+                          (clickEvent)="addSet(set, $event)">
+              </app-button>
+            </span>
           </div>
         </td>
       </tr>

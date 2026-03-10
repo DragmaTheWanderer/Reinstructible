@@ -41,7 +41,8 @@
   <!--Body-->
   @if (displayMode === 'TV'){
   <setTable [legoSets]="legoSets"
-            (legoSetOut)="loadSet($event)"></setTable>
+            (legoSetOut)="loadSet($event)"
+            (subSetBuildOut)="subSetBuild($event)"></setTable>
   } @else if (displayMode === 'CV'){
   <setCards [legoSets]="legoSets"
             [setThemes]="setThemeOptions"

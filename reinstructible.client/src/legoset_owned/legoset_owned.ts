@@ -40,8 +40,12 @@ export class LegoSet_owned implements OnInit {
 
   //setting up an emitter to send the setnumber to the events component.
   @Output() loadElementsEvent = new EventEmitter<ILegoSet>();
+  @Output() subSetBuildEvent = new EventEmitter<ILegoSet>();
   loadSet(value: ILegoSet) {
     this.loadElementsEvent.emit(value);
+  }
+  subSetBuild(value: ILegoSet) {
+    this.subSetBuildEvent.emit(value);
   }
   loadElements() {
     let value = <ILegoSet>{ name: 'All', set_num:'-1' };

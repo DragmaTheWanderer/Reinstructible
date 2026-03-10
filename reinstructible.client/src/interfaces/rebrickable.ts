@@ -12,7 +12,7 @@ interface ILegoSet {
   set_element_count: number;
   set_element_storage_count: number;
 }
-interface ILegoSetCards {
+interface ILegoSetGroup {
   grouping: string;
   legoSets: ILegoSet[];
 }
@@ -30,11 +30,12 @@ interface IElement {
   alt_part_img_url: string;
   part_url: string;
   storage_location: IStorage
-  sub_inventory: ISubInventory;
+  sub_inventory: ISubInventory[];
   selected: boolean;
 }
-interface IElementCards {
+interface IElementGroup {
   grouping: string;
+  selected: boolean;
   elements: IElement[];
 }
 interface IPart {
@@ -116,8 +117,8 @@ export type {
   IStorage_updateList,
   ISubInventory,
 
-  ILegoSetCards,
-  IElementCards,
+  ILegoSetGroup,
+  IElementGroup,
   IFilterOptions,
   IElementOptions
 }

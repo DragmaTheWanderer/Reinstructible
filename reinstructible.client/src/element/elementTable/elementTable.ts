@@ -3,7 +3,7 @@ import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output } fr
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IElement, IElementCards, IFilterOptions, } from '../../interfaces/rebrickable'
+import { IElement, IElementGroup, IFilterOptions, } from '../../interfaces/rebrickable'
 import { EDisplayGroup } from '../../interfaces/Enums'
 import sorting from '../../Utilities/sorting';
 
@@ -26,7 +26,7 @@ export class ElementTable {
   public elements = input<IElement[]>([]);
   public elementsDisp: IElement[] = [];
 
-  public elementGrouped: IElementCards[] = [];
+  public elementGrouped: IElementGroup[] = [];
   public itemForStorage = output<IElement>();
 
   public groupColor = input<IFilterOptions[]>([]);

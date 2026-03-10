@@ -1,0 +1,16 @@
+<div  [ngClass]="selectedBackground()"
+      (click)="selectedSubBuild(pageStep, $event)">
+  <div>
+    <span *ngFor="let element of pageStep.elements">
+      <app-imageCount img_url="{{ element.part_img_url }}"
+                      alt_img_url="{{ element.alt_part_img_url }}"
+                      id="{{ element.element_id }}"
+                      countLeft="{{ element.sub_inventory[0].quantity }}">
+      </app-imageCount>
+
+    </span>
+  </div>
+  <div>
+    <b>Page: {{page}} / Step: {{step}} / Name: {{name}}</b>
+  </div>
+</div>

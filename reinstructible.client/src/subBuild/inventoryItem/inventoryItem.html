@@ -1,0 +1,18 @@
+<div class="w3-border-bottom">
+  <app-imageCount img_url="{{ element.part_img_url }}"
+                  alt_img_url="{{ element.alt_part_img_url }}"
+                  id="{{ element.element_id }}"
+                  countLeft="{{ countLeft }}"
+                  countTotal="{{ element.quantity }}">
+  </app-imageCount>
+
+  <app-button icon="fa-solid fa-plus" color="w3-dark-grey"
+              toolTip="Add to Selected" toolTipClass="btn-tooltip-left"
+              (clickEvent)="addToSelected()">
+  </app-button>
+  /
+  <app-button icon="fa-solid fa-minus" color="w3-dark-grey"
+              toolTip="Clear" toolTipClass="btn-tooltip-left"
+              (clickEvent)="removeFromSelected()">
+  </app-button>
+</div>

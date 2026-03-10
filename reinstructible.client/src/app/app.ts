@@ -7,7 +7,7 @@ import { ILegoSet,  } from '../interfaces/rebrickable'
 
 import { LegoSet_owned } from '../legoset_owned/legoset_owned';
 import { Element } from '../element/element';
-
+import { SubBuild } from '../subBuild/subBuild'
 interface WeatherForecast {
   date: string;
   temperatureC: number;
@@ -21,7 +21,7 @@ interface TestString {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, LegoSet_owned, Element],
+  imports: [CommonModule, LegoSet_owned, Element, SubBuild],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -33,6 +33,8 @@ export class App implements OnInit {
   };
   public ElementVisable: boolean = false;
   public SetVisable: boolean = true;
+  public SubSetBuildVisible: boolean = false;
+
   public legoSet: Partial<ILegoSet> = { id: 0 };
   public setNum: string = "";
 
@@ -59,8 +61,15 @@ export class App implements OnInit {
     
     this.legoSet = legoSet;
     this.SetVisable = false;
+    this.SubSetBuildVisible = false;
     this.ElementVisable = true;
   }
+  subSetBuild(legoSet: ILegoSet) {
 
+    this.legoSet = legoSet;
+    this.SetVisable = false;
+    this.SubSetBuildVisible = true;
+    this.ElementVisable = false;
+  }
   protected readonly title = signal('reinstructible.client');
 }

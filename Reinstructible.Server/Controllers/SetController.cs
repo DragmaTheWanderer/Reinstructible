@@ -93,7 +93,7 @@ namespace Reinstructible.Server.Controllers
         {
             Console.WriteLine("acheaved post from sets controller");
             //checked if set is in DB
-            LegoSet? legoSet = GetSavedSetBySetNum(set_num);
+            //LegoSet? legoSet = GetSavedSetBySetNum(set_num);
             //allow for resaving of set info if needed.
             
             //if (legoSet == null)
