@@ -15,6 +15,8 @@ export class ButtonComponent {
   @Input() toolTip: string = ''; // Input for tooltip text
   @Output() clickEvent = new EventEmitter<Event>(); // Output event for button clicks
 
+  @Input() disabled: boolean = false;
+
   onClick(e: Event): void {
     this.clickEvent.emit(e);
   }

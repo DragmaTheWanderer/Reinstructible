@@ -1,4 +1,4 @@
-import { IElement, IElementGroup, IFilterOptions } from '../interfaces/rebrickable'
+import { IElement, IElementGroup, IFilterOptions, ISubInventory } from '../interfaces/rebrickable'
 
 export default class sorting{
 
@@ -8,7 +8,7 @@ export default class sorting{
     groupColor.forEach(c => {
       let elementsForGroup = elements.filter(e => e.color.id === c.id)
         .sort((a, b) => {
-          const elementComparison = a.color.name.localeCompare(b.color.name);
+          let elementComparison = a.color.name.localeCompare(b.color.name);
           return elementComparison;
         });
       if (elementsForGroup.length > 0) {
@@ -31,7 +31,7 @@ return elementCards;
     groupCategory.forEach(c => {
       let elementsForGroup = elements.filter(e => e.part.part_cat_id === c.id)
         .sort((a, b) => {
-          const elementComparison = a.part.name.localeCompare(b.part.name);
+          let elementComparison = a.part.name.localeCompare(b.part.name);
           return elementComparison || a.color.name.localeCompare(b.color.name);
         });
       if (elementsForGroup.length > 0) {
@@ -77,7 +77,7 @@ return elementCards;
     groupAlpha.forEach(a => {
       let elementsForGroup = elements.filter(e => e.part.name.startsWith(a))
         .sort((a, b) => {
-          const elementComparison = a.part.name.localeCompare(b.part.name);
+          let elementComparison = a.part.name.localeCompare(b.part.name);
           return elementComparison || a.color.name.localeCompare(b.color.name);
         });
       if (elementsForGroup.length > 0) {
@@ -98,9 +98,9 @@ return elementCards;
 
 
     group.forEach(a => {
-      let elementsForGroup = elements.filter(e => e.part.name.includes(a))
+      let elementsForGroup = elements.filter(e => e.part.name == a)
         .sort((a, b) => {
-          const elementComparison = a.part.name.localeCompare(b.part.name);
+          let elementComparison = a.part.name.localeCompare(b.part.name);
           return elementComparison || a.color.name.localeCompare(b.color.name);
         });
       if (elementsForGroup.length > 0) {
@@ -112,6 +112,51 @@ return elementCards;
         elementGroups.push(elementCard);
       }
     })
+    return elementGroups;
+  }
+
+  static groupBySubBuild(elements: IElement[]): IElementGroup[] {
+    let elementGroups: IElementGroup[] = [];
+    let subInventoryGroup: Partial<ISubInventory>[] = [];
+    let groupNonString: Partial<ISubInventory>[] = [];
+
+    //get the sets of subinventories
+    elements.filter(e => e.sub_inventory.length > 0).forEach(element => {
+      element.sub_inventory.forEach(sub => {
+        let SubInventoryPartialItem:Partial<ISubInventory>={
+          page: sub.page,
+          step: sub.step,
+          subBuildName: sub.subBuildName
+        }
+        let test = subInventoryGroup.find(x => x.page == SubInventoryPartialItem.page
+          && x.step == SubInventoryPartialItem.step);
+        if (test == undefined) {
+          subInventoryGroup.push(SubInventoryPartialItem);
+        }
+      });
+    });
+    groupNonString = [...subInventoryGroup].sort((a, b) =>
+      Number(a.page) - Number(b.page)
+      || Number(a.step) - Number(b.step)
+    );
+
+    //filter each group and add the results to the element Groups
+    groupNonString.forEach(g => {
+      let eg: IElementGroup = {
+        grouping: `${g.page}|${g.step}|${g.subBuildName}`,
+        selected: false,
+        elements: []
+      };
+      elements.filter(e => e.sub_inventory.length > 0).forEach(e => {
+        e.sub_inventory.forEach(sub => {
+          if (g.page == sub.page && g.step == sub.step && g.subBuildName == sub.subBuildName) {
+            eg.elements.push(e);
+          }
+        });
+      });
+      elementGroups.push(eg);
+    });
+
     return elementGroups;
   }
 

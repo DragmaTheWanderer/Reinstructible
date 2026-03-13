@@ -8,11 +8,13 @@
 
   <app-button icon="fa-solid fa-plus" color="w3-dark-grey"
               toolTip="Add to Selected" toolTipClass="btn-tooltip-left"
+              [disabled]="isPlusDisabled()"
               (clickEvent)="addToSelected()">
   </app-button>
   /
   <app-button icon="fa-solid fa-minus" color="w3-dark-grey"
               toolTip="Clear" toolTipClass="btn-tooltip-left"
+              [disabled]="isMinusDisabled()"
               (clickEvent)="removeFromSelected()">
   </app-button>
 </div>

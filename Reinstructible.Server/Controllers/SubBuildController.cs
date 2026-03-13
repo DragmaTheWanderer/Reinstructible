@@ -75,14 +75,17 @@ namespace Reinstructible.Server.Controllers
             return result;
         }
 
-        public SubInventory? GetSavedSubInventoryById(string set_num, string element_id)
+        public List<SubInventory> GetSavedSubInventoryById(string set_num, string element_id)
         {
-            SubInventory? result = null;
+            List<SubInventory> result = new();
             var dbSubInventory = _context.SubInventories.Where(x => x.set_num == set_num).Where(x => x.element_id == element_id);
 
             if (!dbSubInventory.Any()) return result;
 
-            result = new SubInventory(dbSubInventory.FirstOrDefault()!);
+            foreach (var item in dbSubInventory)
+            {
+                result.Add(new SubInventory(item));
+            }
             return result;
         }
 

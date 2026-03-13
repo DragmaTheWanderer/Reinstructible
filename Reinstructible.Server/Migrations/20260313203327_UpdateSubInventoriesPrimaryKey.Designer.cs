@@ -10,8 +10,8 @@ using Reinstructible.Server.DL;
 namespace Reinstructible.Server.Migrations
 {
     [DbContext(typeof(SqliteContext))]
-    [Migration("20251211222424_Initial")]
-    partial class Initial
+    [Migration("20260313203327_UpdateSubInventoriesPrimaryKey")]
+    partial class UpdateSubInventoriesPrimaryKey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,10 +172,10 @@ namespace Reinstructible.Server.Migrations
                     b.Property<int>("page")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("quantity")
+                    b.Property<int>("step")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("step")
+                    b.Property<int>("quantity")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("subBuildName")

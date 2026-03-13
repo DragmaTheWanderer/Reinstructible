@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Reinstructible.Server.DBModels
 {
-    [PrimaryKey(nameof(set_num), nameof(element_id))]
+    [PrimaryKey(nameof(set_num), nameof(element_id), nameof(page), nameof(step))]
     public class SubInventory
     {
         //Key combo

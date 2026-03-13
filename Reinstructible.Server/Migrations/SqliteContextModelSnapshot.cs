@@ -169,16 +169,16 @@ namespace Reinstructible.Server.Migrations
                     b.Property<int>("page")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("quantity")
+                    b.Property<int>("step")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("step")
+                    b.Property<int>("quantity")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("subBuildName")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("set_num", "element_id");
+                    b.HasKey("set_num", "element_id", "page", "step");
 
                     b.ToTable("SubInventories");
                 });

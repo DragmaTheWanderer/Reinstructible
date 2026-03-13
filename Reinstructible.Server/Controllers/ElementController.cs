@@ -20,6 +20,7 @@ namespace Reinstructible.Server.Controllers
         private readonly PartCategoryController _partCategoryController = new(httpClientFactory, context);
         private readonly InventoryController _inventoryController = new(httpClientFactory, context);
         private readonly StorageController _storageController = new(httpClientFactory, context);
+        private readonly SubBuildController _subBuildController = new(httpClientFactory, context);
 
         [HttpGet]
         public async Task<List<Element>> GetAsync(string id = "", string partId = "", string colorId = "", string param = "")
@@ -48,7 +49,7 @@ namespace Reinstructible.Server.Controllers
         private async Task<List<Element>?> GetElementsForStorage(string partId, string colorId)
         {
 
-            var result = await GetElementsByPartNumFromDB(partId);
+            var result = await GetElementsByPartNumFromDB("", partId);
             return result;
         }
         private async Task<List<Element>> GetElementsFromDB(string id)
@@ -159,18 +160,18 @@ namespace Reinstructible.Server.Controllers
             foreach (var elem in elemDB)
             { //check if missing key properties
 
-                result.Add(FillElementColorStoragePart(elem));
+                result.Add(FillElementColorStoragePart("", elem));
             }
                 return [.. result];
         }
 
-        private async Task<List<Element>> GetElementsByPartNumFromDB(string partId)
+        private async Task<List<Element>> GetElementsByPartNumFromDB(string set_num, string partId)
         {
             List<Element> result = [];
             var elemDb = _context.Elements.Where(x => x.part_num_id == partId).ToArray();
             foreach (var elem in elemDb)
             {
-                result.Add(FillElementColorStoragePart(elem));
+                result.Add(FillElementColorStoragePart(set_num, elem));
             }
             return [.. result];
         }
@@ -260,10 +261,14 @@ namespace Reinstructible.Server.Controllers
                 var color = _colorController.GetSavedColorById(elem.color_id);
                 var part = _partController.GetSavedPartById(elem.part_num_id!);
                 var inventory = _inventoryController.GetSavedInventorysByElementId(elem.element_id!);
-                var storage = _storageController.GetStorageByElementID(elem.element_id!);   
+                var storage = _storageController.GetStorageByElementID(elem.element_id!);
+
+                //set_num may be an empty string 
+                List<SubInventory> subBuild = [];
+
                 foreach (var inv in inventory!)
                 {
-                    result.Add(new Element(dbe: elem, dbi: inv, color: color!, part: part!, storage: storage!));
+                    result.Add(new Element(dbe: elem, dbi: inv, color: color!, part: part!, storage: storage!, subBuild: subBuild.ToArray()));
                 }
             }
 
@@ -279,7 +284,7 @@ namespace Reinstructible.Server.Controllers
 
             foreach (var invDB in dbInventory)
             {
-                var elem = GetElementFromInventory(invDB);
+                var elem = GetElementFromInventory(set_num, invDB);
                 result.Add(elem);
            }
             return [.. result];
@@ -294,7 +299,7 @@ namespace Reinstructible.Server.Controllers
             if (!dbInventory.Any()) return result;
             if (!dbElement.Any()) return result;
 
-            result = FillElementColorStoragePart(dbElement.FirstOrDefault()!);
+            result = FillElementColorStoragePart(element.set_num!, dbElement.FirstOrDefault()!);
             return result;
         }
 
@@ -312,22 +317,25 @@ namespace Reinstructible.Server.Controllers
             _context.Elements.Remove(dbElement);
             _context.SaveChanges();
         }
-        private Element GetElementFromInventory(DBModels.Inventory invDB)
+        private Element GetElementFromInventory(string set_num, DBModels.Inventory invDB)
         {
             Element result = new();
             var dbElement = _context.Elements.Where(x => x.element_id == invDB.element_id).FirstOrDefault();
-            result = FillElementColorStoragePart(dbElement!);
+            result = FillElementColorStoragePart(set_num, dbElement!);
             result.quantity = invDB.quantity;
             return result;
         }
-        private Element FillElementColorStoragePart(DBModels.Element elem)
+        private Element FillElementColorStoragePart(string set_num, DBModels.Element elem)
         {
             //makes sure to add the part, color, storage classes to the element
-            var colorDB = _colorController.GetSavedColorById(elem.color_id);
-            var partDB = _partController.GetSavedPartById(elem.part_num_id!);
-            var storageDB = _storageController.GetStorageByElementID(elem.element_id!);
+            var color = _colorController.GetSavedColorById(elem.color_id);
+            var part = _partController.GetSavedPartById(elem.part_num_id!);
+            var storage = _storageController.GetStorageByElementID(elem.element_id!);
 
-            Element result = new(elem, colorDB!, partDB!, storageDB!);
+            //set_num may be an empty string 
+            var subBuild = _subBuildController.GetSavedSubInventoryById(set_num, elem.element_id!);
+
+            Element result = new(elem, color!, part!, storage!, subBuild.ToArray());
 
             return result;
         }

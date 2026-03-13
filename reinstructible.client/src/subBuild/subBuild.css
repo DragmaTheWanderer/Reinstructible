@@ -21,3 +21,7 @@ span + .w3-right button {
   max-height: 75vh;
   overflow-y: auto;
 }
+.subBuild-body {
+  max-height: 75vh;
+  overflow-y: auto;
+}

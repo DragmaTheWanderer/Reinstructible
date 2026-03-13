@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Required for standalone components
 
 import { IElement } from '../../interfaces/rebrickable'
@@ -23,9 +23,11 @@ export class InventoryItem implements OnInit, OnChanges {
     //getting the remain pieces to be assigned
     this.getCountLeft();
   }
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     //getting the remain pieces to be assigned
-    this.getCountLeft();
+   
+      this.getCountLeft();
+   
   }
 
   getCountLeft() {
@@ -39,10 +41,22 @@ export class InventoryItem implements OnInit, OnChanges {
     this.countLeft = left;
   }
   addToSelected() {
-    this.addElementEvent.emit(this.element)
+    this.addElementEvent.emit(this.element);
+    this.countLeft -= 1;
   }
   removeFromSelected(){
-    this.removeElementEvent.emit(this.element)
-
+    this.removeElementEvent.emit(this.element);
+    this.countLeft += 1;
   }
+  isPlusDisabled() {
+    let result = false
+    if (this.countLeft == 0) result = true;
+    return result;
+  }
+  isMinusDisabled() {
+    let result = false
+    if (this.countLeft == this.element.quantity) result = true;
+    return result;
+  }
+
 }
