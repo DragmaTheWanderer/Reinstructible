@@ -1,13 +1,14 @@
 <div class="set-body">
-  <div *ngFor="let cardGroup of legoSetCards">
-    <div>{{ cardGroup.grouping}}</div>
-    <div class="w3-row">
-     
-        <span *ngFor="let legoSet of cardGroup.legoSets ">
-          <setCard [legoSet]="legoSet"
-                   (legoSetOut)="loadSet($event)"></setCard>
-        </span>
+  @for (cardGroup of legoSetCards; track cardGroup) {
+    <div>
+      <div>{{ cardGroup.grouping }}</div>
+      <div class="w3-row">
+        @for (legoSet of cardGroup.legoSets; track legoSet) {
+          <span>
+            <setCard [legoSet]="legoSet" (legoSetOut)="loadSet($event)"></setCard>
+          </span>
+        }
       </div>
     </div>
-  
+  }
 </div>

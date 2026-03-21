@@ -1,26 +1,51 @@
 import { Component, OnInit, OnChanges, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-import { ILegoSet, ILegoSetGroup, IFilterOptions } from '../../interfaces/rebrickable'
+import { ILegoSet, ILegoSetGroup, IFilterOptions } from '../../interfaces/rebrickable';
 import { SetCard } from './setCard/setCard';
 
 @Component({
   selector: 'setCards',
   standalone: true,
-  imports: [CommonModule, SetCard],
+  imports: [SetCard],
   templateUrl: './setCards.html',
-  styleUrl: './setCards.css'
+  styleUrl: './setCards.css',
 })
-
 export class SetCards implements OnInit, OnChanges {
   public legoSets = input<ILegoSet[]>([]);
   public currentTheme = input<string>();
   public setThemes = input<IFilterOptions[]>([]);
-  public setAlpha: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  public setAlpha: string[] = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+  ];
   public legoSetCards: ILegoSetGroup[] = [];
   public legoSetOut = output<ILegoSet>();
 
-  public setGroup: string = "theme";
+  public setGroup: string = 'theme';
 
   ngOnInit() {
     this.formatLegoSets();
@@ -35,23 +60,22 @@ export class SetCards implements OnInit, OnChanges {
   formatLegoSets() {
     this.legoSetCards = [];
     //set up the card interface to equate to the grouping needed,  defaults to category.
-    if (this.setGroup === "theme") {
-      if (this.currentTheme() === "All") {
-        this.setThemes().forEach(t => {
+    if (this.setGroup === 'theme') {
+      if (this.currentTheme() === 'All') {
+        this.setThemes().forEach((t) => {
           let legoSetCard: ILegoSetGroup = {
             grouping: t.name,
-            legoSets: this.legoSets().filter(s => s.theme_id === t.id)
-          }
+            legoSets: this.legoSets().filter((s) => s.theme_id === t.id),
+          };
           this.legoSetCards.push(legoSetCard);
         });
       } else {
         let legoSetCard: ILegoSetGroup = {
           grouping: this.currentTheme()!,
-          legoSets: this.legoSets().filter(s => s.theme[0].name === this.currentTheme())
-        }
+          legoSets: this.legoSets().filter((s) => s.theme[0].name === this.currentTheme()),
+        };
         this.legoSetCards.push(legoSetCard);
       }
-
     }
   }
 }

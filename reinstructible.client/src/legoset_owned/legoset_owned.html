@@ -1,33 +1,57 @@
 <!--Loader-->
-<div class="overlay" *ngIf="!setsLoaded"><span class="loader"></span></div>
+@if (!setsLoaded) {
+  <div class="overlay"><span class="loader"></span></div>
+}
 
 <div class="w3-row w3-container">
   <!--sidebar-->
   <div id="controlls" class="w3-third w3-container">
     <div class="w3-display-container sidebar-container">
-      <setFilterComponent [options]="setThemeOptions"
-                          (onOptionsSent)="setTheme($event)"></setFilterComponent>
+      <setFilterComponent
+        [options]="setThemeOptions"
+        (onOptionsSent)="setTheme($event)"
+      ></setFilterComponent>
       <div class="w3-display-bottommiddle">
         <hr />
         <span class="w3-left">
-          <app-button icon="fa-solid fa-plus" color="w3-green"
-                      toolTip="Add Set" toolTipClass="btn-tooltip-left"
-                      (clickEvent)="popUp('New')"></app-button>
-          <app-button icon="fa-solid fa-box-archive" color="w3-dark-grey"
-                      toolTip="Load All Elements For Storage Check" toolTipClass="btn-tooltip-left"
-                      (clickEvent)="loadElements()"></app-button>
-          <app-button icon="fa-regular fa-floppy-disk" color="w3-light-blue"
-                      toolTip="Load currently working on" toolTipClass="btn-tooltip-left"
-                      (clickEvent)="fileLoad()">
+          <app-button
+            icon="fa-solid fa-plus"
+            color="w3-green"
+            toolTip="Add Set"
+            toolTipClass="btn-tooltip-left"
+            (clickEvent)="popUp('New')"
+          ></app-button>
+          <app-button
+            icon="fa-solid fa-box-archive"
+            color="w3-dark-grey"
+            toolTip="Load All Elements For Storage Check"
+            toolTipClass="btn-tooltip-left"
+            (clickEvent)="loadElements()"
+          ></app-button>
+          <app-button
+            icon="fa-regular fa-floppy-disk"
+            color="w3-light-blue"
+            toolTip="Load currently working on"
+            toolTipClass="btn-tooltip-left"
+            (clickEvent)="fileLoad()"
+          >
           </app-button>
         </span>
         <span class="w3-right">
-          <app-button icon="fa-regular fa-clipboard" color="w3-dark-grey"
-                      toolTip="Card View" toolTipClass="btn-tooltip-right"
-                      (clickEvent)="popUp('CV')"></app-button>
-          <app-button icon="fa-solid fa-border-all" color="w3-dark-grey"
-                      toolTip="Table View" toolTipClass="btn-tooltip-right"
-                      (clickEvent)="popUp('TV')"></app-button>
+          <app-button
+            icon="fa-regular fa-clipboard"
+            color="w3-dark-grey"
+            toolTip="Card View"
+            toolTipClass="btn-tooltip-right"
+            (clickEvent)="popUp('CV')"
+          ></app-button>
+          <app-button
+            icon="fa-solid fa-border-all"
+            color="w3-dark-grey"
+            toolTip="Table View"
+            toolTipClass="btn-tooltip-right"
+            (clickEvent)="popUp('TV')"
+          ></app-button>
         </span>
       </div>
     </div>
@@ -35,25 +59,37 @@
   <!--Header-->
   <div>
     <h1 id="tableLabel">Owned Lego Sets</h1>
-    <p *ngIf="!setsLoaded"><em>Loading... Please refresh once the ASP.NET backend has started, if the loader does not stop.</em></p>
-    <p *ngIf="setsLoaded"><em>Select the set you want to see the inventory of.</em></p>
+    @if (!setsLoaded) {
+      <p>
+        <em
+          >Loading... Please refresh once the ASP.NET backend has started, if the loader does not
+          stop.</em
+        >
+      </p>
+    }
+    @if (setsLoaded) {
+      <p><em>Select the set you want to see the inventory of.</em></p>
+    }
   </div>
   <!--Body-->
-  @if (displayMode === 'TV'){
-  <setTable [legoSets]="legoSets"
-            (legoSetOut)="loadSet($event)"
-            (subSetBuildOut)="subSetBuild($event)"></setTable>
-  } @else if (displayMode === 'CV'){
-  <setCards [legoSets]="legoSets"
-            [setThemes]="setThemeOptions"
-            [currentTheme]="selectedTheme"
-            (legoSetOut)="loadSet($event)"></setCards>
+  @if (displayMode === 'TV') {
+    <setTable
+      [legoSets]="legoSets"
+      (legoSetOut)="loadSet($event)"
+      (subSetBuildOut)="subSetBuild($event)"
+    ></setTable>
+  } @else if (displayMode === 'CV') {
+    <setCards
+      [legoSets]="legoSets"
+      [setThemes]="setThemeOptions"
+      [currentTheme]="selectedTheme"
+      (legoSetOut)="loadSet($event)"
+    ></setCards>
   } @else {
-  <p><em>Please select a display mode.</em></p>
+    <p><em>Please select a display mode.</em></p>
   }
 </div>
 
-<legoset_add *ngIf="showPopUp"
-             (addSetEvent)="addedSet($event)"
-             (closeModalEvent)="closeModal()">
-</legoset_add>
+@if (showPopUp) {
+  <legoset_add (addSetEvent)="addedSet($event)" (closeModalEvent)="closeModal()"> </legoset_add>
+}

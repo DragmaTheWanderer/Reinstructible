@@ -1,20 +1,17 @@
 import { Component, OnInit, OnChanges, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-import { IElement, IElementGroup, IFilterOptions } from '../../interfaces/rebrickable'
+import { IElement, IElementGroup, IFilterOptions } from '../../interfaces/rebrickable';
 import { elementCard } from './elementCard/elementCard';
 import { EDisplayGroup } from '../../interfaces/Enums';
 import sorting from '../../Utilities/sorting';
 
-
 @Component({
   selector: 'elementCards',
   standalone: true,
-  imports: [CommonModule, elementCard],
+  imports: [elementCard],
   templateUrl: './elementCards.html',
-  styleUrl: './elementCards.css'
+  styleUrl: './elementCards.css',
 })
-
 export class ElementCards implements OnInit, OnChanges {
   public elements = input<IElement[]>([]);
   public elementCards: IElementGroup[] = [];
@@ -24,11 +21,14 @@ export class ElementCards implements OnInit, OnChanges {
   public groupColor = input<IFilterOptions[]>([]);
   public groupCategory = input<IFilterOptions[]>([]);
   public groupStorage = input<IFilterOptions[]>([]);
- // public groupAlpha: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  // public groupAlpha: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
-
-  ngOnInit() { this.formatElements();}
-  ngOnChanges() { this.formatElements();}
+  ngOnInit() {
+    this.formatElements();
+  }
+  ngOnChanges() {
+    this.formatElements();
+  }
 
   setStorage(value: IElement) {
     this.itemForStorage.emit(value);
@@ -91,7 +91,7 @@ export class ElementCards implements OnInit, OnChanges {
   //  this.groupStorage().forEach(s => {
   //    let elementsForGroup = this.elements()
   //      .filter(e => e.storage_location.bin === s.name)
-  //      .sort((a, b) => 
+  //      .sort((a, b) =>
   //        a.storage_location.drawer.localeCompare(b.storage_location.drawer)
   //        || a.part.name.localeCompare(b.part.name)
   //        || a.color.name.localeCompare(b.color.name)

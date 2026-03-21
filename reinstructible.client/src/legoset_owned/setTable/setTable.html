@@ -1,4 +1,6 @@
-<div class="overlay" *ngIf="setsLoading"><span class="loader"></span></div>
+@if (setsLoading) {
+  <div class="overlay"><span class="loader"></span></div>
+}
 <div id="table" class="set-body">
   <table class="w3-table-all w3-hoverable">
     <thead>
@@ -8,35 +10,51 @@
         <th></th>
       </tr>
     </thead>
-    <tbody style="overflow-y:auto;">
-      <tr *ngFor="let set of legoSets()" (click)="loadSet(set)">
-        <td>
-        <!--<img src="{{ set.set_img_url }}" class="set_img" /></td>-->
-          <app-image img_url="{{ set.set_img_url }}"
-                      alt_img_url=""
-                      id="{{set.set_num}}"
-                      imgClass="set_img">
-          </app-image>
-        <td>
-          <span><b>{{ set.name }}</b> </span><br />
-          <span>{{ set.theme[0].name }}</span> <br />
-          <span>{{ set.set_num }}</span>
-        </td>
-        <td class="w3-display-container">
-          <div class="w3-display-bottommiddle w3-padding">
-            <span>
-              <app-button icon="fa-solid fa-magnifying-glass-plus" color="w3-green"
-                          toolTip="Set Sub-build" toolTipClass="btn-tooltip-right"
-                          (clickEvent)="setSubBuild(set, $event)">
-              </app-button>
-              <app-button icon="fa-solid fa-plus" color="w3-green"
-                          toolTip="Reload Set" toolTipClass="btn-tooltip-right"
-                          (clickEvent)="addSet(set, $event)">
-              </app-button>
-            </span>
-          </div>
-        </td>
-      </tr>
+    <tbody style="overflow-y: auto">
+      @for (set of legoSets(); track set) {
+        <tr (click)="loadSet(set)">
+          <td>
+            <!--<img src="{{ set.set_img_url }}" class="set_img" /></td>-->
+            <app-image
+              img_url="{{ set.set_img_url }}"
+              alt_img_url=""
+              id="{{ set.set_num }}"
+              imgClass="set_img"
+            >
+            </app-image>
+          </td>
+
+          <td>
+            <span
+              ><b>{{ set.name }}</b> </span
+            ><br />
+            <span>{{ set.theme[0].name }}</span> <br />
+            <span>{{ set.set_num }}</span>
+          </td>
+          <td class="w3-display-container">
+            <div class="w3-display-bottommiddle w3-padding">
+              <span>
+                <app-button
+                  icon="fa-solid fa-magnifying-glass-plus"
+                  color="w3-green"
+                  toolTip="Set Sub-build"
+                  toolTipClass="btn-tooltip-right"
+                  (clickEvent)="setSubBuild(set, $event)"
+                >
+                </app-button>
+                <app-button
+                  icon="fa-solid fa-plus"
+                  color="w3-green"
+                  toolTip="Reload Set"
+                  toolTipClass="btn-tooltip-right"
+                  (clickEvent)="addSet(set, $event)"
+                >
+                </app-button>
+              </span>
+            </div>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

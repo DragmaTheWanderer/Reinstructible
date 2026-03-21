@@ -1,13 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-import { ILegoSet,  } from '../interfaces/rebrickable'
-
+import { ILegoSet } from '../interfaces/rebrickable';
 
 import { LegoSet_owned } from '../legoset_owned/legoset_owned';
 import { Element } from '../element/element';
-import { SubBuild } from '../subBuild/subBuild'
+import { SubBuild } from '../subBuild/subBuild';
 interface WeatherForecast {
   date: string;
   temperatureC: number;
@@ -21,22 +19,22 @@ interface TestString {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, LegoSet_owned, Element, SubBuild],
+  imports: [LegoSet_owned, Element, SubBuild],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App implements OnInit {
   public forecasts: WeatherForecast[] = [];
   public forcastLoaded: boolean = false;
   public test: TestString = {
-    value: ""
+    value: '',
   };
   public ElementVisable: boolean = false;
   public SetVisable: boolean = true;
   public SubSetBuildVisible: boolean = false;
 
   public legoSet: Partial<ILegoSet> = { id: 0 };
-  public setNum: string = "";
+  public setNum: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -47,25 +45,23 @@ export class App implements OnInit {
   getForecasts() {
     this.http.get<WeatherForecast[]>('/weatherforecast').subscribe({
       next: (result) => {
-      this.forecasts = result;
-      this.forcastLoaded = true;
-    },
+        this.forecasts = result;
+        this.forcastLoaded = true;
+      },
       error: (error) => {
         console.error(error);
         this.forcastLoaded = false;
-      }
+      },
     });
   }
 
-  loadElements(legoSet: ILegoSet ) {
-    
+  loadElements(legoSet: ILegoSet) {
     this.legoSet = legoSet;
     this.SetVisable = false;
     this.SubSetBuildVisible = false;
     this.ElementVisable = true;
   }
   subSetBuild(legoSet: ILegoSet) {
-
     this.legoSet = legoSet;
     this.SetVisable = false;
     this.SubSetBuildVisible = true;

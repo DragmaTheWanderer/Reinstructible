@@ -1,22 +1,20 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output, } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IFilterOptions } from '../../interfaces/rebrickable'
+import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output } from '@angular/core';
 
-import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from '../../interfaces/Enums'
+import { FormsModule } from '@angular/forms';
+import { IFilterOptions } from '../../interfaces/rebrickable';
+
+import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from '../../interfaces/Enums';
 
 import { ButtonComponent } from '../../shared/button/button.component';
-
 
 @Component({
   selector: 'filterComponent',
   standalone: true,
-  imports: [ButtonComponent, CommonModule, FormsModule,],
+  imports: [ButtonComponent, FormsModule],
   templateUrl: './filter.html',
-  styleUrl: './filter.css'
+  styleUrl: './filter.css',
 })
-
 export class FilterComponent implements OnInit, OnChanges {
   enumDisplayMode: typeof EDisplayMode = EDisplayMode;
 
@@ -31,10 +29,9 @@ export class FilterComponent implements OnInit, OnChanges {
 
   public onFileOption = output<EFileOption>();
 
-
   public currentGrouping: EDisplayGroup = this.inCurrentGrouping();
   public currentGroupText = EDisplayGroup[this.inCurrentGrouping()];
-  
+
   constructor() {
     this.onDisplayMode.emit(EDisplayMode.TV);
   }
@@ -52,15 +49,15 @@ export class FilterComponent implements OnInit, OnChanges {
   }
 
   selectAll() {
-    this.options().forEach(x => x.selected = true)
+    this.options().forEach((x) => (x.selected = true));
     this.elementFilter();
   }
   clearSelections() {
-    this.options().forEach(x => x.selected = false)
+    this.options().forEach((x) => (x.selected = false));
     this.elementFilter();
   }
   toggleSelections() {
-    this.options().forEach(x => x.selected = !x.selected)
+    this.options().forEach((x) => (x.selected = !x.selected));
     this.elementFilter();
   }
   toggleGrouping() {
@@ -71,17 +68,20 @@ export class FilterComponent implements OnInit, OnChanges {
     }
     this.currentGroupText = EDisplayGroup[this.currentGrouping];
     this.onCurrentGrouping.emit(this.currentGrouping);
-    
   }
   elementFilter() {
     //this determins if the option is numeric or string based.
     switch (this.filterType()) {
       case EFilterType.storage:
-        let filteredStringIds = this.options().filter(f => f.selected).flatMap(o => o.name);
+        let filteredStringIds = this.options()
+          .filter((f) => f.selected)
+          .flatMap((o) => o.name);
         this.onOptionsStringSent.emit(filteredStringIds); //emit the array
         break;
       default:
-        let filteredIds = this.options().filter(f => f.selected).flatMap(o => o.id);
+        let filteredIds = this.options()
+          .filter((f) => f.selected)
+          .flatMap((o) => o.id);
         this.onOptionsSent.emit(filteredIds); //emit the array
         break;
     }

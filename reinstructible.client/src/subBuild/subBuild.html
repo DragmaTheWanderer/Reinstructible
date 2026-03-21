@@ -1,56 +1,83 @@
 <div class="w3-row w3-container">
   <div id="controlls" class="w3-third w3-container">
     <!--Inventory and controll section-->
-    <div class="w3-display-container sidebar-container ">
-      <h1 class="w3-bottombar">Inventory for {{legoSet.name}}</h1>
-      <select [(ngModel)]="selectedCategory" name="Category"
-              (ngModelChange)="categoryChange($event)">
-        <option *ngFor="let cat of partCategories" [value]="cat.id">{{ cat.name }}</option>
+    <div class="w3-display-container sidebar-container">
+      <h1 class="w3-bottombar">Inventory for {{ legoSet.name }}</h1>
+      <select
+        [(ngModel)]="selectedCategory"
+        name="Category"
+        (ngModelChange)="categoryChange($event)"
+      >
+        @for (cat of partCategories; track cat) {
+          <option [value]="cat.id">{{ cat.name }}</option>
+        }
       </select>
       <div class="inventory-body">
-        
-        <div *ngFor="let group of selectedPartGroups">
-          <div *ngFor="let e of group.elements">
-            <inventoryItem [element]=e
-                           (addElementEvent)="addElement($event)"
-                           (removeElementEvent)="removeElement($event)">
-            </inventoryItem>
+        @for (group of selectedPartGroups; track group) {
+          <div>
+            @for (e of group.elements; track e) {
+              <div>
+                <inventoryItem
+                  [element]="e"
+                  (addElementEvent)="addElement($event)"
+                  (removeElementEvent)="removeElement($event)"
+                >
+                </inventoryItem>
+              </div>
+            }
+            <div class="w3-bottombar">
+              <b
+                >{{ group.grouping
+                }}<!--Part Name--></b
+              >
+            </div>
           </div>
-          <div class="w3-bottombar">
-            <b>{{ group.grouping }}<!--Part Name--></b>
-          </div>
-        </div>
+        }
       </div>
     </div>
     <div class="w3-display-bottommiddle">
       <hr />
-      <app-button icon="fa-solid fa-plus" color="w3-dark-grey"
-                  toolTip="Add new subbuild step" toolTipClass="btn-tooltip-left"
-                  (clickEvent)="addNewSubBuildStep()">
+      <app-button
+        icon="fa-solid fa-plus"
+        color="w3-dark-grey"
+        toolTip="Add new subbuild step"
+        toolTipClass="btn-tooltip-left"
+        (clickEvent)="addNewSubBuildStep()"
+      >
       </app-button>
-      <app-button icon="fa-solid fa-plus" color="w3-light-grey"
-                  toolTip="Add new subbuild page/step" toolTipClass="btn-tooltip-left"
-                  (clickEvent)="addNewSubBuildPageStep()">
+      <app-button
+        icon="fa-solid fa-plus"
+        color="w3-light-grey"
+        toolTip="Add new subbuild page/step"
+        toolTipClass="btn-tooltip-left"
+        (clickEvent)="addNewSubBuildPageStep()"
+      >
       </app-button>
-      <app-button icon="fa-solid fa-plus" color="w3-green"
-                  toolTip="Add new subbuild page and start over step" toolTipClass="btn-tooltip-left"
-                  (clickEvent)="addNewSubBuildPageNewSteps()">
+      <app-button
+        icon="fa-solid fa-plus"
+        color="w3-green"
+        toolTip="Add new subbuild page and start over step"
+        toolTipClass="btn-tooltip-left"
+        (clickEvent)="addNewSubBuildPageNewSteps()"
+      >
       </app-button>
     </div>
   </div>
   <!--SubBild section-->
   <div id="subBuilds" class="w3-container w3-twothird">
-
     <div class="w3-display-container subBuild-container">
-
       <h1 class="w3-bottombar">Sub Builds</h1>
       <div class="subBuild-body" #subBuildContainer>
         <div id="topOfPage"><span>Top of Page (lego print here)</span></div>
-        <div *ngFor="let group of pageStepGroups">
-          <subBuildItem [pageStep]=group
-                        (pageStepSelectedEvent)="setSelectedSubBuildItem($event)"
-                        (pageStepChangeEvent)="setPageStep($event)"></subBuildItem>
-        </div>
+        @for (group of pageStepGroups; track group) {
+          <div>
+            <subBuildItem
+              [pageStep]="group"
+              (pageStepSelectedEvent)="setSelectedSubBuildItem($event)"
+              (pageStepChangeEvent)="setPageStep($event)"
+            ></subBuildItem>
+          </div>
+        }
         <div id="bottomOfPage"><span>Bottom of Page (lego print here)</span></div>
       </div>
     </div>

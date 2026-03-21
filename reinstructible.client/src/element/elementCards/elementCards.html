@@ -1,12 +1,16 @@
 <div class="element-body">
-  <div *ngFor="let cardGroup of elementCards">
-    <div><h2>{{ cardGroup.grouping}}</h2></div>
-    <div class="w3-row">
-      <span *ngFor="let element of cardGroup.elements ">
-        <elementCard [element]="element"
-                     (itemForStorage)="setStorage($event)"></elementCard>
-      </span>
+  @for (cardGroup of elementCards; track cardGroup) {
+    <div>
+      <div>
+        <h2>{{ cardGroup.grouping }}</h2>
+      </div>
+      <div class="w3-row">
+        @for (element of cardGroup.elements; track element) {
+          <span>
+            <elementCard [element]="element" (itemForStorage)="setStorage($event)"></elementCard>
+          </span>
+        }
+      </div>
     </div>
-  </div>
-
+  }
 </div>

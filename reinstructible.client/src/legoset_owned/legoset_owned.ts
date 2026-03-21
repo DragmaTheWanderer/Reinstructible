@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit, signal, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
-import { ILegoSet, ITheme, IFilterOptions, } from '../interfaces/rebrickable'
+import { ILegoSet, ITheme, IFilterOptions } from '../interfaces/rebrickable';
 import { LegoSet_add } from '../legoset_add/legoset_add';
 import { SetFilterComponent } from './setFilter/setFilter';
 import { SetTable } from './setTable/setTable';
@@ -14,29 +14,27 @@ import { ButtonComponent } from '../shared/button/button.component';
 @Component({
   selector: 'legoset_owned',
   standalone: true,
-  imports: [LegoSet_add, SetFilterComponent, SetTable, SetCards,
-    ButtonComponent,
-    CommonModule, FormsModule],
+  imports: [LegoSet_add, SetFilterComponent, SetTable, SetCards, ButtonComponent, FormsModule],
   templateUrl: './legoset_owned.html',
-  styleUrl: './legoset_owned.css'
+  styleUrl: './legoset_owned.css',
 })
 export class LegoSet_owned implements OnInit {
   public legoSets: ILegoSet[] = [];
   public legoSetsBase: ILegoSet[] = [];
-  public themes: ITheme[] = []
+  public themes: ITheme[] = [];
   public setThemeOptions: IFilterOptions[] = [];
 
-  public selectedTheme: string = "All";
- 
+  public selectedTheme: string = 'All';
+
   public setsLoaded: boolean = false;
   constructor(private http: HttpClient) {}
 
-  public filterValue: string = "";
-  public idValue: string = "";
-  public paramValue: string = "LoadSets";
+  public filterValue: string = '';
+  public idValue: string = '';
+  public paramValue: string = 'LoadSets';
 
   public showPopUp: boolean = false;
-  public displayMode: string = "TV";
+  public displayMode: string = 'TV';
 
   //setting up an emitter to send the setnumber to the events component.
   @Output() loadElementsEvent = new EventEmitter<ILegoSet>();
@@ -48,10 +46,10 @@ export class LegoSet_owned implements OnInit {
     this.subSetBuildEvent.emit(value);
   }
   loadElements() {
-    let value = <ILegoSet>{ name: 'All', set_num:'-1' };
+    let value = <ILegoSet>{ name: 'All', set_num: '-1' };
     this.loadElementsEvent.emit(value);
   }
-  fileLoad(){
+  fileLoad() {
     let value = <ILegoSet>{ name: 'File', set_num: '-2' };
     this.loadElementsEvent.emit(value);
   }
@@ -60,10 +58,9 @@ export class LegoSet_owned implements OnInit {
     this.getSets();
   }
   ngOnInit() {
-    setTimeout( () => {
+    setTimeout(() => {
       this.getSets();
-    }, 3000)
-    
+    }, 3000);
   }
 
   getSets() {
@@ -80,48 +77,52 @@ export class LegoSet_owned implements OnInit {
       next: (result) => {
         this.legoSetsBase = result;
         this.legoSets = result.sort((a, b) => a.name.localeCompare(b.name));
-        if (this.selectedTheme != "All") {
-          this.legoSets = this.legoSetsBase.filter(x => x.theme[0].name === this.selectedTheme);
+        if (this.selectedTheme != 'All') {
+          this.legoSets = this.legoSetsBase.filter((x) => x.theme[0].name === this.selectedTheme);
         }
 
-        this.themes = result.flatMap(t => t.theme)
-          .sort((a,b) => a.name.localeCompare(b.name))
-          .filter((item, index, self) =>
-              index === self.findIndex((t) => (
-                t.id === item.id && t.name === item.name)));
-        this.setThemeOptions = this.themes.map(t => ({ id: t.id, name: t.name, selected: false }));
+        this.themes = result
+          .flatMap((t) => t.theme)
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .filter(
+            (item, index, self) =>
+              index === self.findIndex((t) => t.id === item.id && t.name === item.name),
+          );
+        this.setThemeOptions = this.themes.map((t) => ({
+          id: t.id,
+          name: t.name,
+          selected: false,
+        }));
         this.setsLoaded = true;
-    },
+      },
       error: (error) => {
         console.error(error);
         this.setsLoaded = false;
-      }
+      },
     });
   }
   popUp(value: string) {
     switch (value) {
-      case "CV":
-      case "TV":
+      case 'CV':
+      case 'TV':
         this.displayMode = value;
         break;
       default:
         this.showPopUp = !this.showPopUp;
         break;
-
     }
-    
   }
   closeModal() {
     this.showPopUp = false;
   }
-  setTheme(value:string) {
+  setTheme(value: string) {
     //filter
-    if (value === "All") {
+    if (value === 'All') {
       this.legoSets = this.legoSetsBase;
     } else {
-      this.legoSets = this.legoSetsBase.filter(x => x.theme[0].name === value);
+      this.legoSets = this.legoSetsBase.filter((x) => x.theme[0].name === value);
     }
-    
+
     this.selectedTheme = value;
   }
   protected readonly title = signal('reinstructible.client');

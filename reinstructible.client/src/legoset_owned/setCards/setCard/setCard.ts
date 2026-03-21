@@ -1,39 +1,37 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-import { ILegoSet } from '../../../interfaces/rebrickable'
+import { ILegoSet } from '../../../interfaces/rebrickable';
 import { ImageComponent } from '../../../shared/image/image.component';
 
 @Component({
   selector: 'setCard',
   standalone: true,
-  imports: [ImageComponent, CommonModule,],
+  imports: [ImageComponent],
   templateUrl: './setCard.html',
-  styleUrl: './setCard.css'
+  styleUrl: './setCard.css',
 })
-
 export class SetCard {
   public legoSet = input<ILegoSet | null>(null);
   public legoSetOut = output<ILegoSet>();
 
   public setsLoading: boolean = false;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   loadSet(value: ILegoSet) {
-    console.log("loadSet Clicked");
+    console.log('loadSet Clicked');
     this.legoSetOut.emit(value);
   }
 
   addSet(value: ILegoSet, e: Event) {
-    console.log("add set clicked");
+    console.log('add set clicked');
     e.stopPropagation();
     this.saveSet(value);
   }
   saveSet(legoSet: ILegoSet) {
     let result = {};
     this.setsLoading = true;
-    let error = "";
+    let error = '';
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -46,7 +44,6 @@ export class SetCard {
     const data: string = legoSet.set_num;
     const jsonString = JSON.stringify(data);
 
-
     this.http.post('/api/set', jsonString, httpOptions).subscribe({
       next: (res) => {
         result = res;
@@ -55,10 +52,9 @@ export class SetCard {
       },
       error: (error) => {
         console.error(error);
-        error = 'Failed to create post'; this.setsLoading = false;
-      }
+        error = 'Failed to create post';
+        this.setsLoading = false;
+      },
     });
   }
-
 }
-

@@ -22,15 +22,16 @@
     </tr>
   </tbody>
 </table>-->
-<legoset_owned *ngIf="SetVisable"
-               (loadElementsEvent)="loadElements($event)"
-               (subSetBuildEvent)="subSetBuild($event)"
-               >
-</legoset_owned>
-<element *ngIf="ElementVisable"
-         [legoSet]="legoSet">
-</element>
-<subBuild *ngIf="SubSetBuildVisible"
-          [legoSet]="legoSet"
-          >
-</subBuild>
+@if (SetVisable) {
+  <legoset_owned
+    (loadElementsEvent)="loadElements($event)"
+    (subSetBuildEvent)="subSetBuild($event)"
+  >
+  </legoset_owned>
+}
+@if (ElementVisable) {
+  <element [legoSet]="legoSet"> </element>
+}
+@if (SubSetBuildVisible) {
+  <subBuild [legoSet]="legoSet"> </subBuild>
+}

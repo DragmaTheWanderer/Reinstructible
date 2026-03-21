@@ -1,22 +1,29 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit, ViewChild, signal,Output, EventEmitter, viewChild, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  signal,
+  Output,
+  EventEmitter,
+  viewChild,
+  ElementRef,
+} from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 
-
-import { ILegoSet, ITheme } from '../interfaces/rebrickable'
+import { ILegoSet, ITheme } from '../interfaces/rebrickable';
 
 import { ButtonComponent } from '../shared/button/button.component';
 import { ImageComponent } from '../shared/image/image.component';
 
-
 @Component({
   selector: 'legoset_add',
   standalone: true,
-  imports: [ButtonComponent, ImageComponent,
-    CommonModule, FormsModule],
+  imports: [ButtonComponent, ImageComponent, FormsModule],
   templateUrl: './legoset_add.html',
-  styleUrl: './legoset_add.css'
+  styleUrl: './legoset_add.css',
 })
 export class LegoSet_add implements OnInit, AfterViewInit {
   @ViewChild('setNumberInput') inputElement!: ElementRef;
@@ -25,9 +32,9 @@ export class LegoSet_add implements OnInit, AfterViewInit {
   public setsLoaded: boolean = false;
   constructor(private http: HttpClient) {}
 
-  public filterValue: string = "";
-  public idValue: string = "";
-  public paramValue: string = "AddSets";
+  public filterValue: string = '';
+  public idValue: string = '';
+  public paramValue: string = 'AddSets';
   public setsLoading: boolean = false;
 
   @Output() addSetEvent = new EventEmitter<ILegoSet>();
@@ -58,20 +65,20 @@ export class LegoSet_add implements OnInit, AfterViewInit {
 
     this.http.get<ILegoSet[]>('/api/set', { params: params }).subscribe({
       next: (result) => {
-      this.legoSets = result;
-      this.setsLoaded = true;
-    },
+        this.legoSets = result;
+        this.setsLoaded = true;
+      },
       error: (error) => {
         console.error(error);
         this.setsLoaded = false;
-      }
+      },
     });
   }
 
-  saveSet(legoSet: ILegoSet){
+  saveSet(legoSet: ILegoSet) {
     let result = {};
     this.setsLoading = true;
-    let error = "";
+    let error = '';
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -84,7 +91,6 @@ export class LegoSet_add implements OnInit, AfterViewInit {
     const data: string = legoSet.set_num;
     const jsonString = JSON.stringify(data);
 
-
     this.http.post('/api/set', jsonString, httpOptions).subscribe({
       next: (res) => {
         result = res;
@@ -93,8 +99,9 @@ export class LegoSet_add implements OnInit, AfterViewInit {
       },
       error: (error) => {
         console.error(error);
-        error = 'Failed to create post'; this.setsLoading = false;
-      }
+        error = 'Failed to create post';
+        this.setsLoading = false;
+      },
     });
   }
   protected readonly title = signal('reinstructible.client');

@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
-import { ILegoSet, } from '../../interfaces/rebrickable'
+import { ILegoSet } from '../../interfaces/rebrickable';
 
 import { ButtonComponent } from '../../shared/button/button.component';
 import { ImageComponent } from '../../shared/image/image.component';
@@ -11,18 +11,17 @@ import { ImageComponent } from '../../shared/image/image.component';
 @Component({
   selector: 'setTable',
   standalone: true,
-  imports: [ButtonComponent, ImageComponent, CommonModule, FormsModule,],
+  imports: [ButtonComponent, ImageComponent, FormsModule],
   templateUrl: './setTable.html',
-  styleUrl: './setTable.css'
+  styleUrl: './setTable.css',
 })
-
 export class SetTable {
   public legoSets = input<ILegoSet[]>([]);
   public legoSetOut = output<ILegoSet>();
   public subSetBuildOut = output<ILegoSet>();
   public setsLoading: boolean = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   loadSet(value: ILegoSet) {
     this.legoSetOut.emit(value);
@@ -32,15 +31,15 @@ export class SetTable {
   }
 
   addSet(value: ILegoSet, e: Event) {
-    console.log("add set clicked");
+    console.log('add set clicked');
     e.stopPropagation();
     this.saveSet(value);
   }
-  
+
   saveSet(legoSet: ILegoSet) {
     let result = {};
     this.setsLoading = true;
-    let error = "";
+    let error = '';
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -53,7 +52,6 @@ export class SetTable {
     const data: string = legoSet.set_num;
     const jsonString = JSON.stringify(data);
 
-
     this.http.post('/api/set', jsonString, httpOptions).subscribe({
       next: (res) => {
         result = res;
@@ -62,8 +60,9 @@ export class SetTable {
       },
       error: (error) => {
         console.error(error);
-        error = 'Failed to create post'; this.setsLoading = false;
-      }
+        error = 'Failed to create post';
+        this.setsLoading = false;
+      },
     });
   }
 }

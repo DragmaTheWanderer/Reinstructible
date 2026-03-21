@@ -1,28 +1,35 @@
-<div class="overlay" *ngIf="setsLoading"><span class="loader"></span></div>
-<div class="w3-third w3-container w3-cell w3-round-large"
-     (click)="loadSet(legoSet()!)">
-  <div class="w3-card-4 ">
-    <header class="w3-dark-grey"><h2>{{ legoSet()!.name! }}</h2></header>
+@if (setsLoading) {
+  <div class="overlay"><span class="loader"></span></div>
+}
+<div class="w3-third w3-container w3-cell w3-round-large" (click)="loadSet(legoSet()!)">
+  <div class="w3-card-4">
+    <header class="w3-dark-grey">
+      <h2>{{ legoSet()!.name! }}</h2>
+    </header>
     <div class="img-wrapper w3-display-container">
       <!--<img src="{{ legoSet()!.set_img_url! }}" class="set_img" />-->
-      <app-image img_url="{{ legoSet()!.set_img_url! }}"
-                 alt_img_url=""
-                 id="{{legoSet()!.set_num}}"
-                 imgClass="set_img">
+      <app-image
+        img_url="{{ legoSet()!.set_img_url! }}"
+        alt_img_url=""
+        id="{{ legoSet()!.set_num }}"
+        imgClass="set_img"
+      >
       </app-image>
       <span class="w3-display-bottomright w3-tooltip">
         <span class="btn-tooltip-right"> Re-Add set </span>
-        <button class="btn-base-button w3-green add-set-button"
-                (click)="addSet(legoSet()!, $event)">
+        <button
+          class="btn-base-button w3-green add-set-button"
+          (click)="addSet(legoSet()!, $event)"
+        >
           <i class="fa-solid fa-plus"></i>
         </button>
       </span>
     </div>
     <footer class="w3-dark-grey w3-padding-small">
       <h3>
-        <span class="w3-left">{{legoSet()!.set_num! }}</span>
+        <span class="w3-left">{{ legoSet()!.set_num! }}</span>
         <span>&nbsp;</span>
-        <span class="w3-right">{{legoSet()!.theme![0].name! }}</span>
+        <span class="w3-right">{{ legoSet()!.theme![0].name! }}</span>
       </h3>
     </footer>
   </div>
