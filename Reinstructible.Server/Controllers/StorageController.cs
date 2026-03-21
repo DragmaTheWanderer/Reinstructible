@@ -14,7 +14,7 @@ namespace Reinstructible.Server.Controllers
         private readonly SqliteContext _context = context;
 
         [HttpGet]
-        public async Task<Storage[]> GetAsync()
+        public async Task<Storage[]?> GetAsync()
         {
             return null;
         }
@@ -101,7 +101,7 @@ namespace Reinstructible.Server.Controllers
         {
             //DBModels.Storage dbStorage = new(Storage);
             var trackedStorage = _context.Storages.Find(Storage.element_id);
-            trackedStorage.bin = Storage.bin;
+            trackedStorage!.bin = Storage.bin;
             trackedStorage.drawer = Storage.drawer;
             _context.SaveChanges();
         }

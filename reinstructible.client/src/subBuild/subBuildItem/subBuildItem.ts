@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angu
 import { CommonModule } from '@angular/common'; // Required for standalone components
 import { FormsModule } from '@angular/forms';
 
-import { IElementGroup } from '../../interfaces/rebrickable'
+import { ISubBuildGroup } from '../../interfaces/rebrickable'
 
 import { ImageCountComponent } from '../../shared/imageCount/imageCount.component';
 
@@ -14,26 +14,18 @@ import { ImageCountComponent } from '../../shared/imageCount/imageCount.componen
   styleUrls: ['./subBuildItem.css']
 })
 export class SubBuildItem implements OnInit, OnChanges {
-  @Input() pageStep!: IElementGroup;
-  @Output() pageStepSelectedEvent = new EventEmitter<IElementGroup>();
-  @Output() pageStepChangeEvent = new EventEmitter<IElementGroup>();
-  public page: string = "";
-  public step: string = "";
-  public name: string = "";
+  @Input() pageStep!: ISubBuildGroup;
+  @Output() pageStepSelectedEvent = new EventEmitter<ISubBuildGroup>();
+  @Output() pageStepChangeEvent = new EventEmitter<ISubBuildGroup>();
+ 
 
   public selectedClass: string = 'w3-yellow';
 
   ngOnInit() {
-    this.formatLocals();
+  
   }
   ngOnChanges() {
-    this.formatLocals();
-  }
-  formatLocals() {
-    let groupItem = this.pageStep.grouping.split('|');
-    this.page = groupItem[0];
-    this.step = groupItem[1];
-    this.name = groupItem[2];
+    
   }
 
   selectedBackground() {
@@ -42,7 +34,7 @@ export class SubBuildItem implements OnInit, OnChanges {
     return result;
   }
 
-  selectedSubBuild(value: IElementGroup, e: Event) {
+  selectedSubBuild(value: ISubBuildGroup, e: Event) {
     e.stopPropagation();
     this.pageStepSelectedEvent.emit(this.pageStep);
     this.pageStep.selected = true;
@@ -53,7 +45,6 @@ export class SubBuildItem implements OnInit, OnChanges {
     this.pageStep.elements.forEach(el => {
       el.sub_inventory.forEach(si => {
         si.page = Number(value);
-        this.pageStep.grouping = `${si.page}|${si.step}|${si.subBuildName}`
       })
     })
     this.pageStepChangeEvent.emit(this.pageStep);
@@ -63,7 +54,6 @@ export class SubBuildItem implements OnInit, OnChanges {
     this.pageStep.elements.forEach(el => {
       el.sub_inventory.forEach(si => {
         si.step = Number(value);
-        this.pageStep.grouping = `${si.page}|${si.step}|${si.subBuildName}`
       })
     })
     this.pageStepChangeEvent.emit(this.pageStep);
@@ -73,7 +63,6 @@ export class SubBuildItem implements OnInit, OnChanges {
     this.pageStep.elements.forEach(el => {
       el.sub_inventory.forEach(si => {
         si.subBuildName = value;
-        this.pageStep.grouping = `${si.page}|${si.step}|${si.subBuildName}`
       })
     })
     this.pageStepChangeEvent.emit(this.pageStep);

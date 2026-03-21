@@ -6,10 +6,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Reinstructible.Server.DBModels
 {
-    [PrimaryKey(nameof(set_num), nameof(element_id), nameof(page), nameof(step))]
+    [PrimaryKey(nameof(id))]
     public class SubInventory
     {
         //Key combo
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
         public string? set_num { get; set; }
         public string? element_id { get; set; }
 
@@ -20,8 +22,9 @@ namespace Reinstructible.Server.DBModels
         public int quantity { get; set; }
 
         public SubInventory() { }
-        public SubInventory(string set_num, string element_id, string subBuildName, int page, int step, int quantity)
+        public SubInventory(int id, string set_num, string element_id, string subBuildName, int page, int step, int quantity)
         {
+            this.id = id;
             this.set_num = set_num;
             this.element_id = element_id;
             this.subBuildName = subBuildName;
@@ -32,6 +35,7 @@ namespace Reinstructible.Server.DBModels
 
         public SubInventory(Models.SubInventory vm)
         {
+            this.id = vm.id;
             this.set_num = vm.set_num;
             this.element_id = vm.element_id;
             this.subBuildName = vm.subBuildName;

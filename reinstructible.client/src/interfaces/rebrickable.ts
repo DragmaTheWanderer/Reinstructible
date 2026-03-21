@@ -38,6 +38,11 @@ interface IElementGroup {
   selected: boolean;
   elements: IElement[];
 }
+interface ISubBuildGroup {
+  grouping: ISubInventoryGroupHeader;
+  selected: boolean;
+  elements: IElement[];
+}
 interface IPart {
   part_num: string;
   name: string;
@@ -86,6 +91,15 @@ interface ISubInventory {
   page: number;
   step: number;
 }
+
+interface ISubInventoryGroupHeader {
+  //Key combo
+  page: number;
+  step: number;
+  subBuildName: string;
+
+}
+
 interface IStorage {
   //Id: number;
   element_id: string;
@@ -115,10 +129,12 @@ export type {
 
   IStorage,
   IStorage_updateList,
+  ISubInventoryGroupHeader,
   ISubInventory,
 
   ILegoSetGroup,
   IElementGroup,
+  ISubBuildGroup,
   IFilterOptions,
   IElementOptions
 }

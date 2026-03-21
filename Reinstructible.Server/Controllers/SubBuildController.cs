@@ -28,8 +28,8 @@ namespace Reinstructible.Server.Controllers
         public async Task<IActionResult> PostAsync([FromBody] JsonElement subInventoryItem)
         {
             SubInventory subInventory = JsonSerializer.Deserialize<SubInventory>(subInventoryItem)!;
-            CreateSavedItem(subInventory);
-            return Ok();
+            int newID =  CreateSavedItem(subInventory);
+            return Ok(newID);
         }
         [HttpPut]
         public async Task<IActionResult> PutAsync([FromBody] JsonElement subInventoryItem)
@@ -47,11 +47,14 @@ namespace Reinstructible.Server.Controllers
         }
 
         //CRUD Methods
-        public void CreateSavedItem(SubInventory SubInventory)
+        public int CreateSavedItem(SubInventory SubInventory)
         {
             DBModels.SubInventory dbSubInventory = new(SubInventory);
             _context.SubInventories.Add(dbSubInventory);
             _context.SaveChanges();
+            return dbSubInventory.id;
+
+
         }
         public List<SubInventory> ReadSavedItems()
         {
@@ -98,7 +101,7 @@ namespace Reinstructible.Server.Controllers
         public void DeleteSavedItem(string set_num, string element_id)
         {
             var dbSubInventory = _context.SubInventories.Where(x => x.set_num == set_num).Where(x => x.element_id == element_id).FirstOrDefault();
-            _context.SubInventories.Remove(dbSubInventory);
+            _context.SubInventories.Remove(dbSubInventory!);
             _context.SaveChanges();
         }
 

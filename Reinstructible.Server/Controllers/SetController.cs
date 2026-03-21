@@ -159,7 +159,7 @@ namespace Reinstructible.Server.Controllers
         }
         public void UpdateSavedItem(LegoSet set)
         {
-            DBModels.LegoSet dbSet = _context.LegoSets.Where(x => x.set_num == set.set_num).FirstOrDefault();
+            DBModels.LegoSet dbSet = _context.LegoSets.Where(x => x.set_num == set.set_num).FirstOrDefault()!;
             dbSet.updateFromModel(set);
             _context.LegoSets.Update(dbSet);
             _context.SaveChanges();

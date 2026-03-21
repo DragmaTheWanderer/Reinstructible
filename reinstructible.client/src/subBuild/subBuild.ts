@@ -3,7 +3,7 @@ import { Component, ViewChild, ElementRef, OnInit, Input, Output, EventEmitter }
 import { CommonModule } from '@angular/common'; // Required for standalone components
 import { FormsModule } from '@angular/forms';
 
-import { ILegoSet, IElement, IElementGroup, IPartCategory, ISubInventory } from '../interfaces/rebrickable';
+import { ILegoSet, IElement, IElementGroup, IPartCategory, ISubInventory, ISubBuildGroup, ISubInventoryGroupHeader } from '../interfaces/rebrickable';
 
 import { InventoryItem } from './inventoryItem/inventoryItem';
 import { SubBuildItem } from './subBuildItem/subBuildItem';
@@ -25,7 +25,7 @@ export class SubBuild implements OnInit {
 
   public partGroups: IElementGroup[] = [];
   public selectedPartGroups: IElementGroup[] = [];
-  public pageStepGroups: IElementGroup[] = [];
+  public pageStepGroups: ISubBuildGroup[] = [];
   public partCategories: IPartCategory[] = [];
   public selectedCategory = -1;
   public Loaded: boolean = false;
@@ -117,54 +117,45 @@ export class SubBuild implements OnInit {
   }
 
   addNewSubBuildStep() {
-
-    let pageStepItem: Partial<ISubInventory>
-    if (this.pageStepGroups.length == 0) {
-      pageStepItem = { page: 2, step: 1, subBuildName: this.legoSet.name }
-    } else {
-      let lastPageStepItem = this.pageStepGroups[this.pageStepGroups.length - 1].grouping.split("|");
-      pageStepItem = { page: Number(lastPageStepItem[0]), step: Number(lastPageStepItem[1]!) + 1, subBuildName: lastPageStepItem[2] }
+    let pageStepItem: ISubInventoryGroupHeader = { page: 2, step: 1, subBuildName: this.legoSet.name!};
+    if (this.pageStepGroups.length > 0) {
+      let lastPageStepItem: ISubInventoryGroupHeader = this.pageStepGroups[this.pageStepGroups.length - 1].grouping;
+      pageStepItem = { page: lastPageStepItem.page, step: lastPageStepItem.step + 1, subBuildName: lastPageStepItem.subBuildName };
     }
-    let pageStepGrouping: IElementGroup = {
-      grouping: `${pageStepItem.page}|${pageStepItem.step}|${pageStepItem.subBuildName}`,
+    let pageStepGrouping: ISubBuildGroup = {
+      grouping: pageStepItem,
       selected: true,
       elements: []
     }
-
     this.pageStepGroups.push(pageStepGrouping);
     this.setSelectedSubBuildItem(pageStepGrouping);
     this.scrollToSubBuildBottom("bottomOfPage");
   }
+
   addNewSubBuildPageStep() {
-
-    let pageStepItem: Partial<ISubInventory>
-    if (this.pageStepGroups.length == 0) {
-      pageStepItem = { page: 2, step: 1, subBuildName: this.legoSet.name }
-    } else {
-      let lastPageStepItem = this.pageStepGroups[this.pageStepGroups.length - 1].grouping.split("|");
-      pageStepItem = { page: Number(lastPageStepItem[0]) + 1, step: Number(lastPageStepItem[1]!) + 1, subBuildName: lastPageStepItem[2] }
+    let pageStepItem: ISubInventoryGroupHeader = { page: 2, step: 1, subBuildName: this.legoSet.name! };
+    if (this.pageStepGroups.length > 0) {
+      let lastPageStepItem = this.pageStepGroups[this.pageStepGroups.length - 1].grouping;
+      pageStepItem = { page: lastPageStepItem.page + 1, step: lastPageStepItem.step + 1, subBuildName: lastPageStepItem.subBuildName };
     }
-    let pageStepGrouping: IElementGroup = {
-      grouping: `${pageStepItem.page}|${pageStepItem.step}|${pageStepItem.subBuildName}`,
+    let pageStepGrouping: ISubBuildGroup = {
+      grouping: pageStepItem,
       selected: true,
       elements: []
     }
-
     this.pageStepGroups.push(pageStepGrouping);
     this.setSelectedSubBuildItem(pageStepGrouping);
     this.scrollToSubBuildBottom("bottomOfPage");
   }
+
   addNewSubBuildPageNewSteps() {
-
-    let pageStepItem: Partial<ISubInventory>
-    if (this.pageStepGroups.length == 0) {
-      pageStepItem = { page: 2, step: 1, subBuildName: this.legoSet.name }
-    } else {
-      let lastPageStepItem = this.pageStepGroups[this.pageStepGroups.length - 1].grouping.split("|");
-      pageStepItem = { page: Number(lastPageStepItem[0]) + 1, step: 1, subBuildName: lastPageStepItem[2] }
+    let pageStepItem: ISubInventoryGroupHeader = { page: 2, step: 1, subBuildName: this.legoSet.name! };
+    if (this.pageStepGroups.length > 0) {
+      let lastPageStepItem = this.pageStepGroups[this.pageStepGroups.length - 1].grouping;
+      pageStepItem = { page: lastPageStepItem.page + 1, step: 1, subBuildName: lastPageStepItem.subBuildName };
     }
-    let pageStepGrouping: IElementGroup = {
-      grouping: `${pageStepItem.page}|${pageStepItem.step}|${pageStepItem.subBuildName}`,
+    let pageStepGrouping: ISubBuildGroup = {
+      grouping: pageStepItem,
       selected: true,
       elements: []
     }
@@ -174,16 +165,18 @@ export class SubBuild implements OnInit {
     this.scrollToSubBuildBottom("bottomOfPage");
   }
 
-  setSelectedSubBuildItem(value: IElementGroup) {
+  setSelectedSubBuildItem(value: ISubBuildGroup) {
     //clear the selected tag from the other pageStepGroups
     this.pageStepGroups.forEach(item => {
       if (item.grouping != value.grouping) { item.selected = false; }
     });
   }
 
-  setPageStep(value: IElementGroup) {
+  setPageStep(value: ISubBuildGroup) {
     value.elements.forEach(e => {
-      this.modifySubBuild(e);
+      e.sub_inventory.forEach(s => {
+        this.modifySubBuild(s);
+      })
     })
   }
 
@@ -191,38 +184,41 @@ export class SubBuild implements OnInit {
     //find the pageStepGroups that is selected
     value.set_num = this.legoSet.set_num!;
     let selected = this.pageStepGroups.find(x => x.selected)!;
-    let group = selected.grouping.split('|');
-    if (selected.elements.length == 0) {
-      selected.elements.push(formatElement());
-      this.saveSubbuild(formatElement());
+    let group = selected.grouping;
+
+    //formattred element is causing the ID to become 0  Not sure how to fix yet.
+    let subInventory = formatElement();
+
+    if (subInventory.id == 0) {
+      value.sub_inventory.push(subInventory);
+      this.saveSubbuild(subInventory);
     } else {
-      //See if the element exsists on the list,  otherwise add it in
-      let foundElement = selected.elements.find(x => x.element_id == value.element_id);
-      if (foundElement != null) {
-        foundElement.sub_inventory.find(s => s.element_id == value.element_id)!.quantity += 1;
-        this.modifySubBuild(foundElement);
-      } else {
-        selected.elements.push(formatElement());
-        this.saveSubbuild(formatElement());
-      }
+      this.modifySubBuild(subInventory);
     }
     this.updateInventory(value);
 
-    function formatElement(): IElement {
-      let subInv: ISubInventory = {
-        id: -1,
-        set_num: value.set_num,
-        element_id: value.element_id,
+    function formatElement(): ISubInventory {
+      // check if a subuild exsists fro the page/step
+      // if so then return that, if not create a new one.
+      let subInventory: ISubInventory | undefined = value.sub_inventory.find(s => s.page == group.page && s.step == group.step);
+      if (subInventory == undefined) {
+        subInventory = {
+          id: 0,
+          set_num: value.set_num,
+          element_id: value.element_id,
 
-        //fields
-        quantity: 1,
-        subBuildName: group[2],
-        page: Number(group[0]),
-        step: Number(group[1]),
+          //fields
+          quantity: 1,
+          subBuildName: group.subBuildName,
+          page: Number(group.page),
+          step: Number(group.step),
+        }
       }
-      value.sub_inventory = [];
-      value.sub_inventory.push(subInv);
-      return value;
+      else {
+        subInventory.quantity += 1;
+      }
+
+      return subInventory;
     }
 
 
@@ -242,7 +238,10 @@ export class SubBuild implements OnInit {
       const indexElement = selected.elements.findIndex(x => x.element_id == value.element_id)!;
       selected.elements.splice(indexElement, 1);
     } else {
-      this.modifySubBuild(foundElement);
+      foundElement.sub_inventory.forEach(s => {
+        this.modifySubBuild(s);
+      })
+      
     }
     this.updateInventory(value);
   }
@@ -269,14 +268,17 @@ export class SubBuild implements OnInit {
     observe: 'response' as 'response', // To get the full HttpResponse
   };
 
-  saveSubbuild(value: IElement) {
+  saveSubbuild(value: ISubInventory) {
     let result = {};
     let loading = true;
     let error = "";
-    let foundSubBuild = value.sub_inventory.find(s => s.element_id == value.element_id)!;
+
+    let foundSubBuild = value;
     const jsonString = JSON.stringify(foundSubBuild);
     this.http.post('/api/subbuild', jsonString, this.httpOptions).subscribe({
       next: (res) => {
+        //need to make sure the correct sub build item is being updated.
+        foundSubBuild.id = Number(res.body);
         this.scrollToSubBuildBottom("bottomOfPage");
       },
       error: (error) => {
@@ -285,11 +287,11 @@ export class SubBuild implements OnInit {
       }
     });
   }
-  modifySubBuild(value: IElement) {
+  modifySubBuild(value: ISubInventory) {
     let result = {};
     let loading = true;
     let error = "";
-    let foundSubBuild = value.sub_inventory.find(s => s.element_id == value.element_id)!;
+    let foundSubBuild = value;
     const jsonString = JSON.stringify(foundSubBuild);
     this.http.put('/api/subbuild', jsonString, this.httpOptions).subscribe({
       next: (res) => {

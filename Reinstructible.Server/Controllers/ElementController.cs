@@ -23,7 +23,7 @@ namespace Reinstructible.Server.Controllers
         private readonly SubBuildController _subBuildController = new(httpClientFactory, context);
 
         [HttpGet]
-        public async Task<List<Element>> GetAsync(string id = "", string partId = "", string colorId = "", string param = "")
+        public async Task<List<Element>?> GetAsync(string id = "", string partId = "", string colorId = "", string param = "")
         {
 
             List<Element>? result = param switch
@@ -96,7 +96,7 @@ namespace Reinstructible.Server.Controllers
                 Minifigs? minifigsResults = JsonSerializer.Deserialize<Minifigs>(minifigResultStr);
                 foreach (var item in minifigsResults!.results!)
                 {
-                    var minifigElementsString = await service.GetRecordByIdAsync(minifigs, item.set_num, param);
+                    var minifigElementsString = await service.GetRecordByIdAsync(minifigs, item.set_num!, param);
                     Elements? minifigElements = JsonSerializer.Deserialize<Elements>(minifigElementsString);
                     var minifigElementList = minifigElements!.results;
                     foreach (var m in minifigElementList!)
@@ -124,7 +124,7 @@ namespace Reinstructible.Server.Controllers
                             }
                             else
                             {
-                                missingElementString = await service.GetRecordPartByColor(m.part.part_num!, m.color!.id.ToString());
+                                missingElementString = await service.GetRecordPartByColor(m.part!.part_num!, m.color!.id.ToString());
                             }
                             Element missingElementProps = JsonSerializer.Deserialize<Element>(missingElementString!)!;
                             m.set_num = id;

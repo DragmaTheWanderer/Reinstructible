@@ -5,6 +5,7 @@ namespace Reinstructible.Server.Models
     public class SubInventory
     {
         //Key combo
+        public int id { get; set; } 
         public string? set_num { get; set; }
         public string? element_id { get; set; }
 
@@ -15,8 +16,9 @@ namespace Reinstructible.Server.Models
         public int step { get; set; }
 
         public SubInventory() { }
-        public SubInventory(string? set_num, string? element_id, int quantity, string? subBuildName, int page, int step)
+        public SubInventory(int id, string? set_num, string? element_id, int quantity, string? subBuildName, int page, int step)
         {
+            this.id = id;
             this.set_num = set_num;
             this.element_id = element_id;
             this.quantity = quantity;
@@ -27,6 +29,7 @@ namespace Reinstructible.Server.Models
 
         public SubInventory(DBModels.SubInventory dbm)
         {
+            this.id = dbm.id;
             this.set_num = dbm.set_num;
             this.element_id = dbm.element_id;
             this.quantity = dbm.quantity;

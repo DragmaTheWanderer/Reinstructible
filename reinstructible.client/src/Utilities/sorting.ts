@@ -1,4 +1,4 @@
-import { IElement, IElementGroup, IFilterOptions, ISubInventory } from '../interfaces/rebrickable'
+import { IElement, IElementGroup, IFilterOptions, ISubInventory, ISubInventoryGroupHeader, ISubBuildGroup } from '../interfaces/rebrickable'
 
 export default class sorting{
 
@@ -115,15 +115,14 @@ return elementCards;
     return elementGroups;
   }
 
-  static groupBySubBuild(elements: IElement[]): IElementGroup[] {
-    let elementGroups: IElementGroup[] = [];
-    let subInventoryGroup: Partial<ISubInventory>[] = [];
-    let groupNonString: Partial<ISubInventory>[] = [];
+  static groupBySubBuild(elements: IElement[]): ISubBuildGroup[] {
+    let subBuildGroups: ISubBuildGroup[] = [];
+    let subInventoryGroup: ISubInventoryGroupHeader[] = [];
 
     //get the sets of subinventories
     elements.filter(e => e.sub_inventory.length > 0).forEach(element => {
       element.sub_inventory.forEach(sub => {
-        let SubInventoryPartialItem:Partial<ISubInventory>={
+        let SubInventoryPartialItem: ISubInventoryGroupHeader ={
           page: sub.page,
           step: sub.step,
           subBuildName: sub.subBuildName
@@ -135,15 +134,15 @@ return elementCards;
         }
       });
     });
-    groupNonString = [...subInventoryGroup].sort((a, b) =>
+    subInventoryGroup = [...subInventoryGroup].sort((a, b) =>
       Number(a.page) - Number(b.page)
       || Number(a.step) - Number(b.step)
     );
 
     //filter each group and add the results to the element Groups
-    groupNonString.forEach(g => {
-      let eg: IElementGroup = {
-        grouping: `${g.page}|${g.step}|${g.subBuildName}`,
+    subInventoryGroup.forEach(g => {
+      let eg: ISubBuildGroup = {
+        grouping: g,
         selected: false,
         elements: []
       };
@@ -154,10 +153,10 @@ return elementCards;
           }
         });
       });
-      elementGroups.push(eg);
+      subBuildGroups.push(eg);
     });
 
-    return elementGroups;
+    return subBuildGroups;
   }
 
 }

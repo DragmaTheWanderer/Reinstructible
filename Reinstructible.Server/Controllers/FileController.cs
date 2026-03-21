@@ -52,7 +52,7 @@ namespace Reinstructible.Server.Controllers
 
 
             var fileName = data["fileName"];
-            var jsonString = data["jsonString"];
+            var jsonString = data["jsonString"]!;
 
 
             //Save the Jason String locally
