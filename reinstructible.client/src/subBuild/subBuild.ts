@@ -227,16 +227,18 @@ export class SubBuild implements OnInit {
     let selected = this.pageStepGroups.find((x) => x.selected)!;
     let group = selected.grouping;
 
-    //formattred element is causing the ID to become 0  Not sure how to fix yet.
+    //formattred element is causing the ID to become 0 Need to return either the new ID or apply the returned sub inventory item to the object.
     let subInventory = formatElement();
 
     if (subInventory.id == 0) {
       value.sub_inventory.push(subInventory);
+      //push the item into the selected group elements
+      selected.elements.push(value);
       this.saveSubbuild(subInventory);
     } else {
       this.modifySubBuild(subInventory);
     }
-    this.updateInventory(value);
+    //this.updateInventory(value); //move this to the result of the modify or save subbuild sections.
 
     function formatElement(): ISubInventory {
       // check if a subuild exsists fro the page/step
