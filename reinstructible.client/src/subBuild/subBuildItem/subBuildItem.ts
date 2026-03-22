@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angu
 import { CommonModule } from '@angular/common'; // Required for standalone components
 import { FormsModule } from '@angular/forms';
 
-import { ISubBuildGroup } from '../../interfaces/rebrickable'
+import { ISubBuildGroup, IElement } from '../../interfaces/rebrickable'
 
 import { ImageCountComponent } from '../../shared/imageCount/imageCount.component';
 
@@ -17,7 +17,6 @@ export class SubBuildItem implements OnInit, OnChanges {
   @Input() pageStep!: ISubBuildGroup;
   @Output() pageStepSelectedEvent = new EventEmitter<ISubBuildGroup>();
   @Output() pageStepChangeEvent = new EventEmitter<ISubBuildGroup>();
- 
 
   public selectedClass: string = 'w3-yellow';
 
@@ -25,7 +24,12 @@ export class SubBuildItem implements OnInit, OnChanges {
   
   }
   ngOnChanges() {
-    
+  
+  }
+
+  getQuantity(element: IElement) {
+    let subinv = element.sub_inventory.find(e => e.page == this.pageStep.grouping.page && e.step == this.pageStep.grouping.step);
+    return subinv?.quantity;
   }
 
   selectedBackground() {

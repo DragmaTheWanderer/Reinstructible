@@ -1,31 +1,16 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import {
-  Component,
-  ViewChild,
-  ElementRef,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, Input, Output, EventEmitter, } from '@angular/core';
 // Required for standalone components
 import { FormsModule } from '@angular/forms';
 
-import {
-  ILegoSet,
-  IElement,
-  IElementGroup,
-  IPartCategory,
-  ISubInventory,
-  ISubBuildGroup,
-  ISubInventoryGroupHeader,
-} from '../interfaces/rebrickable';
+import { ILegoSet, IElement, IElementGroup, IPartCategory, ISubInventory, ISubBuildGroup, ISubInventoryGroupHeader, } from '../interfaces/rebrickable';
 
 import { InventoryItem } from './inventoryItem/inventoryItem';
 import { SubBuildItem } from './subBuildItem/subBuildItem';
 import { ButtonComponent } from '../shared/button/button.component';
 
 import sorting from '../Utilities/sorting';
+import updateInterfaces from '../Utilities/updateInterfaces';
 
 @Component({
   selector: 'subBuild',
@@ -37,6 +22,8 @@ import sorting from '../Utilities/sorting';
 export class SubBuild implements OnInit {
   @ViewChild('subBuildContainer') private subBuildContainer!: ElementRef;
   @Input() legoSet: Partial<ILegoSet> = { id: 0 };
+  @Output() loadElementsEvent = new EventEmitter<ILegoSet>();
+
   public inventoryList: IElement[] = [];
 
   public partGroups: IElementGroup[] = [];
@@ -130,6 +117,11 @@ export class SubBuild implements OnInit {
     }
   }
 
+  loadSet() {
+    let legoset: ILegoSet = updateInterfaces.populateLegoSetFromPartial(this.legoSet);
+    this.loadElementsEvent.emit(legoset);
+  }
+
   addNewSubBuildStep() {
     let pageStepItem: ISubInventoryGroupHeader = {
       page: 2,
@@ -190,7 +182,7 @@ export class SubBuild implements OnInit {
       pageStepItem = {
         page: lastPageStepItem.page + 1,
         step: 1,
-        subBuildName: lastPageStepItem.subBuildName,
+        subBuildName: this.legoSet.name!,
       };
     }
     let pageStepGrouping: ISubBuildGroup = {

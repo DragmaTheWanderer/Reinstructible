@@ -10,6 +10,7 @@ import { ElementTable } from './elementTable/elementTable';
 import { ILegoSet, IElement, IColor, IPartCategory, IStorage_updateList, IFilterOptions, IElementOptions } from '../interfaces/rebrickable';
 import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from '../interfaces/Enums';
 import fileUtil from '../Utilities/file';
+import updateInterfaces from '../Utilities/updateInterfaces';
 
 import { ImageComponent } from '../shared/image/image.component';
 
@@ -72,6 +73,7 @@ export class Element implements OnInit, OnChanges {
    * Event emitted when an element is selected for storage. Parent uses this to open/initialize storage UI.
    */
   @Output() loadStorageEvent = new EventEmitter<IElement>();
+  @Output() subSetBuildEvent = new EventEmitter<ILegoSet>();
   //@Output() loadCurrentGrouping = new EventEmitter<EDisplayGroup>();
   /**
   * Computed list of unique part categories present in `elementsBase`.
@@ -401,6 +403,12 @@ export class Element implements OnInit, OnChanges {
     this.storageBins = [...unassignedBin, ...storageBins];
   }
 
+  setSubBuild(value: string) {
+    let legoset: ILegoSet = updateInterfaces.populateLegoSetFromPartial(this.legoSet);
+    this.subSetBuildEvent.emit(legoset);
+  }
+
+
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -459,6 +467,8 @@ export class Element implements OnInit, OnChanges {
     }
    this.Loaded = true;
   }
+
+
   /**
    * Simple reactive title signal used by the template (keeps string in a signal).
    */

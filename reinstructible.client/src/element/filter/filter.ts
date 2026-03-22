@@ -26,6 +26,7 @@ export class FilterComponent implements OnInit, OnChanges {
   public onOptionsStringSent = output<string[]>();
   public onDisplayMode = output<EDisplayMode>();
   public onCurrentGrouping = output<EDisplayGroup>();
+  public onSetSubBuild = output<string>()
 
   public onFileOption = output<EFileOption>();
 
@@ -103,6 +104,8 @@ export class FilterComponent implements OnInit, OnChanges {
   setDisplayMode(value: EDisplayMode) {
     this.onDisplayMode.emit(value);
   }
-
+  setSubBuild() {
+    this.onSetSubBuild.emit("SetSubBuild");
+  }
   protected readonly title = signal('reinstructible.client');
 }

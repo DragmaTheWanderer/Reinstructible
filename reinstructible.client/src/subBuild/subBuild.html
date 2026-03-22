@@ -37,30 +37,33 @@
     </div>
     <div class="w3-display-bottommiddle">
       <hr />
-      <app-button
-        icon="fa-solid fa-plus"
-        color="w3-dark-grey"
-        toolTip="Add new subbuild step"
-        toolTipClass="btn-tooltip-left"
-        (clickEvent)="addNewSubBuildStep()"
-      >
+      <app-button icon="fa-solid fa-plus"
+                  color="w3-dark-grey"
+                  toolTip="Add new subbuild step"
+                  toolTipClass="btn-tooltip-left"
+                  (clickEvent)="addNewSubBuildStep()">
       </app-button>
-      <app-button
-        icon="fa-solid fa-plus"
-        color="w3-light-grey"
-        toolTip="Add new subbuild page/step"
-        toolTipClass="btn-tooltip-left"
-        (clickEvent)="addNewSubBuildPageStep()"
-      >
+      <app-button icon="fa-solid fa-plus"
+                  color="w3-light-grey"
+                  toolTip="Add new subbuild page/step"
+                  toolTipClass="btn-tooltip-left"
+                  (clickEvent)="addNewSubBuildPageStep()">
       </app-button>
-      <app-button
-        icon="fa-solid fa-plus"
-        color="w3-green"
-        toolTip="Add new subbuild page and start over step"
-        toolTipClass="btn-tooltip-left"
-        (clickEvent)="addNewSubBuildPageNewSteps()"
-      >
+      <app-button icon="fa-solid fa-plus"
+                  color="w3-green"
+                  toolTip="Add new subbuild page and start over step"
+                  toolTipClass="btn-tooltip-left"
+                  (clickEvent)="addNewSubBuildPageNewSteps()">
       </app-button>
+      <span>
+        <app-button icon="fa-solid fa-table-cells"
+                    color="w3-green"
+                    toolTip="View Elements"
+                    toolTipClass="btn-tooltip-left"
+                    (clickEvent)="loadSet()">
+        </app-button>
+      </span>
+
     </div>
   </div>
   <!--SubBild section-->

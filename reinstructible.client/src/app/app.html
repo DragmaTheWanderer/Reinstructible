@@ -30,8 +30,13 @@
   </legoset_owned>
 }
 @if (ElementVisable) {
-  <element [legoSet]="legoSet"> </element>
+  <element [legoSet]="legoSet"
+           (subSetBuildEvent)="subSetBuild($event)"
+           >
+  </element>
 }
 @if (SubSetBuildVisible) {
-  <subBuild [legoSet]="legoSet"> </subBuild>
+  <subBuild [legoSet]="legoSet"
+            (loadElementsEvent)="loadElements($event)"
+            > </subBuild>
 }
