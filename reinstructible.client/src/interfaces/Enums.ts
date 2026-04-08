@@ -1,7 +1,10 @@
 export enum EFilterType {
   category = 0,
   color,
-  storage
+  storage,
+  subBuildName,
+  subBuildPage,
+  subBuildStep,
 }
 
 export enum EDisplayGroup {

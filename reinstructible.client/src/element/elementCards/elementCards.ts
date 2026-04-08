@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, input, output } from '@angular/core';
 
-import { IElement, IElementGroup, IFilterOptions } from '../../interfaces/rebrickable';
+import { IElement, IElementGroup, IFilterOptionGroups, IFilterOptions } from '../../interfaces/rebrickable';
 import { elementCard } from './elementCard/elementCard';
 import { EDisplayGroup } from '../../interfaces/Enums';
 import sorting from '../../Utilities/sorting';
@@ -13,15 +13,15 @@ import sorting from '../../Utilities/sorting';
   styleUrl: './elementCards.css',
 })
 export class ElementCards implements OnInit, OnChanges {
+  public currentGrouping = input<EDisplayGroup>();
   public elements = input<IElement[]>([]);
   public elementCards: IElementGroup[] = [];
   public itemForStorage = output<IElement>();
 
-  public currentGrouping = input<EDisplayGroup>();
-  public groupColor = input<IFilterOptions[]>([]);
-  public groupCategory = input<IFilterOptions[]>([]);
-  public groupStorage = input<IFilterOptions[]>([]);
-  // public groupAlpha: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  public optionGroups = input<IFilterOptionGroups>();
+  //public groupColor = input<IFilterOptions[]>([]);
+  //public groupCategory = input<IFilterOptions[]>([]);
+  //public groupStorage = input<IFilterOptions[]>([]);
 
   ngOnInit() {
     this.formatElements();
@@ -38,14 +38,17 @@ export class ElementCards implements OnInit, OnChanges {
     switch (this.currentGrouping()) {
       case EDisplayGroup.Color:
         //this.formatByColor();
-        this.elementCards = sorting.groupByColor(this.elements(), this.groupColor());
+        let groupColor = this.optionGroups()?.partColorOptions!;
+        this.elementCards = sorting.groupByColor(this.elements(), groupColor);
         break;
       case EDisplayGroup.Category:
         //this.formatByCategory();
-        this.elementCards = sorting.groupByCategory(this.elements(), this.groupCategory());
+        let groupCategory = this.optionGroups()?.partCategoryOptions!;
+        this.elementCards = sorting.groupByCategory(this.elements(), groupCategory);
         break;
       case EDisplayGroup.Storage:
-        this.elementCards = sorting.groupByStorage(this.elements(), this.groupStorage());
+        let groupStorage = this.optionGroups()?.partStorageOptions!;
+        this.elementCards = sorting.groupByStorage(this.elements(), groupStorage);
         //this.formatByStorage();
         break;
       case EDisplayGroup.Alpha:

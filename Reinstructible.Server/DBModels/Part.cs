@@ -11,6 +11,7 @@ namespace Reinstructible.Server.DBModels
         public string?  part_num    { get; set; }
         public string?  name        { get; set; }
         public int      part_cat_id { get; set; }
+        public string   part_cat_name { get; set; }
         public int      year_from   { get; set; }
         public int      year_to     { get; set; }
         public string? part_url { get; set; }

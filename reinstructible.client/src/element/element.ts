@@ -7,10 +7,11 @@ import { Storage } from '../storage/storage';
 import { FilterComponent } from './filter/filter';
 import { ElementCards } from './elementCards/elementCards'
 import { ElementTable } from './elementTable/elementTable';
-import { ILegoSet, IElement, IColor, IPartCategory, IStorage_updateList, IFilterOptions, IElementOptions } from '../interfaces/rebrickable';
+import { ILegoSet, IElement, IColor, IPartCategory, IStorage_updateList, IFilterOptionGroups, IFilterOptions, IElementOptions, ISubInventory } from '../interfaces/rebrickable';
 import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from '../interfaces/Enums';
 import fileUtil from '../Utilities/file';
 import updateInterfaces from '../Utilities/updateInterfaces';
+import filterOption from '../Utilities/filterOption';
 
 import { ImageComponent } from '../shared/image/image.component';
 
@@ -79,26 +80,7 @@ export class Element implements OnInit, OnChanges {
   * Computed list of unique part categories present in `elementsBase`.
   * Used to populate category selection control.
   */
-  public partCategory: IPartCategory[] = [];
-  public partCategoryOptions: IFilterOptions[] = [];
-  public categoryOptionType: EFilterType = EFilterType.category;
-  /**
-   * Computed list of unique colors present in `elementsBase`.
-   * Used to populate color selection control.
-   */
-  public partColor: IColor[] = [];
-  public partColorOptions: IFilterOptions[] = [];
-  public colorOptionType: EFilterType = EFilterType.color;
-
-  /**
-   * Computed list of storage bin options in `elementsBase`.
-   * Used to populate Storage selection control.
-   */
-  public partStorage: string[] = [];
-  public partStorageOptions: IFilterOptions[] = [];
-  public storageOptionType: EFilterType = EFilterType.storage;
-
-
+ 
   constructor(private http: HttpClient) { }
 
   /**
@@ -129,6 +111,20 @@ export class Element implements OnInit, OnChanges {
     this.elementFilter();
   }
 
+  public filterOptionGroups: IFilterOptionGroups = {
+    partCategoryOptions: [],
+    partColorOptions: [],
+    partStorageOptions: [],
+    subBuildNameOptions: [],
+    subBuildPageOptions: [],
+    subBuildStepOptions: [],
+    categoryOptionType: EFilterType.category,
+    colorOptionType: EFilterType.color,
+    storageOptionType: EFilterType.storage,
+    subBuildNameOptionType: EFilterType.subBuildName,
+    subBuildPageOptionType: EFilterType.subBuildPage,
+    subBuildStepOptionType: EFilterType.subBuildStep,
+  };
 
   /**
    * Handler that receives storage updates from the storage component.
@@ -150,20 +146,20 @@ export class Element implements OnInit, OnChanges {
     //if (this.options.currentGrouping == EDisplayGroup.Storage) {
     //check if there are no more elements in the current listing in the bin
     const reassignedBin = this.elementsBase.filter(x => x.storage_location.bin == oldBin);
-    const newAssignedBin = this.partStorageOptions.filter(x => x.name == newStorages.bin);
+    const newAssignedBin = this.filterOptionGroups.partStorageOptions.filter(x => x.name == newStorages.bin);
 
     if (reassignedBin.length == 0) {
       //remove old bin from the part storage options list
-      this.partStorageOptions = this.partStorageOptions.filter(x => x.name != oldBin);
+      this.filterOptionGroups.partStorageOptions = this.filterOptionGroups.partStorageOptions.filter(x => x.name != oldBin);
     }
     if (newAssignedBin.length == 0) {
       //add new bin to the part storage options list
-      this.partStorageOptions.push({
+      this.filterOptionGroups.partStorageOptions.push({
         id: newStorages.bin == 'Unassigned' ? -1 : Number(newStorages.bin),
         name: newStorages.bin,
         selected: true
       })
-      this.partStorageOptions.sort((a, b) => a.name.localeCompare(b.name));
+      this.filterOptionGroups.partStorageOptions.sort((a, b) => a.name.localeCompare(b.name));
     }
     //}
 
@@ -178,24 +174,16 @@ export class Element implements OnInit, OnChanges {
    */
   ngOnInit() {}
 
-  public colorIds: number[] = [];
-  public categoryIds: number[] = [];
-  public storageBins: string[] = [];
-
-  partCatergoryFilter(values: number[]) {
-    this.categoryIds = values;
-    this.elementFilter();
-  }
-  partColorFilter(values: number[]) {
-    this.colorIds = values;
+ 
+  filter(filterOptionGroups: IFilterOptionGroups) {
+    this.filterOptionGroups = filterOptionGroups;
     this.elementFilter();
   }
 
-  partStorageFilter(values: string[]) {
-    this.storageBins = values;
-    this.elementFilter();
+  elementFilter() {
+    this.elements = filterOption.applyFilter(this.elementsBase, this.filterOptionGroups);
   }
-
+  
   public options: IElementOptions = {
     currentGrouping: EDisplayGroup.Color,
     displayMode: EDisplayMode.TV,
@@ -206,36 +194,12 @@ export class Element implements OnInit, OnChanges {
     this.options.displayMode = value;
   }
   setCurrentGrouping(value: EDisplayGroup) {
-    //this.options.displayMode (no need for change)
-    this.categoryOptionType = this.options.filterType
     this.options.currentGrouping = value;
   }
 
-  elementFilter() {
-    this.elements = this.elementsBase
-      .filter(i => this.colorIds.includes(i.color.id))
-      .filter(i => this.categoryIds.includes(i.part.part_cat_id))
-      .filter(i => this.storageBins.includes(i.storage_location.bin))
-       ;
-  }
+ 
 
-  public selectedControllTab = signal<EFilterType>(EFilterType.category);
-  //public selectedControllTab = signal<'category' | 'color' | 'storage' | string>('category');
-
-  openControlTab(type: EFilterType) {
-    this.options.filterType = type;
-    this.selectedControllTab.set(this.options.filterType);
-    
-  }
-  borderColor(type: EFilterType) {
-    let result = "w3-border-red";
-    if (type != this.selectedControllTab() ) result = "";
-    return (result);
-  }
-  selectedCard(type: EFilterType) {
-    let result = type === this.selectedControllTab();
-    return result; 
-  }
+  
   
 
   /**
@@ -273,134 +237,22 @@ export class Element implements OnInit, OnChanges {
       next: (result) => {
         this.elementsBase = result;
         this.elements = this.elementsBase;
-        this.getCategory();
-        this.getColor();
-        this.getStorage();
+        this.filterOptionGroups.partCategoryOptions = filterOption.partCategory(this.elements);
+        this.filterOptionGroups.partColorOptions = filterOption.partColor(this.elements);
+        this.filterOptionGroups.partStorageOptions = filterOption.partStorage(this.elements);
+        this.filterOptionGroups.subBuildNameOptions = filterOption.subBuildName(this.elements);
+        this.filterOptionGroups.subBuildPageOptions = filterOption.subBuildPage(this.elements);
+        this.filterOptionGroups.subBuildStepOptions = filterOption.subBuildStep(this.elements);
+
+      
+        this.Loaded = true;
+        
       },
       error: (error) => {
         console.error(error);
         this.Loaded = false;
       }
     });
-  }
-
-  /**
-   * Builds `partCategory` by:
-   * - Gathering unique category ids from `elementsBase`.
-   * - Requesting category objects from the API for each unique id.
-   * - Sorting the resulting categories by name.
-   *
-   * Note: requests to the server are performed per-category id; consider batching on the server
-   * if the number of unique categories becomes large.
-   */
-  getCategory() {
-    this.partCategory = [];
-    let categoryId: number[] = [];
-    let elements = this.elementsBase;
-    let item: IPartCategory;
-    let cat: IPartCategory[] = [];
-
-    // Filter the unique category IDs of elements in a set
-    elements.forEach(element => {
-      if (!categoryId.includes(element.part.part_cat_id)) {
-        categoryId.push(element.part.part_cat_id);
-      }
-    });
-
-    // Get the category objects for each ID
-    categoryId.forEach(idValue => {
-      let params = new HttpParams()
-        .set('id', idValue); // Convert non-string values if needed
-      this.http.get<IPartCategory[]>('/api/partcategory', { params: params }).subscribe({
-        next: (result) => {
-          item = result[0];
-          cat.push(item);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-        complete: () => {
-          //set the selected for each category to true so that they are all selected by default
-          this.partCategory.forEach(category => { category.selected = true; });
-          // Sort the new list
-          this.partCategory = cat.sort((a, b) => a.name.localeCompare(b.name));
-          //map the partCategory to the partCategoryOptions list
-          this.partCategoryOptions = this.partCategory.map(cat => ({ id: cat.id, name: cat.name, selected: cat.selected }));
-          this.categoryIds = this.partCategory.map(cat => cat.id);
-          this.Loaded = true;
-        }
-      });
-    });
-  }
-
-  /**
-   * Builds `partColor` by:
-   * - Scanning `elementsBase` for unique colors (by name).
-   * - Sorting the resulting color list by name.
-   *
-   * Comments in the code show an alternate approach that requests color objects from the API;
-   * the current implementation derives color objects directly from `elementsBase`.
-   */
-  getColor() {
-    this.partColor = [];
-    let elements = this.elementsBase;
-    let item: IColor;
-    let color: IColor[] = [];
-
-    // Filter the unique color objects of elements in a set
-    elements.forEach(element => {
-      if (!color.some(item => item.name === element.color.name)) {
-        color.push(element.color);
-      }
-    });
-    // Sort the new list
-    this.partColor = color.sort((a, b) => a.name.localeCompare(b.name));
-    //set the selected for each color to true so that they are all selected by default
-    this.partColor.forEach(color => { color.selected = true; });
-
-    // The following commented code shows how to request color objects per id from the API.
-    // It is retained for reference in case a switch to server-driven color lookup is desired.
-    this.partColorOptions = this.partColor.map(color => ({ id: color.id, name: color.name, selected: color.selected }));
-    this.colorIds = this.partColor.map(color => color.id);
-  }
-  /**
- * Builds `partStorage` by:
- * - Scanning `elementsBase` for unique Storage bins (by name).
- * - Sorting the resulting storage list by name.
- *
- * the current implementation derives storage objects directly from `elementsBase`.
- */
-  getStorage() {
-    this.partStorage = [];
-
-    // Filter and sort the unique color objects of elements in a set
-    const storageBins = [...new Set(this.elementsBase.map(s => s.storage_location.bin)
-                                                     .filter(x => x != 'Unassigned')
-                                                     .sort((a, b) => a.localeCompare(b))
-    )];
-
-    const unassignedBin = [...new Set(this.elementsBase.map(s => s.storage_location.bin)
-                                                       .filter(x => x == 'Unassigned'))];
-    // The following commented code shows how to request color objects per id from the API.
-    // It is retained for reference in case a switch to server-driven color lookup is desired.
-
-    if (unassignedBin.length > 0) {
-      this.partStorageOptions.push({
-        id: -1,
-        name: 'Unassigned',
-        selected: true
-      });
-    }
-
-    storageBins.forEach(bin => (
-      this.partStorageOptions.push({
-        id: bin == 'Unassigned' ? -1 : Number(bin),
-        name: bin,
-        selected: true
-      })
-    ))
-
-    this.storageBins = [...unassignedBin, ...storageBins];
   }
 
   setSubBuild(value: string) {
@@ -428,20 +280,20 @@ export class Element implements OnInit, OnChanges {
         await fileUtil.loadElementsFile(this.http, "elements.rb", this.elements);
 
         //load filter option groups
-        await fileUtil.loadpartCategoryOptionsFile(this.http, "partCategoryOptions.rb", this.partCategoryOptions);
-        await fileUtil.loadpartCategoryOptionsFile(this.http, "partStorageOptions.rb", this.partStorageOptions);
-        await fileUtil.loadpartCategoryOptionsFile(this.http, "partColorOptions.rb", this.partColorOptions);
+        await fileUtil.loadpartCategoryOptionsFile(this.http, "partCategoryOptions.rb", this.filterOptionGroups.partCategoryOptions);
+        await fileUtil.loadpartCategoryOptionsFile(this.http, "partStorageOptions.rb", this.filterOptionGroups.partStorageOptions);
+        await fileUtil.loadpartCategoryOptionsFile(this.http, "partColorOptions.rb", this.filterOptionGroups.partColorOptions);
                
-        //load filter ids
-        await fileUtil.loadNumberFilteredFile(this.http, "colorIds.rb", this.colorIds);
-        await fileUtil.loadNumberFilteredFile(this.http, "categoryIds.rb", this.categoryIds);
-        await fileUtil.loadStringFilteredFile(this.http, "storageBins.rb", this.storageBins);
+        ////load filter ids
+        //await fileUtil.loadNumberFilteredFile(this.http, "colorIds.rb", this.colorIds);
+        //await fileUtil.loadNumberFilteredFile(this.http, "categoryIds.rb", this.categoryIds);
+        //await fileUtil.loadStringFilteredFile(this.http, "storageBins.rb", this.storageBins);
 
         //load current options
         await fileUtil.loadOptionsFile(this.http, "options.rb", this.options);
         //ensure the options are updating the correct paramaters
-        this.selectedControllTab.set(this.options.filterType);
-        this.openControlTab(this.options.filterType);
+        //this.selectedControllTab.set(this.options.filterType);
+        //this.openControlTab(this.options.filterType);
 
         break;
       case EFileOption.Save:
@@ -451,14 +303,14 @@ export class Element implements OnInit, OnChanges {
         //save elements and option groups
         await fileUtil.saveFile(this.http, "elementsBase.rb", JSON.stringify(this.elementsBase));
         await fileUtil.saveFile(this.http, "elements.rb", JSON.stringify(this.elements));
-        await fileUtil.saveFile(this.http, "partCategoryOptions.rb", JSON.stringify(this.partCategoryOptions));
-        await fileUtil.saveFile(this.http, "partColorOptions.rb", JSON.stringify(this.partColorOptions));
-        await fileUtil.saveFile(this.http, "partStorageOptions.rb", JSON.stringify(this.partStorageOptions));
+        await fileUtil.saveFile(this.http, "partCategoryOptions.rb", JSON.stringify(this.filterOptionGroups.partCategoryOptions));
+        await fileUtil.saveFile(this.http, "partColorOptions.rb", JSON.stringify(this.filterOptionGroups.partColorOptions));
+        await fileUtil.saveFile(this.http, "partStorageOptions.rb", JSON.stringify(this.filterOptionGroups.partStorageOptions));
 
-        //save filtered ids
-        await fileUtil.saveFile(this.http, "categoryIds.rb", JSON.stringify(this.categoryIds));
-        await fileUtil.saveFile(this.http, "colorIds.rb", JSON.stringify(this.colorIds));
-        await fileUtil.saveFile(this.http, "storageBins.rb", JSON.stringify(this.storageBins));
+        ////save filtered ids
+        //await fileUtil.saveFile(this.http, "categoryIds.rb", JSON.stringify(this.categoryIds));
+        //await fileUtil.saveFile(this.http, "colorIds.rb", JSON.stringify(this.colorIds));
+        //await fileUtil.saveFile(this.http, "storageBins.rb", JSON.stringify(this.storageBins));
 
         //save current options
         await fileUtil.saveFile(this.http, "options.rb", JSON.stringify(this.options));

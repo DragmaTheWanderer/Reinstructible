@@ -46,6 +46,7 @@ interface ISubBuildGroup {
 interface IPart {
   part_num: string;
   name: string;
+  part_cat_name: string;
   part_cat_id: number;
   year_from: number;
   year_to: number;
@@ -68,6 +69,22 @@ interface IColor {
   is_trans: boolean;
   selected: boolean;
 }
+interface IFilterOptionGroups {
+  partCategoryOptions: IFilterOptions[];
+  partColorOptions: IFilterOptions[];
+  partStorageOptions: IFilterOptions[];
+  subBuildNameOptions: IFilterOptions[];
+  subBuildPageOptions: IFilterOptions[];
+  subBuildStepOptions: IFilterOptions[];
+
+  categoryOptionType: EFilterType;
+  colorOptionType: EFilterType;
+  storageOptionType: EFilterType;
+  subBuildNameOptionType: EFilterType;
+  subBuildPageOptionType: EFilterType;
+  subBuildStepOptionType: EFilterType;
+}
+
 interface IFilterOptions {
   id: number;
   name: string;
@@ -135,6 +152,7 @@ export type {
   ILegoSetGroup,
   IElementGroup,
   ISubBuildGroup,
+  IFilterOptionGroups,
   IFilterOptions,
   IElementOptions
 }

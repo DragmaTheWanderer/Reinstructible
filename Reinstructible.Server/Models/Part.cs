@@ -11,6 +11,7 @@ namespace Reinstructible.Server.Models
         public string?  part_num    { get; set; }
         public string?  name        { get; set; }
         public int      part_cat_id { get; set; }
+        public string part_cat_name { get; set; }
         public int      year_from   { get; set; }
         public int      year_to     { get; set; }
         public string?  part_url    { get; set; }
@@ -34,6 +35,7 @@ namespace Reinstructible.Server.Models
             this.part_num = dbm.part_num;
             this.name = dbm.name;
             this.part_cat_id = dbm.part_cat_id;
+            this.part_cat_name = dbm.part_cat_name;
             this.year_from = dbm.year_from;
             this.year_to = dbm.year_to;
         }

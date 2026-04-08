@@ -3,7 +3,7 @@ import { Component, OnInit, OnChanges, signal, input, SimpleChanges, output } fr
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IElement, IElementGroup, IFilterOptions, } from '../../interfaces/rebrickable'
+import { IElement, IElementGroup, IFilterOptionGroups, IFilterOptions, } from '../../interfaces/rebrickable'
 import { EDisplayGroup } from '../../interfaces/Enums'
 import sorting from '../../Utilities/sorting';
 
@@ -29,9 +29,10 @@ export class ElementTable {
   public elementGrouped: IElementGroup[] = [];
   public itemForStorage = output<IElement>();
 
-  public groupColor = input<IFilterOptions[]>([]);
-  public groupCategory = input<IFilterOptions[]>([]);
-  public groupStorage = input<IFilterOptions[]>([]);
+  public optionGroups = input<IFilterOptionGroups>();
+  //public groupColor = input<IFilterOptions[]>([]);
+  //public groupCategory = input<IFilterOptions[]>([]);
+  //public groupStorage = input<IFilterOptions[]>([]);
 
 
   /**
@@ -50,19 +51,23 @@ export class ElementTable {
 
   formatElements() {
     this.elementsDisp = [];
+    
     switch (this.currentGrouping()) {
       case EDisplayGroup.Color:
-        this.elementGrouped = sorting.groupByColor(this.elements(), this.groupColor());
+        let groupColor = this.optionGroups()?.partColorOptions!;
+        this.elementGrouped = sorting.groupByColor(this.elements(), groupColor);
         this.elementsDisp = this.elements().sort((a, b) => a.color.name.localeCompare(b.color.name)
           || a.part.name.localeCompare(b.part.name));
         break;
       case EDisplayGroup.Category:
-        this.elementGrouped = sorting.groupByCategory(this.elements(), this.groupCategory());
+        let groupCategory = this.optionGroups()?.partCategoryOptions!;
+        this.elementGrouped = sorting.groupByCategory(this.elements(), groupCategory);
         this.elementsDisp = this.elements().sort((a, b) => a.part.name.localeCompare(b.part.name)
           || a.color.name.localeCompare(b.color.name));
         break;
       case EDisplayGroup.Storage:
-        this.elementGrouped = sorting.groupByStorage(this.elements(), this.groupStorage());
+        let groupStorage = this.optionGroups()?.partStorageOptions!;
+        this.elementGrouped = sorting.groupByStorage(this.elements(), groupStorage);
         //set up 2 groups, then sort each group, then concat the 2 for the display
         let unassigned = this.elements().filter(x => x.storage_location.bin == 'Unassigned')
           .sort((a, b) =>

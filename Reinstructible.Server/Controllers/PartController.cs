@@ -3,6 +3,7 @@ using Reinstructible.Server.DL;
 using Reinstructible.Server.HTTPRequest;
 using Reinstructible.Server.Models;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace Reinstructible.Server.Controllers
 {
@@ -79,8 +80,24 @@ namespace Reinstructible.Server.Controllers
         public Part? GetSavedPartById(string part_num)
         {
             Part? result = null;
-            var dbPart = _context.Parts.Where(x => x.part_num == part_num);
-
+            //var dbPart = _context.Parts.Where(x => x.part_num == part_num);
+            var dbPart = (from p in _context.Parts
+                          where p.part_num == part_num
+                          join pc in _context.PartCategorys
+                          on p.part_cat_id equals pc.id into ppc
+                          from pc in ppc.DefaultIfEmpty()
+                          select new DBModels.Part
+                          {
+                              part_num = p.part_num,
+                              name = p.name,
+                              part_cat_id = p.part_cat_id,
+                              part_cat_name = pc.name,
+                              year_from = p.year_from,
+                              year_to = p.year_to,
+                              part_url = p.part_url
+                          });
+                
+              
             if (!dbPart.Any()) return result;
 
             result = new Part(dbPart.FirstOrDefault()!);

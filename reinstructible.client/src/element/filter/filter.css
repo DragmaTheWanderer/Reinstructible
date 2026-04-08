@@ -1,3 +1,8 @@
+.element-controll-container {
+  height: 75vh;
+  overflow: overlay;
+}
+
 .element-footer {
   display: flex;
   justify-content: space-between;

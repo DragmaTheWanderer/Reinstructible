@@ -1,0 +1,16 @@
+<div class="w3-card-4">
+  <header class="w3-container w3-dark-grey"></header>
+  <div>
+    <ul class="w3-ul w3-hoverable">
+      @for (option of options(); track option) {
+      <li class="w3-left-align" (click)="onSelected(option)">
+        <label>
+          <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
+          {{ option.name }}
+        </label>
+      </li>
+      }
+    </ul>
+  </div>
+  <footer></footer>
+</div>
