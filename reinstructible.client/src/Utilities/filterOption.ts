@@ -13,7 +13,7 @@ export default class filterOption {
     });
     //sort the catergories map the sorted list into the options
     options = partC.sort((a, b) => a.part_cat_name.localeCompare(b.part_cat_name))
-      .map(pc => ({id: pc.part_cat_id, name: pc.part_cat_name, selected: true}));
+      .map(pc => ({id: pc.part_cat_id, name: pc.part_cat_name, subOptions:[], selected: true}));
    
     return options;
   }
@@ -28,7 +28,7 @@ export default class filterOption {
     });
     //sort the catergories map the sorted list into the options
     options = partC.sort((a, b) => a.name.localeCompare(b.name))
-      .map(pc => ({ id: pc.id, name: pc.name, selected: true }));
+      .map(pc => ({ id: pc.id, name: pc.name, subOptions: [], selected: true }));
 
       return options;
   }
@@ -49,6 +49,7 @@ export default class filterOption {
       options.push({
         id: -1,
         name: 'Unassigned',
+        subOptions: [],
         selected: true
       });
     }
@@ -57,13 +58,14 @@ export default class filterOption {
       options.push({
         id: bin == 'Unassigned' ? -1 : Number(bin),
         name: bin,
+        subOptions: [],
         selected: true
       })
     ))
 
     return options;
   }
-  static subBuildName(elements: IElement[]): IFilterOptions[] {
+  static subBuild(elements: IElement[]): IFilterOptions[] {
     let options: IFilterOptions[] = [];
     let subI: ISubInventory[] = [];
     // Filter the unique Categories objects of elements in a set
@@ -76,44 +78,36 @@ export default class filterOption {
     });
     //sort the catergories map the sorted list into the options
     options = subI.sort((a, b) => a.subBuildName.localeCompare(b.subBuildName))
-      .map(pc => ({ id: pc.id, name: pc.subBuildName, selected: true }));
+      .map(pc => ({ id: pc.id, name: pc.subBuildName, subOptions: [], selected: true, compacted: true }));
+    //in a loop get the page/step associated with each name and add it on the subFilter
+    options.forEach(o => {
+      o.subOptions = this.subBuildPageStep(elements, o);
+    })
 
     return options;
   }
-  static subBuildPage(elements: IElement[]): IFilterOptions[] {
+  static subBuildPageStep(elements: IElement[], option: IFilterOptions): IFilterOptions[] {
     let options: IFilterOptions[] = [];
     let subI: ISubInventory[] = [];
-    // Filter the unique Categories objects of elements in a set
+
+    //filter the suboptions  by the name first
     elements.forEach(e => {
       e.sub_inventory.forEach(i => {
-        if (!subI.some(item => item.page === i.page)) {
-          subI.push(i);
+        if (option.name === i.subBuildName) {
+          if (!subI.some(item => (item.page === i.page) && (item.step === i.step))) {
+                  subI.push(i);
+                }
+          
         }
       })
-    });
-    //sort the catergories map the sorted list into the options
-    options = subI.sort((a, b) => a.page-b.page)
-      .map(pc => ({ id: pc.id, name: pc.page.toString(), selected: true }));
+    })
 
+    //sort the catergories map the sorted list into the options
+    options = subI.sort((a, b) => a.page-b.page).sort((a,b) => a.step-b.step)
+      .map(pc => ({ id: pc.id, name: "Page:" + pc.page.toString() + " / Step:" + pc.step.toString(), subOptions: [], selected: true }));
     return options;
   }
-  static subBuildStep(elements: IElement[]): IFilterOptions[] {
-    let options: IFilterOptions[] = [];
-    let subI: ISubInventory[] = [];
-    // Filter the unique Categories objects of elements in a set
-    elements.forEach(e => {
-      e.sub_inventory.forEach(i => {
-        if (!subI.some(item => item.step === i.step)) {
-          subI.push(i);
-        }
-      })
-    });
-    //sort the catergories map the sorted list into the options
-    options = subI.sort((a, b) => a.step-b.step)
-      .map(pc => ({ id: pc.id, name: pc.step.toString(), selected: true }));
 
-    return options;
-  }
 
   static applyFilter(elementsBase: IElement[], filterOptionGroups: IFilterOptionGroups): IElement[] {
     let filteredElements: IElement[] = [];
@@ -122,7 +116,7 @@ export default class filterOption {
     const colorIds = [...new Set(filterOptionGroups.partColorOptions.filter(item=>item.selected===true).map(item => item.id))];
     const storageBins = [...new Set(filterOptionGroups.partStorageOptions.filter(item => item.selected === true).map(item => item.name))];
 
-    const subBuildNameCount = filterOptionGroups.subBuildNameOptions.length;
+    const subBuildNameCount = filterOptionGroups.subBuildOptions.length;
 
 
     //base filter
@@ -139,17 +133,25 @@ export default class filterOption {
   static SubBuildFilter(elements: IElement[], filterOptionGroups: IFilterOptionGroups): IElement[] {
     let filteredElements: IElement[] = [];
 
-    const subBuildNames = [...new Set(filterOptionGroups.subBuildNameOptions.filter(item => item.selected === true).map(item => item.name))];
-    const subBuildPages = [...new Set(filterOptionGroups.subBuildPageOptions.filter(item => item.selected === true).map(item => item.name))];
-    const subBuildSteps = [...new Set(filterOptionGroups.subBuildStepOptions.filter(item => item.selected === true).map(item => item.name))];
+    const subBuildNameItems = filterOptionGroups.subBuildOptions.filter(item => item.selected === true);
+    const subBuildPageStepItems: IFilterOptions[] = [];
+    subBuildNameItems.forEach(obj => subBuildPageStepItems.push(...obj.subOptions.filter(i => i.selected == true)));
+
+
+    const subBuildNames = [...new Set(subBuildNameItems.map(item => item.name))];
+    const subBuildPageSteps = [...new Set(subBuildPageStepItems.map(item => item.name))];
+    //const subBuildSteps = [...new Set(filterOptionGroups.subBuildStepOptions.filter(item => item.selected === true).map(item => item.name))];
 
     //filter out the sub_inv objects of each element
     //remove any elements that do not have a subbuild item any longer, and calculate the new quantity
     elements.forEach(e => {
       let subbuild: ISubInventory[] = e.sub_inventory
         .filter(i => subBuildNames.includes(i.subBuildName))
-        .filter(i => subBuildPages.includes(i.page.toString()))
-        .filter(i => subBuildSteps.includes(i.step.toString()));
+        .filter(i => subBuildPageSteps.includes(`Page:${i.page} / Step:${i.step}`))
+        //.filter(i => subBuildSteps.includes(i.step.toString()));
+
+    
+
 
       if (subbuild.length > 0) {
         const eItem = structuredClone(e);

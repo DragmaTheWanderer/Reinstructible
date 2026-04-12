@@ -28,37 +28,33 @@ export class FilterComponent implements OnInit, OnChanges {
     partCategoryOptions: [],
     partColorOptions: [],
     partStorageOptions: [],
-    subBuildNameOptions: [],
-    subBuildPageOptions: [],
-    subBuildStepOptions: [],
+    subBuildOptions: [],
     categoryOptionType: EFilterType.category,
     colorOptionType: EFilterType.color,
     storageOptionType: EFilterType.storage,
-    subBuildNameOptionType: EFilterType.subBuildName,
-    subBuildPageOptionType: EFilterType.subBuildPage,
-    subBuildStepOptionType: EFilterType.subBuildStep,
-
+    subBuildOptionType: EFilterType.subBuild,
   };
 
   public onOptionsSent = output<IFilterOptionGroups>();
+  public onSetSubBuild = output<string>()
 
+  public onCurrentGrouping = output<EDisplayGroup>();
+  public inCurrentGrouping = input<EDisplayGroup>(EDisplayGroup.Category);
+  public currentGrouping: EDisplayGroup = this.inCurrentGrouping();
+  public currentGroupText = EDisplayGroup[this.inCurrentGrouping()];
 
-  //enumDisplayMode: typeof EDisplayMode = EDisplayMode;
+  enumDisplayMode: typeof EDisplayMode = EDisplayMode;
 
   //public filterType = input<EFilterType>();
   //public optionGrpups = input<IFilterOptionGroups>();
-  //public inCurrentGrouping = input<EDisplayGroup>(EDisplayGroup.Category);
 
-  
+
+
   //public onOptionsStringSent = output<string[]>();
-  //public onDisplayMode = output<EDisplayMode>();
-  //public onCurrentGrouping = output<EDisplayGroup>();
-  //public onSetSubBuild = output<string>()
+  public onDisplayMode = output<EDisplayMode>();
+  
 
-  //public onFileOption = output<EFileOption>();
-
-  //public currentGrouping: EDisplayGroup = this.inCurrentGrouping();
-  //public currentGroupText = EDisplayGroup[this.inCurrentGrouping()];
+  public onFileOption = output<EFileOption>();
 
   //constructor() {
   //  this.onDisplayMode.emit(EDisplayMode.TV);
@@ -72,43 +68,20 @@ export class FilterComponent implements OnInit, OnChanges {
 
     if (this.elementList()!.length > 0) {
       this.elements = this.elementList()!;
-      this.filterOptionGroups.partCategoryOptions = filterOption.partCategory(this.elements);
-      this.filterOptionGroups.partColorOptions = filterOption.partColor(this.elements);
-      this.filterOptionGroups.partStorageOptions = filterOption.partStorage(this.elements);
-      this.filterOptionGroups.subBuildNameOptions = filterOption.subBuildName(this.elements);
-      this.filterOptionGroups.subBuildPageOptions = filterOption.subBuildPage(this.elements);
-      this.filterOptionGroups.subBuildStepOptions = filterOption.subBuildStep(this.elements);
+      if (this.filterOptionGroups.partCategoryOptions.length == 0) {
+        this.filterOptionGroups.partCategoryOptions = filterOption.partCategory(this.elements);
+        this.filterOptionGroups.partColorOptions = filterOption.partColor(this.elements);
+        this.filterOptionGroups.partStorageOptions = filterOption.partStorage(this.elements);
+        this.filterOptionGroups.subBuildOptions = filterOption.subBuild(this.elements);
+      }
     }
 
-    
-  //  this.currentGrouping = this.inCurrentGrouping();
-  //  this.currentGroupText = EDisplayGroup[this.inCurrentGrouping()];
-  //  this.options = this.optionGrpups()?.partCategoryOptions;
+  
   }
 
   public filter(item: { filterType: EFilterType, options: IFilterOptions[] }) {
     let type: EFilterType = item.filterType;
     let fo: IFilterOptions[] = item.options;
-    switch (type) {
-      case EFilterType.category:
-        this.filterOptionGroups.partCategoryOptions = fo;
-        break;
-      case EFilterType.color:
-        this.filterOptionGroups.partColorOptions = fo;
-        break;
-      case EFilterType.storage:
-        this.filterOptionGroups.partStorageOptions = fo;
-        break;
-      case EFilterType.subBuildName:
-        this.filterOptionGroups.subBuildNameOptions = fo;
-        break;
-      case EFilterType.subBuildPage:
-        this.filterOptionGroups.subBuildPageOptions = fo;
-        break;
-      case EFilterType.subBuildStep:
-        this.filterOptionGroups.subBuildStepOptions = fo;
-        break;
-    }
     this.onOptionsSent.emit(this.filterOptionGroups);
   }
 
@@ -135,64 +108,98 @@ export class FilterComponent implements OnInit, OnChanges {
   ////}
 
   //public options = this.optionGrpups()?.partCategoryOptions;
-  //selectAll() {
-  //  this.options!.forEach((x) => (x.selected = true));
-  //  this.elementFilter();
-  //}
-  //clearSelections() {
-  //  this.options!.forEach((x) => (x.selected = false));
-  //  this.elementFilter();
-  //}
-  //toggleSelections() {
-  //  this.options!.forEach((x) => (x.selected = !x.selected));
-  //  this.elementFilter();
-  //}
-  //toggleGrouping() {
-  //  if (this.currentGrouping == Object.keys(EDisplayGroup).length / 2 - 1) {
-  //    this.currentGrouping = 0;
-  //  } else {
-  //    this.currentGrouping++;
-  //  }
-  //  this.currentGroupText = EDisplayGroup[this.currentGrouping];
-  //  this.onCurrentGrouping.emit(this.currentGrouping);
-  //}
-  //elementFilter() {
-  //  //this determins if the option is numeric or string based.
-  //  switch (this.filterType()) {
-  //    case EFilterType.storage:
-  //      let filteredStringIds = this.options!
-  //        .filter((f) => f.selected)
-  //        .flatMap((o) => o.name);
-  //      this.onOptionsStringSent.emit(filteredStringIds); //emit the array
-  //      break;
-  //    default:
-  //      let filteredIds = this.options!
-  //        .filter((f) => f.selected)
-  //        .flatMap((o) => o.id);
-  //      this.onOptionsSent.emit(filteredIds); //emit the array
-  //      break;
-  //  }
-  //}
-  
+  selectAll() {
+    switch (this.selectedControllTab()) {
+      case EFilterType.category:
+        this.filterOptionGroups.partCategoryOptions.forEach((x) => (x.selected = true));
+        break;
+      case EFilterType.color:
+        this.filterOptionGroups.partColorOptions.forEach((x) => (x.selected = true));
+        break;
+      case EFilterType.storage:
+        this.filterOptionGroups.partStorageOptions.forEach((x) => (x.selected = true));
+        break;
+      case EFilterType.subBuild:
+        this.filterOptionGroups.subBuildOptions.forEach(x => {
+          x.selected = true;
+          x.subOptions.forEach(y => y.selected = true);
+        });
+        break;
+    }
+    this.onOptionsSent.emit(this.filterOptionGroups);
+  }
+  clearSelections() {
+    switch (this.selectedControllTab()) {
+      case EFilterType.category:
+        this.filterOptionGroups.partCategoryOptions.forEach((x) => (x.selected = false));
+        break;
+      case EFilterType.color:
+        this.filterOptionGroups.partColorOptions.forEach((x) => (x.selected = false));
+        break;
+      case EFilterType.storage:
+        this.filterOptionGroups.partStorageOptions.forEach((x) => (x.selected = false));
+        break;
+      case EFilterType.subBuild:
+        this.filterOptionGroups.subBuildOptions.forEach(x => {
+          x.selected = false
+          x.subOptions.forEach(y => y.selected = false);
+        });
+        break;
+    }
+    this.onOptionsSent.emit(this.filterOptionGroups);
+  }
+  toggleSelections() {
+    switch (this.selectedControllTab()) {
+      case EFilterType.category:
+        this.filterOptionGroups.partCategoryOptions.forEach((x) => (x.selected = !x.selected));
+        break;
+      case EFilterType.color:
+        this.filterOptionGroups.partColorOptions.forEach((x) => (x.selected = !x.selected));
+        break;
+      case EFilterType.storage:
+        this.filterOptionGroups.partStorageOptions.forEach((x) => (x.selected = !x.selected));
+        break;
+      case EFilterType.subBuild:
+        this.filterOptionGroups.subBuildOptions.forEach(x => {
+          x.selected = !x.selected
+          x.subOptions.forEach(y => {
+            y.selected = !y.selected
+            if (y.selected) { x.selected = true; }
+          });
+        });
+        break;
+    }
+    this.onOptionsSent.emit(this.filterOptionGroups);
+  }
+  toggleGrouping() {
+    if (this.currentGrouping == Object.keys(EDisplayGroup).length / 2 - 1) {
+      this.currentGrouping = 0;
+    } else {
+      this.currentGrouping++;
+    }
+    this.currentGroupText = EDisplayGroup[this.currentGrouping];
+    this.onCurrentGrouping.emit(this.currentGrouping);
+  }
+ 
 
-  //private httpOptions = {
-  //  headers: new HttpHeaders({
-  //    'Content-Type': 'application/json',
-  //  }),
-  //  observe: 'response' as 'response', // To get the full HttpResponse
-  //};
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+    observe: 'response' as 'response', // To get the full HttpResponse
+  };
 
-  //fileSave() {
-  //  this.onFileOption.emit(EFileOption.Save);
-  //}
-  //fileLoad() {
-  //  this.onFileOption.emit(EFileOption.Load);
-  //}
-  //setDisplayMode(value: EDisplayMode) {
-  //  this.onDisplayMode.emit(value);
-  //}
-  //setSubBuild() {
-  //  this.onSetSubBuild.emit("SetSubBuild");
-  //}
+  fileSave() {
+    this.onFileOption.emit(EFileOption.Save);
+  }
+  fileLoad() {
+    this.onFileOption.emit(EFileOption.Load);
+  }
+  setDisplayMode(value: EDisplayMode) {
+    this.onDisplayMode.emit(value);
+  }
+  setSubBuild() {
+    this.onSetSubBuild.emit("SetSubBuild");
+  }
   protected readonly title = signal('reinstructible.client');
 }

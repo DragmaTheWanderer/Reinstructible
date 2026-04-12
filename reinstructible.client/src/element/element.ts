@@ -115,15 +115,11 @@ export class Element implements OnInit, OnChanges {
     partCategoryOptions: [],
     partColorOptions: [],
     partStorageOptions: [],
-    subBuildNameOptions: [],
-    subBuildPageOptions: [],
-    subBuildStepOptions: [],
+    subBuildOptions: [],
     categoryOptionType: EFilterType.category,
     colorOptionType: EFilterType.color,
     storageOptionType: EFilterType.storage,
-    subBuildNameOptionType: EFilterType.subBuildName,
-    subBuildPageOptionType: EFilterType.subBuildPage,
-    subBuildStepOptionType: EFilterType.subBuildStep,
+    subBuildOptionType: EFilterType.subBuild,
   };
 
   /**
@@ -157,6 +153,7 @@ export class Element implements OnInit, OnChanges {
       this.filterOptionGroups.partStorageOptions.push({
         id: newStorages.bin == 'Unassigned' ? -1 : Number(newStorages.bin),
         name: newStorages.bin,
+        subOptions: [],
         selected: true
       })
       this.filterOptionGroups.partStorageOptions.sort((a, b) => a.name.localeCompare(b.name));
@@ -240,9 +237,7 @@ export class Element implements OnInit, OnChanges {
         this.filterOptionGroups.partCategoryOptions = filterOption.partCategory(this.elements);
         this.filterOptionGroups.partColorOptions = filterOption.partColor(this.elements);
         this.filterOptionGroups.partStorageOptions = filterOption.partStorage(this.elements);
-        this.filterOptionGroups.subBuildNameOptions = filterOption.subBuildName(this.elements);
-        this.filterOptionGroups.subBuildPageOptions = filterOption.subBuildPage(this.elements);
-        this.filterOptionGroups.subBuildStepOptions = filterOption.subBuildStep(this.elements);
+        this.filterOptionGroups.subBuildOptions = filterOption.subBuild(this.elements);
 
       
         this.Loaded = true;

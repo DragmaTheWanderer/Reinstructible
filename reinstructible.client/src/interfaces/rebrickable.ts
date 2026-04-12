@@ -73,22 +73,21 @@ interface IFilterOptionGroups {
   partCategoryOptions: IFilterOptions[];
   partColorOptions: IFilterOptions[];
   partStorageOptions: IFilterOptions[];
-  subBuildNameOptions: IFilterOptions[];
-  subBuildPageOptions: IFilterOptions[];
-  subBuildStepOptions: IFilterOptions[];
+  subBuildOptions: IFilterOptions[];
 
   categoryOptionType: EFilterType;
   colorOptionType: EFilterType;
   storageOptionType: EFilterType;
-  subBuildNameOptionType: EFilterType;
-  subBuildPageOptionType: EFilterType;
-  subBuildStepOptionType: EFilterType;
+  subBuildOptionType: EFilterType;
 }
 
 interface IFilterOptions {
   id: number;
   name: string;
+  subOptions: IFilterOptions[];
   selected: boolean;
+  compacted?: boolean;
+
 }
 interface ITheme {
   id: number;

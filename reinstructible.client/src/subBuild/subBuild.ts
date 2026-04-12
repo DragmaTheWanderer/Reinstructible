@@ -133,7 +133,7 @@ export class SubBuild implements OnInit {
         this.pageStepGroups[this.pageStepGroups.length - 1].grouping;
       pageStepItem = {
         page: lastPageStepItem.page,
-        step: lastPageStepItem.step + 1,
+        step: Number(lastPageStepItem.step) + 1,
         subBuildName: lastPageStepItem.subBuildName,
       };
     }
@@ -156,8 +156,8 @@ export class SubBuild implements OnInit {
     if (this.pageStepGroups.length > 0) {
       let lastPageStepItem = this.pageStepGroups[this.pageStepGroups.length - 1].grouping;
       pageStepItem = {
-        page: lastPageStepItem.page + 1,
-        step: lastPageStepItem.step + 1,
+        page: Number(lastPageStepItem.page) + 1,
+        step: Number(lastPageStepItem.step) + 1,
         subBuildName: lastPageStepItem.subBuildName,
       };
     }
@@ -180,7 +180,7 @@ export class SubBuild implements OnInit {
     if (this.pageStepGroups.length > 0) {
       let lastPageStepItem = this.pageStepGroups[this.pageStepGroups.length - 1].grouping;
       pageStepItem = {
-        page: lastPageStepItem.page + 1,
+        page: Number(lastPageStepItem.page) + 1,
         step: 1,
         subBuildName: this.legoSet.name!,
       };
@@ -236,7 +236,7 @@ export class SubBuild implements OnInit {
       // check if a subuild exsists fro the page/step
       // if so then return that, if not create a new one.
       let subInventory: ISubInventory | undefined = value.sub_inventory.find(
-        (s) => s.page == group.page && s.step == group.step,
+        (s) => s.page == group.page && s.step == group.step && s.subBuildName == group.subBuildName,
       );
       if (subInventory == undefined) {
         subInventory = {

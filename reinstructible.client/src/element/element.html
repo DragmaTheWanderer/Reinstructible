@@ -5,16 +5,17 @@
 <!--sidebar-->
   <div class="w3-sidebar w3-light-grey w3-bar-block" style="width: 400px">
     
-      <filterComponent [elementList]="elementsBase"
-      (onOptionsSent)="filter($event)"
-      [(filterType)]="options.filterType"
-
-                       ></filterComponent>
-      <!--(onDisplayMode)="setDisplayMode($event)"
+    <filterComponent  [elementList]="elementsBase"
+                      (onOptionsSent)="filter($event)"
+                      [(filterType)]="options.filterType"
+                      (onDisplayMode)="setDisplayMode($event)"
+                      (onFileOption)="triggerFileOption($event)"
+                      (onCurrentGrouping)="setCurrentGrouping($event)"
+                      (onSetSubBuild)="setSubBuild($event)"
+                     ></filterComponent>
+      <!--
       (onOptionsStringSent)="partStorageFilter($event)"
-        (onFileOption)="triggerFileOption($event)"
-      (onCurrentGrouping)="setCurrentGrouping($event)"
-      (onSetSubBuild)="setSubBuild($event)"-->
+        -->
 
       <!--@switch (selectedControllTab()) {
   @case (categoryOptionType) {-->

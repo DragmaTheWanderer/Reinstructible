@@ -91,6 +91,7 @@ export class LegoSet_owned implements OnInit {
         this.setThemeOptions = this.themes.map((t) => ({
           id: t.id,
           name: t.name,
+          subOptions: [],
           selected: false,
         }));
         this.setsLoaded = true;

@@ -3,11 +3,41 @@
   <div>
     <ul class="w3-ul w3-hoverable">
       @for (option of options(); track option) {
-      <li class="w3-left-align" (click)="onSelected(option)">
+      <li class="w3-left-align" (click)="onSelected(option, $event)">
         <label>
           <input class="w3-check" type="checkbox" [(ngModel)]="option.selected" />
           {{ option.name }}
         </label>
+        @if (option.subOptions.length>0){
+        <span class="w3-right">
+          @if(option.compacted){
+          <app-button icon="fa-solid fa-angles-down"
+                      color="w3-gray"
+                      toolTip="Expand Sub-options"
+                      toolTipClass="btn-tooltip-right"
+                      (clickEvent)="expandCompact(option, $event)"></app-button>
+          } @else {
+          <app-button icon="fa-solid fa-angles-up"
+                      color="w3-gray"
+                      toolTip="Compact Sub-options"
+                      toolTipClass="btn-tooltip-right"
+                      (clickEvent)="expandCompact(option, $event)"></app-button>
+        
+          }
+        </span>
+        }
+        <ul class="w3-ul w3-hoverable">
+          @if(!option.compacted){
+          @for (sub of option.subOptions; track sub) {
+          <li class="w3-left-align" (click)="onSubSelected(sub, option, $event)">
+            <label>
+              <input class="w3-check" type="checkbox" [(ngModel)]="sub.selected" />
+              {{ sub.name }}
+            </label>
+          </li>
+          }
+          }
+        </ul>
       </li>
       }
     </ul>

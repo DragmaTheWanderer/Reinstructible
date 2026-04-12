@@ -1,5 +1,5 @@
 <!--Tab Header-->
-<div class="w3-grid" style="grid-template-columns: auto auto auto">
+<div class="w3-grid" style="grid-template-columns: auto auto auto auto">
   <div>
     <a href="javascript:void(0)" (click)="openControlTab(filterOptionGroups.categoryOptionType)">
       <div class="tablink w3-bottombar w3-hover-light-grey w3-padding"
@@ -25,29 +25,14 @@
     </a>
   </div>
   <div>
-    <a href="javascript:void(0)" (click)="openControlTab(filterOptionGroups.subBuildNameOptionType)">
+    <a href="javascript:void(0)" (click)="openControlTab(filterOptionGroups.subBuildOptionType)">
       <div class="tablink w3-bottombar w3-hover-light-grey w3-padding"
-           [ngClass]="borderColor(filterOptionGroups.subBuildNameOptionType)">
-        Sub-Build Name
+           [ngClass]="borderColor(filterOptionGroups.subBuildOptionType)">
+        Sub-Build
       </div>
     </a>
   </div>
-  <div>
-    <a href="javascript:void(0)" (click)="openControlTab(filterOptionGroups.subBuildPageOptionType)">
-      <div class="tablink w3-bottombar w3-hover-light-grey w3-padding"
-           [ngClass]="borderColor(filterOptionGroups.subBuildPageOptionType)">
-        Sub-Build Page
-      </div>
-    </a>
-  </div>
-  <div>
-    <a href="javascript:void(0)" (click)="openControlTab(filterOptionGroups.subBuildStepOptionType)">
-      <div class="tablink w3-bottombar w3-hover-light-grey w3-padding"
-           [ngClass]="borderColor(filterOptionGroups.subBuildStepOptionType)">
-        Sub-Build Step
-      </div>
-    </a>
-  </div>
+  
 </div>
 
 <!--Body-->
@@ -74,21 +59,9 @@
 
     }
 
-    @case (filterOptionGroups.subBuildNameOptionType) {
-    <cardComponent [options]="filterOptionGroups.subBuildNameOptions"
-                   [filterType]="filterOptionGroups.subBuildNameOptionType"
-                   (onOptionsSent)="filter($event)"></cardComponent>
-
-    }
-    @case (filterOptionGroups.subBuildPageOptionType) {
-    <cardComponent [options]="filterOptionGroups.subBuildPageOptions"
-                   [filterType]="filterOptionGroups.subBuildPageOptionType"
-                   (onOptionsSent)="filter($event)"></cardComponent>
-
-    }
-    @case (filterOptionGroups.subBuildStepOptionType) {
-    <cardComponent [options]="filterOptionGroups.subBuildStepOptions"
-                   [filterType]="filterOptionGroups.subBuildStepOptionType"
+    @case (filterOptionGroups.subBuildOptionType) {
+    <cardComponent [options]="filterOptionGroups.subBuildOptions"
+                   [filterType]="filterOptionGroups.subBuildOptionType"
                    (onOptionsSent)="filter($event)"></cardComponent>
 
     }
@@ -96,7 +69,7 @@
   </div>
 </div>
   <!--Controlls-->
-  <!--<div class="w3-container">
+  <div class="w3-container">
       <span class="w3-display-bottommiddle element-footer">
         <span class="w3-left">
           <app-button icon="fa-regular fa-square-check"
@@ -163,4 +136,4 @@
         </span>
       </span>
 
-  </div>-->
+  </div>
