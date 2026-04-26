@@ -44,28 +44,39 @@ export class SubBuildItem implements OnInit, OnChanges {
     this.pageStep.selected = true;
   }
 
-  onPageChange(value: string) {
+  onPageChange(event: FocusEvent) {
+    let value: number = this.pageStep.grouping.page;
     //make the pageStep mods needed
+
+    //ensure the only items that get changed are the sub steps for the item in question
     this.pageStep.elements.forEach(el => {
       el.sub_inventory.forEach(si => {
+        if (si.step == this.pageStep.grouping.step &&
+            si.subBuildName == this.pageStep.grouping.subBuildName)
         si.page = Number(value);
       })
     })
     this.pageStepChangeEvent.emit(this.pageStep);
   }
-  onStepChange(value: string) {
+  onStepChange(event: FocusEvent) {
+    let value: number = this.pageStep.grouping.step;
     //make the pageStep mods needed
     this.pageStep.elements.forEach(el => {
       el.sub_inventory.forEach(si => {
+        if (si.page == this.pageStep.grouping.page &&
+            si.subBuildName == this.pageStep.grouping.subBuildName)
         si.step = Number(value);
       })
     })
     this.pageStepChangeEvent.emit(this.pageStep);
   }
-  onNameChange(value: string) {
+  onNameChange(event: FocusEvent) {
+    let value: string = this.pageStep.grouping.subBuildName
     //make the pageStep mods needed
     this.pageStep.elements.forEach(el => {
       el.sub_inventory.forEach(si => {
+        if (si.step == this.pageStep.grouping.step &&
+            si.page == this.pageStep.grouping.page)
         si.subBuildName = value;
       })
     })

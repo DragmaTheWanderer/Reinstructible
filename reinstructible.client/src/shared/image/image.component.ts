@@ -12,7 +12,8 @@ export class ImageComponent {
   @Input() img_url: string = ''; 
   @Input() alt_img_url: string = ''; 
   @Input() id: string = ''; 
-  @Input() imgClass: string = ''; 
+  @Input() imgClass: string = '';
+  @Input() toolTip: string = '';
   @Output() clickEvent = new EventEmitter<Event>(); // Output event for button clicks
 
   onClick(e: Event): void {

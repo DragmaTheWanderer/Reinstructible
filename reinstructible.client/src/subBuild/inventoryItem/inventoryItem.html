@@ -1,9 +1,11 @@
+<!--@if(!hideSelectedInventory && countLeft === 0){-->
 <div class="w3-border-bottom">
   <app-imageCount img_url="{{ element.part_img_url }}"
                   alt_img_url="{{ element.alt_part_img_url }}"
                   id="{{ element.element_id }}"
                   countLeft="{{ countLeft }}"
-                  countTotal="{{ element.quantity }}">
+                  countTotal="{{ element.quantity }}"
+                  toolTip="{{ element.color.name }}">
   </app-imageCount>
 
   <app-button icon="fa-solid fa-plus" color="w3-dark-grey"
@@ -18,3 +20,5 @@
               (clickEvent)="removeFromSelected()">
   </app-button>
 </div>
+<!--}  -->
+

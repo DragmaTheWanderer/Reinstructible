@@ -16,6 +16,7 @@ export class ImageCountComponent {
   @Input() img_url: string = '';
   @Input() alt_img_url: string = '';
   @Input() id: string = '';
+  @Input() toolTip: string = '';
   imgClass: string = 'element-img';
   @Output() clickEvent = new EventEmitter<Event>(); // Output event for button clicks
 

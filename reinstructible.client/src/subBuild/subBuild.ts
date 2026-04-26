@@ -32,6 +32,7 @@ export class SubBuild implements OnInit {
   public partCategories: IPartCategory[] = [];
   public selectedCategory = -1;
   public Loaded: boolean = false;
+  public hideSelectedInventory: boolean = true;
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -363,6 +364,37 @@ export class SubBuild implements OnInit {
         loading = false;
       },
     });
+  }
+
+  isInventoryGroupHidden(g: IElementGroup): boolean {
+    let result = false;
+    let elementsVisable: number = g.elements.length;
+    if (this.hideSelectedInventory) {
+      //look at the inventory totals and compair it to the quantity if the result is 0 then return true
+      g.elements.forEach(e => {
+        if (this.isInventoryItemHidden(e)) {
+          elementsVisable -=1;
+        }
+      })
+    }  
+    result = elementsVisable==0;
+    return result;
+  }
+
+  isInventoryItemHidden(e: IElement): boolean {
+    let result = false;
+    if (this.hideSelectedInventory) {
+      //look at the inventory totals and compair it to the quantity if the result is 0 then return true
+      let left = e.quantity;
+      if (e.sub_inventory != null) {
+        if (e.sub_inventory.length > 0) {
+          const sum: number = e.sub_inventory.reduce((n, { quantity }) => n + quantity, 0);
+          left -= sum;
+        }
+      }
+      if (left == 0) result = true;
+    }
+    return result;
   }
 
   scrollToSubBuildBottom(elementName: string): void {

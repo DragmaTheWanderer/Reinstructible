@@ -128,7 +128,8 @@ return elementCards;
           subBuildName: sub.subBuildName
         }
         let test = subInventoryGroup.find(x => x.page == SubInventoryPartialItem.page
-          && x.step == SubInventoryPartialItem.step);
+          && x.step == SubInventoryPartialItem.step
+          && x.subBuildName == SubInventoryPartialItem.subBuildName);
         if (test == undefined) {
           subInventoryGroup.push(SubInventoryPartialItem);
         }
