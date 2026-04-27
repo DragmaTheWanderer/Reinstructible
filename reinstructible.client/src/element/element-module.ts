@@ -7,19 +7,19 @@ import { ElementRoutingModule } from './element-routing-module';
 import { Element } from './element';
 
 @NgModule({
-  declarations: [
-    
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ElementRoutingModule,
-    Element,
-  ],
-  providers: [
-    provideHttpClient(),
-    provideBrowserGlobalErrorListeners()
-  ],
-    bootstrap: [Element]
+ declarations: [
+  
+ ],
+ imports: [
+  BrowserModule,
+  FormsModule,
+  ElementRoutingModule,
+  Element,
+ ],
+ providers: [
+  provideHttpClient(),
+  provideBrowserGlobalErrorListeners()
+ ],
+  bootstrap: [Element]
 })
 export class ElementModule { }

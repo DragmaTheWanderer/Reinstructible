@@ -1,24 +1,24 @@
 <!--@if(!hideSelectedInventory && countLeft === 0){-->
 <div class="w3-border-bottom">
-  <app-imageCount img_url="{{ element.part_img_url }}"
-                  alt_img_url="{{ element.alt_part_img_url }}"
-                  id="{{ element.element_id }}"
-                  countLeft="{{ countLeft }}"
-                  countTotal="{{ element.quantity }}"
-                  toolTip="{{ element.color.name }}">
-  </app-imageCount>
+ <app-imageCount img_url="{{ element.part_img_url }}"
+         alt_img_url="{{ element.alt_part_img_url }}"
+         id="{{ element.element_id }}"
+         countLeft="{{ countLeft }}"
+         countTotal="{{ element.quantity }}"
+         toolTip="{{ element.color.name }}">
+ </app-imageCount>
 
-  <app-button icon="fa-solid fa-plus" color="w3-dark-grey"
-              toolTip="Add element to Selected" toolTipClass="btn-tooltip-left"
-              [disabled]="isPlusDisabled()"
-              (clickEvent)="addToSelected()">
-  </app-button>
-  /
-  <app-button icon="fa-solid fa-minus" color="w3-dark-grey"
-              toolTip="Remove element from selected" toolTipClass="btn-tooltip-left"
-              [disabled]="isMinusDisabled()"
-              (clickEvent)="removeFromSelected()">
-  </app-button>
+ <app-button icon="fa-solid fa-plus" color="w3-dark-grey"
+       toolTip="Add element to Selected" toolTipClass="btn-tooltip-left"
+       [disabled]="isPlusDisabled()"
+       (clickEvent)="addToSelected()">
+ </app-button>
+ /
+ <app-button icon="fa-solid fa-minus" color="w3-dark-grey"
+       toolTip="Remove element from selected" toolTipClass="btn-tooltip-left"
+       [disabled]="isMinusDisabled()"
+       (clickEvent)="removeFromSelected()">
+ </app-button>
 </div>
-<!--}  -->
+<!--} -->
 

@@ -7,114 +7,116 @@ using System.Xml.Linq;
 
 namespace Reinstructible.Server.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PartController(IHttpClientFactory httpClientFactory, SqliteContext context) : ControllerBase
+  [Route("api/[controller]")]
+  [ApiController]
+  public class PartController(IHttpClientFactory httpClientFactory, SqliteContext context) : ControllerBase
+  {
+    private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+    private readonly SqliteContext _context = context;
+
+    [HttpGet]
+    public async Task<Part[]> GetAsync(string id = "", string param = "")
     {
-        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-        private readonly SqliteContext _context = context;
+      string type = string.IsNullOrEmpty(param)? "parts" : "sets" ;
+      Part[]? result;
+      var service = new RebrickableAPIService(_httpClientFactory);
 
-        [HttpGet]
-        public async Task<Part[]> GetAsync(string id = "", string param = "")
-        {
-            string type = string.IsNullOrEmpty(param)? "parts" : "sets" ;
-            Part[]? result;
-            var service = new RebrickableAPIService(_httpClientFactory);
-
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                var resultStr = await service.GetRecordsAsync(type);
-                Parts? detail = JsonSerializer.Deserialize<Parts>(resultStr);
-                result = detail!.results!;
-            }
-            else
-            {
-                var resultStr = string.IsNullOrEmpty(param) ?
-                    await service.GetRecordByIdAsync(type, id): 
-                    await service.GetRecordByIdAsync(type, id, param);
-                Part? detail = JsonSerializer.Deserialize<Part>(resultStr);
-                result = [detail!];
-            }
-            return result;
-        }
-
-        public async Task SaveParts(Part[] parts)
-        {
-            //Check each part to see if it has been saved
-            foreach (var part in parts) {
-                Part? testPart = GetSavedPartByItem(part);
-                if (testPart == null) {
-                    //no part saved, We have the Part so save it
-                    CreateSavedItem(part);
-                }
-            }
-        }
-        //CRUD Methods
-        public void CreateSavedItem(Part part)
-        {
-            DBModels.Part dbPart = new(part);
-            _context.Parts.Add(dbPart);
-            _context.SaveChanges();
-        }
-        public List<Part> ReadSavedItems()
-        {
-            List<Part> result = [];
-            var dbPart = _context.Parts.OrderBy(x => x.name).ToList();
-
-            foreach (var item in dbPart) {
-                result.Add(new Part(item));
-            }
-
-            return result;
-        }
-        public Part? GetSavedPartByItem(Part part)
-        {
-            Part? result = null;
-            var dbPart = _context.Parts.Where(x => x.part_num == part.part_num);
-
-            if (!dbPart.Any()) return result;
-
-            result = new Part(dbPart.FirstOrDefault()!);
-            return result;
-        }
-        public Part? GetSavedPartById(string part_num)
-        {
-            Part? result = null;
-            //var dbPart = _context.Parts.Where(x => x.part_num == part_num);
-            var dbPart = (from p in _context.Parts
-                          where p.part_num == part_num
-                          join pc in _context.PartCategorys
-                          on p.part_cat_id equals pc.id into ppc
-                          from pc in ppc.DefaultIfEmpty()
-                          select new DBModels.Part
-                          {
-                              part_num = p.part_num,
-                              name = p.name,
-                              part_cat_id = p.part_cat_id,
-                              part_cat_name = pc.name,
-                              year_from = p.year_from,
-                              year_to = p.year_to,
-                              part_url = p.part_url
-                          });
-                
-              
-            if (!dbPart.Any()) return result;
-
-            result = new Part(dbPart.FirstOrDefault()!);
-            return result;
-        }
-        public void UpdateSavedItem(Part part)
-        {
-            DBModels.Part dbPart = new(part);
-            _context.Parts.Update(dbPart);
-            _context.SaveChanges();
-        }
-        public void DeleteSavedItem(Part part)
-        {
-            DBModels.Part dbPart = new(part);
-            _context.Parts.Remove(dbPart);
-            _context.SaveChanges();
-        }
-
+      if (string.IsNullOrWhiteSpace(id))
+      {
+        var resultStr = await service.GetRecordsAsync(type);
+        Parts? detail = JsonSerializer.Deserialize<Parts>(resultStr);
+        result = detail!.results!;
+      }
+      else
+      {
+        var resultStr = string.IsNullOrEmpty(param) ?
+          await service.GetRecordByIdAsync(type, id): 
+          await service.GetRecordByIdAsync(type, id, param);
+        Part? detail = JsonSerializer.Deserialize<Part>(resultStr);
+        result = [detail!];
+      }
+      return result;
     }
+
+    public async Task SaveParts(Part[] parts)
+    {
+      //Check each part to see if it has been saved
+      foreach (var part in parts) {
+        Part? testPart = GetSavedPartById(part.part_num!);
+        if (testPart == null) {
+          //no part saved, We have the Part so save it
+          CreateSavedItem(part);
+        }
+      }
+    }
+    //CRUD Methods
+    public void CreateSavedItem(Part part)
+    {
+      DBModels.Part dbPart = new(part);
+      var sql = "INSERT INTO Parts (Name, Age) VALUES (@name, @age)";
+
+      _context.Parts.Add(dbPart);
+      _context.SaveChanges();
+    }
+    public List<Part> ReadSavedItems()
+    {
+      List<Part> result = [];
+      var dbPart = _context.Parts.OrderBy(x => x.name).ToList();
+
+      foreach (var item in dbPart) {
+        result.Add(new Part(item));
+      }
+
+      return result;
+    }
+    //public Part? GetSavedPartByItem(Part part)
+    //{
+    //  Part? result = null;
+    //  var dbPart = _context.Parts.Where(x => x.part_num == part.part_num);
+
+    //  if (!dbPart.Any()) return result;
+
+    //  result = new Part(dbPart.FirstOrDefault()!);
+    //  return result;
+    //}
+    public Part? GetSavedPartById(string part_num)
+    {
+      Part? result = null;
+      //var dbPart = _context.Parts.Where(x => x.part_num == part_num);
+      var dbPart = (from p in _context.Parts
+             where p.part_num == part_num
+             join pc in _context.PartCategorys
+             on p.part_cat_id equals pc.id into ppc
+             from pc in ppc.DefaultIfEmpty()
+             select new DBModels.Part
+             {
+               part_num = p.part_num,
+               name = p.name,
+               part_cat_id = p.part_cat_id,
+               part_cat_name = pc.name,
+               year_from = p.year_from,
+               year_to = p.year_to,
+               part_url = p.part_url
+             });
+        
+       
+      if (!dbPart.Any()) return result;
+
+      result = new Part(dbPart.FirstOrDefault()!);
+      return result;
+    }
+    public void UpdateSavedItem(Part part)
+    {
+      DBModels.Part dbPart = new(part);
+      _context.Parts.Update(dbPart);
+      _context.SaveChanges();
+    }
+    public void DeleteSavedItem(Part part)
+    {
+      DBModels.Part dbPart = new(part);
+      _context.Parts.Remove(dbPart);
+      _context.SaveChanges();
+    }
+
+  }
 }

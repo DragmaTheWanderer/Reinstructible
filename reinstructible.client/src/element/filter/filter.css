@@ -1,16 +1,16 @@
 .element-controll-container {
-  height: 75vh;
-  overflow: overlay;
+ height: 75vh;
+ overflow: overlay;
 }
 
 .element-footer {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 1rem;
-  width: 100%
+ display: flex;
+ justify-content: space-between;
+ padding-top: 1rem;
+ width: 100%
 }
 
 /*span + .w3-right button {
-  margin-left: 5px;
+ margin-left: 5px;
 }
 */

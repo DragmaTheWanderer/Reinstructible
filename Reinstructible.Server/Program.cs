@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 // Configure the DbContext to use SQLite
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<SqliteContext>(options =>
-    options.UseSqlite(connectionString)); // UseSqlite extension method
+  options.UseSqlite(connectionString)); // UseSqlite extension method
 
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -19,9 +19,9 @@ builder.Services.AddOpenApi();
 // Add services to the container.
 builder.Services.AddHttpClient("RebrickableApi", client =>
 {
-    client.BaseAddress = new Uri("https://rebrickable.com/");
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
-    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("key", "Xy3MWAYFmi");
+  client.BaseAddress = new Uri("https://rebrickable.com/");
+  client.DefaultRequestHeaders.Add("Accept", "application/json");
+  client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("key", "Xy3MWAYFmi");
 });
 
 var app = builder.Build();
@@ -32,7 +32,7 @@ app.MapStaticAssets();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+  app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();

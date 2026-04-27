@@ -1,43 +1,43 @@
 
 th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 table {
-  margin: 0 auto;
+ margin: 0 auto;
 }
 
 .set_img {
-  max-width: 75px;
+ max-width: 75px;
 }
 
 .legoset_add {
-  max-width: 600px;
-  padding: 1rem;
-  text-align: center;
+ max-width: 600px;
+ padding: 1rem;
+ text-align: center;
 }
 .legoset_add {
-  border: 2px solid black;
-  border-radius: 15px;
-  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+ border: 2px solid black;
+ border-radius: 15px;
+ box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
 }
 .modal {
-  position: fixed; /* Stay in place */
-  z-index: 10; /* Sit on top */
-  left: calc(50% - (600px/2));
-  top: calc(50%);
-  transform:translateY(-50%);
-  overflow: auto; /* Enable scroll if needed */
-  background: white;
+ position: fixed; /* Stay in place */
+ z-index: 10; /* Sit on top */
+ left: calc(50% - (600px/2));
+ top: calc(50%);
+ transform:translateY(-50%);
+ overflow: auto; /* Enable scroll if needed */
+ background: white;
 }
 
 .close_modal {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  background: #aaaaaa;
-  color: black;
-  font-size: 20px;
-  font-weight: bold;
-  
+ position: absolute;
+ top: 2px;
+ right: 2px;
+ background: #aaaaaa;
+ color: black;
+ font-size: 20px;
+ font-weight: bold;
+ 
 }

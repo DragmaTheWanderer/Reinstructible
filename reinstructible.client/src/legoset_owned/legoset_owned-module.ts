@@ -7,19 +7,19 @@ import { LegoSet_ownedRoutingModule } from './legoset_owned-routing-module';
 import { LegoSet_owned } from './legoset_owned';
 
 @NgModule({
-  declarations: [
-    
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    LegoSet_owned,
-    LegoSet_ownedRoutingModule,
-  ],
-  providers: [
-    provideHttpClient(),
-    provideBrowserGlobalErrorListeners()
-  ],
-  bootstrap: [LegoSet_owned]
+ declarations: [
+  
+ ],
+ imports: [
+  BrowserModule,
+  FormsModule,
+  LegoSet_owned,
+  LegoSet_ownedRoutingModule,
+ ],
+ providers: [
+  provideHttpClient(),
+  provideBrowserGlobalErrorListeners()
+ ],
+ bootstrap: [LegoSet_owned]
 })
 export class LegoSet_OwnedModule { }

@@ -1,9 +1,9 @@
 <span class="w3-tooltip">
-  <span style="position:absolute;left:0;bottom:0"
-        class="w3-text w3-tag">{{ toolTip }}</span>
-  <img [ngClass]="imgClass"
-       src="{{img_url}}"
-       alt="{{id}}"
-       (error)="img_url = alt_img_url">
+ <span style="position:absolute;left:0;bottom:0"
+    class="w3-text w3-tag">{{ toolTip }}</span>
+ <img [ngClass]="imgClass"
+    src="{{img_url}}"
+    alt="{{id}}"
+    (error)="img_url = alt_img_url">
 
 </span>

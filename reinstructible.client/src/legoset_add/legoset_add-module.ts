@@ -7,19 +7,19 @@ import { LegoSet_addRoutingModule } from './legoset_add-routing-module';
 import { LegoSet_add } from './legoset_add';
 
 @NgModule({
-  declarations: [
-    
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    LegoSet_add,
-    LegoSet_addRoutingModule
-  ],
-  providers: [
-    provideHttpClient(),
-    provideBrowserGlobalErrorListeners()
-  ],
-  bootstrap: [LegoSet_add]
+ declarations: [
+  
+ ],
+ imports: [
+  BrowserModule,
+  FormsModule,
+  LegoSet_add,
+  LegoSet_addRoutingModule
+ ],
+ providers: [
+  provideHttpClient(),
+  provideBrowserGlobalErrorListeners()
+ ],
+ bootstrap: [LegoSet_add]
 })
 export class LegoSet_AddModule { }

@@ -8,50 +8,50 @@ import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from '../../../
 import { ButtonComponent } from '../../../shared/button/button.component';
 
 @Component({
-  selector: 'cardComponent',
-  standalone: true,
-  imports: [ButtonComponent, FormsModule,],
-  templateUrl: './card.html',
-  styleUrl: './card.css',
+ selector: 'cardComponent',
+ standalone: true,
+ imports: [ButtonComponent, FormsModule,],
+ templateUrl: './card.html',
+ styleUrl: './card.css',
 })
 
 export class CardComponent {
-  public filterType = input<EFilterType>();
-  public options = input<IFilterOptions[]>([]);
+ public filterType = input<EFilterType>();
+ public options = input<IFilterOptions[]>([]);
 
-  public onOptionsSent = output<{ filterType: EFilterType, options: IFilterOptions[] }>();
+ public onOptionsSent = output<{ filterType: EFilterType, options: IFilterOptions[] }>();
 
-  onSelected(option: IFilterOptions, e: Event) {
-    e.stopPropagation();
-    option.selected = !option.selected; // toggle the selected state
+ onSelected(option: IFilterOptions, e: Event) {
+  e.stopPropagation();
+  option.selected = !option.selected; // toggle the selected state
 
-    //check the childern to toggle all off or on
-    option.subOptions.forEach(x => {
-      x.selected = option.selected;
-    })
+  //check the childern to toggle all off or on
+  option.subOptions.forEach(x => {
+   x.selected = option.selected;
+  })
 
-    this.elementFilter();
-  }
+  this.elementFilter();
+ }
 
-  onSubSelected(option: IFilterOptions, parent: IFilterOptions, e: Event) {
-    e.stopPropagation();
-    option.selected = !option.selected; // toggle the selected state
+ onSubSelected(option: IFilterOptions, parent: IFilterOptions, e: Event) {
+  e.stopPropagation();
+  option.selected = !option.selected; // toggle the selected state
 
-    //check if the parents childern are all deselected or not.
-    parent.selected = parent.subOptions.some(x => x.selected);
+  //check if the parents childern are all deselected or not.
+  parent.selected = parent.subOptions.some(x => x.selected);
 
-    this.elementFilter();
-  }
+  this.elementFilter();
+ }
 
-  elementFilter() {
-    let ft: EFilterType = this.filterType() ?? EFilterType.color;
-    let o: IFilterOptions[] = this.options();
-    this.onOptionsSent.emit({ filterType: ft, options: o })
-  }
+ elementFilter() {
+  let ft: EFilterType = this.filterType() ?? EFilterType.color;
+  let o: IFilterOptions[] = this.options();
+  this.onOptionsSent.emit({ filterType: ft, options: o })
+ }
 
-  expandCompact(option: IFilterOptions, e: Event) {
-    e.stopPropagation();
-    option.compacted = !option.compacted;
-  }
+ expandCompact(option: IFilterOptions, e: Event) {
+  e.stopPropagation();
+  option.compacted = !option.compacted;
+ }
 }
 

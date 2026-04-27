@@ -1,17 +1,17 @@
 :host {
-    max-width: 1280px;
-    padding: 2rem;
-    text-align: center;
+  max-width: 1280px;
+  padding: 2rem;
+  text-align: center;
 }
 
 .sidebar-container{
-    height:100vh;
+  height:100vh;
 }
-  .sidebar-container .w3-display-bottommiddle{
-      width: 100%;
-      margin-bottom: 40px;
-  }
+ .sidebar-container .w3-display-bottommiddle{
+   width: 100%;
+   margin-bottom: 40px;
+ }
 
 span+.w3-right button{
-    margin-left:5px;
+  margin-left:5px;
 }

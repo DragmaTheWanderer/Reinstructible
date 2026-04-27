@@ -6,19 +6,19 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 
 @NgModule({
-  declarations: [
-    
-    
-  ],
-  imports: [
-    BrowserModule, 
-    AppRoutingModule,
-    App,
-  ],
-  providers: [
-    provideHttpClient(),
-    provideBrowserGlobalErrorListeners()
-  ],
-  bootstrap: [App]
+ declarations: [
+  
+  
+ ],
+ imports: [
+  BrowserModule, 
+  AppRoutingModule,
+  App,
+ ],
+ providers: [
+  provideHttpClient(),
+  provideBrowserGlobalErrorListeners()
+ ],
+ bootstrap: [App]
 })
 export class AppModule { }

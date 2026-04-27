@@ -5,56 +5,56 @@ import { ILegoSet } from '../../../interfaces/rebrickable';
 import { ImageComponent } from '../../../shared/image/image.component';
 
 @Component({
-  selector: 'setCard',
-  standalone: true,
-  imports: [ImageComponent],
-  templateUrl: './setCard.html',
-  styleUrl: './setCard.css',
+ selector: 'setCard',
+ standalone: true,
+ imports: [ImageComponent],
+ templateUrl: './setCard.html',
+ styleUrl: './setCard.css',
 })
 export class SetCard {
-  public legoSet = input<ILegoSet | null>(null);
-  public legoSetOut = output<ILegoSet>();
+ public legoSet = input<ILegoSet | null>(null);
+ public legoSetOut = output<ILegoSet>();
 
-  public setsLoading: boolean = false;
-  constructor(private http: HttpClient) {}
+ public setsLoading: boolean = false;
+ constructor(private http: HttpClient) {}
 
-  loadSet(value: ILegoSet) {
-    console.log('loadSet Clicked');
-    this.legoSetOut.emit(value);
-  }
+ loadSet(value: ILegoSet) {
+  console.log('loadSet Clicked');
+  this.legoSetOut.emit(value);
+ }
 
-  addSet(value: ILegoSet, e: Event) {
-    console.log('add set clicked');
-    e.stopPropagation();
-    this.saveSet(value);
-  }
-  saveSet(legoSet: ILegoSet) {
-    let result = {};
-    this.setsLoading = true;
-    let error = '';
+ addSet(value: ILegoSet, e: Event) {
+  console.log('add set clicked');
+  e.stopPropagation();
+  this.saveSet(value);
+ }
+ saveSet(legoSet: ILegoSet) {
+  let result = {};
+  this.setsLoading = true;
+  let error = '';
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      observe: 'response' as 'response', // To get the full HttpResponse
-    };
+  const httpOptions = {
+   headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+   }),
+   observe: 'response' as 'response', // To get the full HttpResponse
+  };
 
-    // const body = { 'legoSetJSON' : JSON.stringify(legoSet) };
-    const data: string = legoSet.set_num;
-    const jsonString = JSON.stringify(data);
+  // const body = { 'legoSetJSON' : JSON.stringify(legoSet) };
+  const data: string = legoSet.set_num;
+  const jsonString = JSON.stringify(data);
 
-    this.http.post('/api/set', jsonString, httpOptions).subscribe({
-      next: (res) => {
-        result = res;
-        this.setsLoading = false;
-        //this.addSetEvent.emit(legoSet);
-      },
-      error: (error) => {
-        console.error(error);
-        error = 'Failed to create post';
-        this.setsLoading = false;
-      },
-    });
-  }
+  this.http.post('/api/set', jsonString, httpOptions).subscribe({
+   next: (res) => {
+    result = res;
+    this.setsLoading = false;
+    //this.addSetEvent.emit(legoSet);
+   },
+   error: (error) => {
+    console.error(error);
+    error = 'Failed to create post';
+    this.setsLoading = false;
+   },
+  });
+ }
 }

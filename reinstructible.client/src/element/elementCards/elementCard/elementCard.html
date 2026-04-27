@@ -1,33 +1,33 @@
-<div class="w3-third w3-container w3-cell w3-round-large  w3-hoverable">
-  <div class="w3-card-4"
-       [ngClass]="foundElementBackground(element()!)"
-       (click)="foundElement(element()!, $event)">
-    <header class="w3-dark-grey">
-      <h3>{{ element()!.color.name }}</h3>
-    </header>
-    
-    <div class="w3-cell-row">
-      <div class=" w3-container w3-cell ">
-        <span class="w3-jumbo"><b>{{ element()!.quantity }}</b></span>
-      </div>
-      <div class=" w3-container w3-cell ">
-        <!--<img src="{{ element()!.part_img_url! }}" class="set_img" />-->
-        <app-image img_url="{{ element()!.part_img_url }}"
-                   alt_img_url="{{element()!.alt_part_img_url}}"
-                   id="{{element()!.element_id}}"
-                   imgClass="element-img">
-        </app-image>
-      </div>
-      <div class=" w3-container w3-cell "
-           (click)="setStorage(element()!, $event)">
-        <div>{{ element()!.storage_location.bin }}</div>
-        <div>{{ element()!.storage_location.drawer }}</div>
-      </div>
-      
-    </div>
-
-    <footer class="w3-dark-grey w3-padding-small element-footer">
-      <h3 [innerHTML]="partName"></h3>
-    </footer>
+<div class="w3-third w3-container w3-cell w3-round-large w3-hoverable">
+ <div class="w3-card-4"
+    [ngClass]="foundElementBackground(element()!)"
+    (click)="foundElement(element()!, $event)">
+  <header class="w3-dark-grey">
+   <h3>{{ element()!.color.name }}</h3>
+  </header>
+  
+  <div class="w3-cell-row">
+   <div class=" w3-container w3-cell ">
+    <span class="w3-jumbo"><b>{{ element()!.quantity }}</b></span>
+   </div>
+   <div class=" w3-container w3-cell ">
+    <!--<img src="{{ element()!.part_img_url! }}" class="set_img" />-->
+    <app-image img_url="{{ element()!.part_img_url }}"
+          alt_img_url="{{element()!.alt_part_img_url}}"
+          id="{{element()!.element_id}}"
+          imgClass="element-img">
+    </app-image>
+   </div>
+   <div class=" w3-container w3-cell "
+      (click)="setStorage(element()!, $event)">
+    <div>{{ element()!.storage_location.bin }}</div>
+    <div>{{ element()!.storage_location.drawer }}</div>
+   </div>
+   
   </div>
+
+  <footer class="w3-dark-grey w3-padding-small element-footer">
+   <h3 [innerHTML]="partName"></h3>
+  </footer>
+ </div>
 </div>

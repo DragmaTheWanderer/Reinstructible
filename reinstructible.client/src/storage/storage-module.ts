@@ -6,18 +6,18 @@ import { StorageRoutingModule } from './storage-routing-module';
 import { Storage } from './storage';
 
 @NgModule({
-  declarations: [
-   
-  ],
-  imports: [
-    BrowserModule, 
-    StorageRoutingModule,
-    Storage,
-  ],
-  providers: [
-    provideHttpClient(),
-    provideBrowserGlobalErrorListeners()
-  ],
-  bootstrap: [Storage]
+ declarations: [
+  
+ ],
+ imports: [
+  BrowserModule, 
+  StorageRoutingModule,
+  Storage,
+ ],
+ providers: [
+  provideHttpClient(),
+  provideBrowserGlobalErrorListeners()
+ ],
+ bootstrap: [Storage]
 })
 export class StorageModule { }

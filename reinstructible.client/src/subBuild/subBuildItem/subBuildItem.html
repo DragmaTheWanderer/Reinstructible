@@ -1,53 +1,53 @@
 <div
-  class="w3-bottombar"
-  [ngClass]="selectedBackground()"
-  (click)="selectedSubBuild(pageStep, $event)"
+ class="w3-bottombar"
+ [ngClass]="selectedBackground()"
+ (click)="selectedSubBuild(pageStep, $event)"
 >
-  <div
-    class="w3-flex"
-    style="gap: 8px; flex-wrap: wrap; justify-content: center; align-content: center"
-  >
-    @for (element of pageStep.elements; track element) {
-      <div class="w3-border w3-round-large">
-        <app-imageCount img_url="{{ element.part_img_url }}"
-                        alt_img_url="{{ element.alt_part_img_url }}"
-                        id="{{ element.element_id }}"
-                        countLeft="{{ getQuantity(element) }}">
-          <!--element.sub_inventory[getSubInvIndex(element);].quantity-->
-        </app-imageCount>
-      </div>
-    }
-  </div>
-  <div class="w3-flex" style="gap: 8px">
-    <span>
-      <label><b>Page: </b></label>
-      <input
-        class="w3-input w3-border w3-round-large"
-        type="text"
-        style="width: 100px; display: inline-block"
-        [(ngModel)]="pageStep.grouping.page"
-        (blur)="onPageChange($event)"
-      />
-    </span>
-    <span>
-      <label><b>Step: </b></label>
-      <input
-        class="w3-input w3-border w3-round-large"
-        type="text"
-        style="width: 100px; display: inline-block"
-        [(ngModel)]="pageStep.grouping.step"
-        (blur)="onStepChange($event)"
-      />
-    </span>
-    <span>
-      <label><b>Name: </b></label>
-      <input
-        class="w3-input w3-border w3-round-large"
-        type="text"
-        style="width: 500px; display: inline-block"
-        [(ngModel)]="pageStep.grouping.subBuildName"
-        (blur)="onNameChange($event)"
-      />
-    </span>
-  </div>
+ <div
+  class="w3-flex"
+  style="gap: 8px; flex-wrap: wrap; justify-content: center; align-content: center"
+ >
+  @for (element of pageStep.elements; track element) {
+   <div class="w3-border w3-round-large">
+    <app-imageCount img_url="{{ element.part_img_url }}"
+            alt_img_url="{{ element.alt_part_img_url }}"
+            id="{{ element.element_id }}"
+            countLeft="{{ getQuantity(element) }}">
+     <!--element.sub_inventory[getSubInvIndex(element);].quantity-->
+    </app-imageCount>
+   </div>
+  }
+ </div>
+ <div class="w3-flex" style="gap: 8px">
+  <span>
+   <label><b>Page: </b></label>
+   <input
+    class="w3-input w3-border w3-round-large"
+    type="text"
+    style="width: 100px; display: inline-block"
+    [(ngModel)]="pageStep.grouping.page"
+    (blur)="onPageChange($event)"
+   />
+  </span>
+  <span>
+   <label><b>Step: </b></label>
+   <input
+    class="w3-input w3-border w3-round-large"
+    type="text"
+    style="width: 100px; display: inline-block"
+    [(ngModel)]="pageStep.grouping.step"
+    (blur)="onStepChange($event)"
+   />
+  </span>
+  <span>
+   <label><b>Name: </b></label>
+   <input
+    class="w3-input w3-border w3-round-large"
+    type="text"
+    style="width: 500px; display: inline-block"
+    [(ngModel)]="pageStep.grouping.subBuildName"
+    (blur)="onNameChange($event)"
+   />
+  </span>
+ </div>
 </div>

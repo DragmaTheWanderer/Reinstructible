@@ -1,81 +1,81 @@
 <!--Loader-->
 @if (setsLoading) {
-  <div class="overlay"><span class="loader"></span></div>
+ <div class="overlay"><span class="loader"></span></div>
 }
 
 <div class="legoset_add modal">
-  <button
-    class="close_modal w3-button w3-circle w3-padding-small w3-black"
-    type="button"
-    (click)="closeModal()"
-  >
-    &times;
-  </button>
-  <h1 id="tableLabel">Add a Lego Set</h1>
-  <hr />
-  <p><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-  <div class="w3-row w3-section">
-    <div class="w3-quarter">
-      <label>Set Number:</label>
-    </div>
-    <div class="w3-half">
-      <input
-        type="text"
-        #setNumberInput
-        name="setNumber"
-        class="w3-input w3-border w3-round"
-        [(ngModel)]="filterValue"
-        placeholder="Enter Set Number"
-        (keyup.enter)="getSet()"
-      />
-    </div>
-    <div class="w3-rest">
-      <button class="w3-btn w3-round-large w3-dark-grey" type="submit" (click)="getSet()">
-        Submit
-      </button>
-    </div>
+ <button
+  class="close_modal w3-button w3-circle w3-padding-small w3-black"
+  type="button"
+  (click)="closeModal()"
+ >
+  &times;
+ </button>
+ <h1 id="tableLabel">Add a Lego Set</h1>
+ <hr />
+ <p><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
+ <div class="w3-row w3-section">
+  <div class="w3-quarter">
+   <label>Set Number:</label>
   </div>
-  <hr />
-  @if (setsLoaded) {
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Set Number</th>
-            <th>Name</th>
-            <th>Set Image</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (set of legoSets; track set) {
-            <tr>
-              <td>
-                <app-button
-                  icon="fa-solid fa-plus"
-                  color="w3-green"
-                  toolTip="Add Set"
-                  toolTipClass="btn-tooltip-left"
-                  (clickEvent)="addSet(set)"
-                >
-                </app-button>
-              </td>
-              <td>{{ set.set_num }}</td>
-              <td>{{ set.name }}</td>
-              <td>
-                <!--<img class="set_img" src="{{ set.set_img_url }}" />-->
-                <app-image
-                  img_url="{{ set.set_img_url }}"
-                  alt_img_url=""
-                  id="{{ set.set_num }}"
-                  imgClass="set_img"
-                >
-                </app-image>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  }
+  <div class="w3-half">
+   <input
+    type="text"
+    #setNumberInput
+    name="setNumber"
+    class="w3-input w3-border w3-round"
+    [(ngModel)]="filterValue"
+    placeholder="Enter Set Number"
+    (keyup.enter)="getSet()"
+   />
+  </div>
+  <div class="w3-rest">
+   <button class="w3-btn w3-round-large w3-dark-grey" type="submit" (click)="getSet()">
+    Submit
+   </button>
+  </div>
+ </div>
+ <hr />
+ @if (setsLoaded) {
+  <div>
+   <table>
+    <thead>
+     <tr>
+      <th></th>
+      <th>Set Number</th>
+      <th>Name</th>
+      <th>Set Image</th>
+     </tr>
+    </thead>
+    <tbody>
+     @for (set of legoSets; track set) {
+      <tr>
+       <td>
+        <app-button
+         icon="fa-solid fa-plus"
+         color="w3-green"
+         toolTip="Add Set"
+         toolTipClass="btn-tooltip-left"
+         (clickEvent)="addSet(set)"
+        >
+        </app-button>
+       </td>
+       <td>{{ set.set_num }}</td>
+       <td>{{ set.name }}</td>
+       <td>
+        <!--<img class="set_img" src="{{ set.set_img_url }}" />-->
+        <app-image
+         img_url="{{ set.set_img_url }}"
+         alt_img_url=""
+         id="{{ set.set_num }}"
+         imgClass="set_img"
+        >
+        </app-image>
+       </td>
+      </tr>
+     }
+    </tbody>
+   </table>
+  </div>
+ }
 </div>

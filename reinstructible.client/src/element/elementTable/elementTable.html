@@ -1,38 +1,38 @@
 <div class="element-body">
-  <table class="w3-table-all w3-hoverable">
-    <thead>
-      <tr class="w3-grey">
-        <th class="w3-text-white">Quantity</th>
-        <th class="w3-text-white">Image</th>
-        <th class="w3-text-white">Part</th>
-        <th class="w3-text-white">Storage</th>
-      </tr>
-    </thead>
-    @for (group of elementGrouped; track group) {
-      <tbody style="overflow-y: auto">
-        @for (item of group.elements; track item) {
-          <tr [ngClass]="foundElementBackground(item)" (click)="foundElement(item, $event)">
-            <td class="w3-jumbo">
-              <b>{{ item.quantity }}</b>
-            </td>
-            <td>
-              <!--<img class="element-img" src="{{item.part_img_url}}" alt="Element {{item.element_id}}" (error)="item.part_img_url = item.alt_part_img_url">-->
-              <app-image
-                img_url="{{ item.part_img_url }}"
-                alt_img_url="{{ item.alt_part_img_url }}"
-                id="{{ item.element_id }}"
-                imgClass="element-img"
-              >
-              </app-image>
-            </td>
-            <td class="w3-left-align">{{ item.color.name }} {{ item.part.name }}</td>
-            <td (click)="setStorage(item, $event)">
-              {{ item.storage_location.bin }} <br />
-              {{ item.storage_location.drawer }}
-            </td>
-          </tr>
-        }
-      </tbody>
+ <table class="w3-table-all w3-hoverable">
+  <thead>
+   <tr class="w3-grey">
+    <th class="w3-text-white">Quantity</th>
+    <th class="w3-text-white">Image</th>
+    <th class="w3-text-white">Part</th>
+    <th class="w3-text-white">Storage</th>
+   </tr>
+  </thead>
+  @for (group of elementGrouped; track group) {
+   <tbody style="overflow-y: auto">
+    @for (item of group.elements; track item) {
+     <tr [ngClass]="foundElementBackground(item)" (click)="foundElement(item, $event)">
+      <td class="w3-jumbo">
+       <b>{{ item.quantity }}</b>
+      </td>
+      <td>
+       <!--<img class="element-img" src="{{item.part_img_url}}" alt="Element {{item.element_id}}" (error)="item.part_img_url = item.alt_part_img_url">-->
+       <app-image
+        img_url="{{ item.part_img_url }}"
+        alt_img_url="{{ item.alt_part_img_url }}"
+        id="{{ item.element_id }}"
+        imgClass="element-img"
+       >
+       </app-image>
+      </td>
+      <td class="w3-left-align">{{ item.color.name }} {{ item.part.name }}</td>
+      <td (click)="setStorage(item, $event)">
+       {{ item.storage_location.bin }} <br />
+       {{ item.storage_location.drawer }}
+      </td>
+     </tr>
     }
-  </table>
+   </tbody>
+  }
+ </table>
 </div>

@@ -4,5 +4,5 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { App } from './app/app';
 bootstrapApplication(App, {
-  providers: [provideZoneChangeDetection(), provideHttpClient()],
+ providers: [provideZoneChangeDetection(), provideHttpClient()],
 });

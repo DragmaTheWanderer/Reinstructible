@@ -9,60 +9,60 @@ import { ButtonComponent } from '../../shared/button/button.component';
 import { ImageComponent } from '../../shared/image/image.component';
 
 @Component({
-  selector: 'setTable',
-  standalone: true,
-  imports: [ButtonComponent, ImageComponent, FormsModule],
-  templateUrl: './setTable.html',
-  styleUrl: './setTable.css',
+ selector: 'setTable',
+ standalone: true,
+ imports: [ButtonComponent, ImageComponent, FormsModule],
+ templateUrl: './setTable.html',
+ styleUrl: './setTable.css',
 })
 export class SetTable {
-  public legoSets = input<ILegoSet[]>([]);
-  public legoSetOut = output<ILegoSet>();
-  public subSetBuildOut = output<ILegoSet>();
-  public setsLoading: boolean = false;
+ public legoSets = input<ILegoSet[]>([]);
+ public legoSetOut = output<ILegoSet>();
+ public subSetBuildOut = output<ILegoSet>();
+ public setsLoading: boolean = false;
 
-  constructor(private http: HttpClient) {}
+ constructor(private http: HttpClient) {}
 
-  loadSet(value: ILegoSet) {
-    this.legoSetOut.emit(value);
-  }
-  setSubBuild(value: ILegoSet, e: Event) {
-    this.subSetBuildOut.emit(value);
-  }
+ loadSet(value: ILegoSet) {
+  this.legoSetOut.emit(value);
+ }
+ setSubBuild(value: ILegoSet, e: Event) {
+  this.subSetBuildOut.emit(value);
+ }
 
-  addSet(value: ILegoSet, e: Event) {
-    console.log('add set clicked');
-    e.stopPropagation();
-    this.saveSet(value);
-  }
+ addSet(value: ILegoSet, e: Event) {
+  console.log('add set clicked');
+  e.stopPropagation();
+  this.saveSet(value);
+ }
 
-  saveSet(legoSet: ILegoSet) {
-    let result = {};
-    this.setsLoading = true;
-    let error = '';
+ saveSet(legoSet: ILegoSet) {
+  let result = {};
+  this.setsLoading = true;
+  let error = '';
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      observe: 'response' as 'response', // To get the full HttpResponse
-    };
+  const httpOptions = {
+   headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+   }),
+   observe: 'response' as 'response', // To get the full HttpResponse
+  };
 
-    // const body = { 'legoSetJSON' : JSON.stringify(legoSet) };
-    const data: string = legoSet.set_num;
-    const jsonString = JSON.stringify(data);
+  // const body = { 'legoSetJSON' : JSON.stringify(legoSet) };
+  const data: string = legoSet.set_num;
+  const jsonString = JSON.stringify(data);
 
-    this.http.post('/api/set', jsonString, httpOptions).subscribe({
-      next: (res) => {
-        result = res;
-        this.setsLoading = false;
-        //this.addSetEvent.emit(legoSet);
-      },
-      error: (error) => {
-        console.error(error);
-        error = 'Failed to create post';
-        this.setsLoading = false;
-      },
-    });
-  }
+  this.http.post('/api/set', jsonString, httpOptions).subscribe({
+   next: (res) => {
+    result = res;
+    this.setsLoading = false;
+    //this.addSetEvent.emit(legoSet);
+   },
+   error: (error) => {
+    console.error(error);
+    error = 'Failed to create post';
+    this.setsLoading = false;
+   },
+  });
+ }
 }

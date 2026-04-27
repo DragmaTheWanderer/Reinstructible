@@ -1,93 +1,93 @@
 <div class="w3-row w3-container">
-  <div id="controlls" class="w3-third w3-container">
-    <!--Inventory and controll section-->
-    <div class="w3-display-container sidebar-container">
-      <h1 class="w3-bottombar">{{ legoSet.name }}</h1>
-      <div class="w3-row w3-section">
-        <div class="w3-col" style="width:50px">
-          <input class="w3-check" type="checkbox" checked="checked" [(ngModel)]="hideSelectedInventory">
-          <!--<label>Hide Fully Selected Items</label>-->
-        </div>
-        <div class="w3-rest">
-          <select [(ngModel)]="selectedCategory" name="Category" (ngModelChange)="categoryChange($event)" class="w3-select w3-border w3-rest">
-            @for (cat of partCategories; track cat) {
-            <option [value]="cat.id">{{ cat.name }}</option>
-            }
-          </select>
-        </div>
-      </div>
-      
-      <div class="inventory-body">
-        @for (group of selectedPartGroups; track group) {
-        @if(!isInventoryGroupHidden(group)){
-        <div>
-          @for (e of group.elements; track e) {
+ <div id="controlls" class="w3-third w3-container">
+  <!--Inventory and controll section-->
+  <div class="w3-display-container sidebar-container">
+   <h1 class="w3-bottombar">{{ legoSet.name }}</h1>
+   <div class="w3-row w3-section">
+    <div class="w3-col" style="width:50px">
+     <input class="w3-check" type="checkbox" checked="checked" [(ngModel)]="hideSelectedInventory">
+     <!--<label>Hide Fully Selected Items</label>-->
+    </div>
+    <div class="w3-rest">
+     <select [(ngModel)]="selectedCategory" name="Category" (ngModelChange)="categoryChange($event)" class="w3-select w3-border w3-rest">
+      @for (cat of partCategories; track cat) {
+      <option [value]="cat.id">{{ cat.name }}</option>
+      }
+     </select>
+    </div>
+   </div>
+   
+   <div class="inventory-body">
+    @for (group of selectedPartGroups; track group) {
+    @if(!isInventoryGroupHidden(group)){
+    <div>
+     @for (e of group.elements; track e) {
 
-          @if (!isInventoryItemHidden(e)){
-          <div>
-            <inventoryItem [element]="e"
-                           (addElementEvent)="addElement($event)"
-                           (removeElementEvent)="removeElement($event)">
-            </inventoryItem>
-          </div>
-          }
-          }
-          <div class="w3-bottombar">
-            <b> {{ group.grouping }} </b>
-          </div>
-        </div>
-        }
-        }
-      </div>
+     @if (!isInventoryItemHidden(e)){
+     <div>
+      <inventoryItem [element]="e"
+              (addElementEvent)="addElement($event)"
+              (removeElementEvent)="removeElement($event)">
+      </inventoryItem>
+     </div>
+     }
+     }
+     <div class="w3-bottombar">
+      <b> {{ group.grouping }} </b>
+     </div>
     </div>
-    <div class="w3-display-bottommiddle">
-      <hr />
-      <app-button icon="fa-solid fa-plus"
-                  color="w3-dark-grey"
-                  toolTip="Add new subbuild step"
-                  toolTipClass="btn-tooltip-left"
-                  (clickEvent)="addNewSubBuildStep()">
-      </app-button>
-      <app-button icon="fa-solid fa-plus"
-                  color="w3-light-grey"
-                  toolTip="Add new subbuild page/step"
-                  toolTipClass="btn-tooltip-left"
-                  (clickEvent)="addNewSubBuildPageStep()">
-      </app-button>
-      <app-button icon="fa-solid fa-plus"
-                  color="w3-green"
-                  toolTip="Add new subbuild page and start over step"
-                  toolTipClass="btn-tooltip-left"
-                  (clickEvent)="addNewSubBuildPageNewSteps()">
-      </app-button>
-      <span>
-        <app-button icon="fa-solid fa-table-cells"
-                    color="w3-green"
-                    toolTip="View Elements"
-                    toolTipClass="btn-tooltip-left"
-                    (clickEvent)="loadSet()">
-        </app-button>
-      </span>
+    }
+    }
+   </div>
+  </div>
+  <div class="w3-display-bottommiddle">
+   <hr />
+   <app-button icon="fa-solid fa-plus"
+         color="w3-dark-grey"
+         toolTip="Add new subbuild step"
+         toolTipClass="btn-tooltip-left"
+         (clickEvent)="addNewSubBuildStep()">
+   </app-button>
+   <app-button icon="fa-solid fa-plus"
+         color="w3-light-grey"
+         toolTip="Add new subbuild page/step"
+         toolTipClass="btn-tooltip-left"
+         (clickEvent)="addNewSubBuildPageStep()">
+   </app-button>
+   <app-button icon="fa-solid fa-plus"
+         color="w3-green"
+         toolTip="Add new subbuild page and start over step"
+         toolTipClass="btn-tooltip-left"
+         (clickEvent)="addNewSubBuildPageNewSteps()">
+   </app-button>
+   <span>
+    <app-button icon="fa-solid fa-table-cells"
+          color="w3-green"
+          toolTip="View Elements"
+          toolTipClass="btn-tooltip-left"
+          (clickEvent)="loadSet()">
+    </app-button>
+   </span>
 
-    </div>
   </div>
-  <!--SubBild section-->
-  <div id="subBuilds" class="w3-container w3-twothird">
-    <div class="w3-display-container subBuild-container">
-      <h1 class="w3-bottombar">Sub Builds</h1>
-      <div class="subBuild-body" #subBuildContainer>
-        <div id="topOfPage"><span>Top of Page (lego print here)</span></div>
-        @for (group of pageStepGroups; track group) {
-          <div>
-            <subBuildItem
-              [pageStep]="group"
-              (pageStepSelectedEvent)="setSelectedSubBuildItem($event)"
-              (pageStepChangeEvent)="setPageStep($event)"
-            ></subBuildItem>
-          </div>
-        }
-        <div id="bottomOfPage"><span>Bottom of Page (lego print here)</span></div>
-      </div>
-    </div>
+ </div>
+ <!--SubBild section-->
+ <div id="subBuilds" class="w3-container w3-twothird">
+  <div class="w3-display-container subBuild-container">
+   <h1 class="w3-bottombar">Sub Builds</h1>
+   <div class="subBuild-body" #subBuildContainer>
+    <div id="topOfPage"><span>Top of Page (lego print here)</span></div>
+    @for (group of pageStepGroups; track group) {
+     <div>
+      <subBuildItem
+       [pageStep]="group"
+       (pageStepSelectedEvent)="setSelectedSubBuildItem($event)"
+       (pageStepChangeEvent)="setPageStep($event)"
+      ></subBuildItem>
+     </div>
+    }
+    <div id="bottomOfPage"><span>Bottom of Page (lego print here)</span></div>
+   </div>
   </div>
+ </div>
 </div>

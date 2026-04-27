@@ -1,159 +1,159 @@
 import { EDisplayGroup, EFileOption, EFilterType, EDisplayMode } from './Enums';
 
 interface ILegoSet {
-  id: number;
-  set_num: string;
-  set_num_parent: string;
-  name: string;
-  theme_id: number;
-  theme: ITheme[];
-  set_img_url: string;
-  set_imager_resource: number;
-  set_element_count: number;
-  set_element_storage_count: number;
+ id: number;
+ set_num: string;
+ set_num_parent: string;
+ name: string;
+ theme_id: number;
+ theme: ITheme[];
+ set_img_url: string;
+ set_imager_resource: number;
+ set_element_count: number;
+ set_element_storage_count: number;
 }
 interface ILegoSetGroup {
-  grouping: string;
-  legoSets: ILegoSet[];
+ grouping: string;
+ legoSets: ILegoSet[];
 }
 interface IElement {
-  id: number;
-  inv_part_id: number;
-  part: IPart;
-  color: IColor;
-  set_num: string;
-  quantity: number;
-  is_spare: boolean;
-  element_id: string;
-  num_sets: number;
-  part_img_url: string;
-  alt_part_img_url: string;
-  part_url: string;
-  storage_location: IStorage
-  sub_inventory: ISubInventory[];
-  selected: boolean;
+ id: number;
+ inv_part_id: number;
+ part: IPart;
+ color: IColor;
+ set_num: string;
+ quantity: number;
+ is_spare: boolean;
+ element_id: string;
+ num_sets: number;
+ part_img_url: string;
+ alt_part_img_url: string;
+ part_url: string;
+ storage_location: IStorage
+ sub_inventory: ISubInventory[];
+ selected: boolean;
 }
 interface IElementGroup {
-  grouping: string;
-  selected: boolean;
-  elements: IElement[];
+ grouping: string;
+ selected: boolean;
+ elements: IElement[];
 }
 interface ISubBuildGroup {
-  grouping: ISubInventoryGroupHeader;
-  selected: boolean;
-  elements: IElement[];
+ grouping: ISubInventoryGroupHeader;
+ selected: boolean;
+ elements: IElement[];
 }
 interface IPart {
-  part_num: string;
-  name: string;
-  part_cat_name: string;
-  part_cat_id: number;
-  year_from: number;
-  year_to: number;
-  
-  prints: string[];
-  molds: string[];
-  alternates: string;
-  selected: boolean;
+ part_num: string;
+ name: string;
+ part_cat_name: string;
+ part_cat_id: number;
+ year_from: number;
+ year_to: number;
+ 
+ prints: string[];
+ molds: string[];
+ alternates: string;
+ selected: boolean;
 }
 interface IPartCategory {
-  id: number;
-  name: string;
-  part_count: number;
-  selected: boolean;
+ id: number;
+ name: string;
+ part_count: number;
+ selected: boolean;
 }
 interface IColor {
-  id: number;
-  name: string;
-  rgb: string;
-  is_trans: boolean;
-  selected: boolean;
+ id: number;
+ name: string;
+ rgb: string;
+ is_trans: boolean;
+ selected: boolean;
 }
 interface IFilterOptionGroups {
-  partCategoryOptions: IFilterOptions[];
-  partColorOptions: IFilterOptions[];
-  partStorageOptions: IFilterOptions[];
-  subBuildOptions: IFilterOptions[];
+ partCategoryOptions: IFilterOptions[];
+ partColorOptions: IFilterOptions[];
+ partStorageOptions: IFilterOptions[];
+ subBuildOptions: IFilterOptions[];
 
-  categoryOptionType: EFilterType;
-  colorOptionType: EFilterType;
-  storageOptionType: EFilterType;
-  subBuildOptionType: EFilterType;
+ categoryOptionType: EFilterType;
+ colorOptionType: EFilterType;
+ storageOptionType: EFilterType;
+ subBuildOptionType: EFilterType;
 }
 
 interface IFilterOptions {
-  id: number;
-  name: string;
-  subOptions: IFilterOptions[];
-  selected: boolean;
-  compacted?: boolean;
+ id: number;
+ name: string;
+ subOptions: IFilterOptions[];
+ selected: boolean;
+ compacted?: boolean;
 
 }
 interface ITheme {
-  id: number;
-  parent_id: number;
-  name: string;
+ id: number;
+ parent_id: number;
+ name: string;
 }
 
 interface ISubInventory {
-  //Key combo
-  id: number;
-  set_num: string;
-  element_id: string;
+ //Key combo
+ id: number;
+ set_num: string;
+ element_id: string;
 
-  //fields
-  quantity: number;
-  subBuildName: string;
-  page: number;
-  step: number;
+ //fields
+ quantity: number;
+ subBuildName: string;
+ page: number;
+ step: number;
 }
 
 interface ISubInventoryGroupHeader {
-  //Key combo
-  page: number;
-  step: number;
-  subBuildName: string;
+ //Key combo
+ page: number;
+ step: number;
+ subBuildName: string;
 
 }
 
 interface IStorage {
-  //Id: number;
-  element_id: string;
-  bin: string;
-  drawer: string;
+ //Id: number;
+ element_id: string;
+ bin: string;
+ drawer: string;
 }
 
 interface IStorage_updateList {
-  element_ids: string[];
-  bin: string;
-  drawer: string;
+ element_ids: string[];
+ bin: string;
+ drawer: string;
 }
 
 interface IElementOptions {
-  currentGrouping: EDisplayGroup;
-  filterType: EFilterType;
-  displayMode: EDisplayMode;
+ currentGrouping: EDisplayGroup;
+ filterType: EFilterType;
+ displayMode: EDisplayMode;
 }
 
 export type {
-  IColor,
-  IElement,
-  ILegoSet,
-  IPart,
-  IPartCategory,
-  ITheme,
+ IColor,
+ IElement,
+ ILegoSet,
+ IPart,
+ IPartCategory,
+ ITheme,
 
-  IStorage,
-  IStorage_updateList,
-  ISubInventoryGroupHeader,
-  ISubInventory,
+ IStorage,
+ IStorage_updateList,
+ ISubInventoryGroupHeader,
+ ISubInventory,
 
-  ILegoSetGroup,
-  IElementGroup,
-  ISubBuildGroup,
-  IFilterOptionGroups,
-  IFilterOptions,
-  IElementOptions
+ ILegoSetGroup,
+ IElementGroup,
+ ISubBuildGroup,
+ IFilterOptionGroups,
+ IFilterOptions,
+ IElementOptions
 }
 
 

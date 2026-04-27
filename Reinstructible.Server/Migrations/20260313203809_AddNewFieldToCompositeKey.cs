@@ -4,19 +4,19 @@
 
 namespace Reinstructible.Server.Migrations
 {
+  /// <inheritdoc />
+  public partial class AddNewFieldToCompositeKey : Migration
+  {
     /// <inheritdoc />
-    public partial class AddNewFieldToCompositeKey : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
 
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-
-        }
     }
+
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+
+    }
+  }
 }

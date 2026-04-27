@@ -7,65 +7,65 @@ import { LegoSet_owned } from '../legoset_owned/legoset_owned';
 import { Element } from '../element/element';
 import { SubBuild } from '../subBuild/subBuild';
 interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
+ date: string;
+ temperatureC: number;
+ temperatureF: number;
+ summary: string;
 }
 interface TestString {
-  value: string;
+ value: string;
 }
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [LegoSet_owned, Element, SubBuild],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+ selector: 'app-root',
+ standalone: true,
+ imports: [LegoSet_owned, Element, SubBuild],
+ templateUrl: './app.html',
+ styleUrl: './app.css',
 })
 export class App implements OnInit {
-  public forecasts: WeatherForecast[] = [];
-  public forcastLoaded: boolean = false;
-  public test: TestString = {
-    value: '',
-  };
-  public ElementVisable: boolean = false;
-  public SetVisable: boolean = true;
-  public SubSetBuildVisible: boolean = false;
+ public forecasts: WeatherForecast[] = [];
+ public forcastLoaded: boolean = false;
+ public test: TestString = {
+  value: '',
+ };
+ public ElementVisable: boolean = false;
+ public SetVisable: boolean = true;
+ public SubSetBuildVisible: boolean = false;
 
-  public legoSet: Partial<ILegoSet> = { id: 0 };
-  public setNum: string = '';
+ public legoSet: Partial<ILegoSet> = { id: 0 };
+ public setNum: string = '';
 
-  constructor(private http: HttpClient) {}
+ constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    //this.getForecasts();
-  }
+ ngOnInit() {
+  //this.getForecasts();
+ }
 
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe({
-      next: (result) => {
-        this.forecasts = result;
-        this.forcastLoaded = true;
-      },
-      error: (error) => {
-        console.error(error);
-        this.forcastLoaded = false;
-      },
-    });
-  }
+ getForecasts() {
+  this.http.get<WeatherForecast[]>('/weatherforecast').subscribe({
+   next: (result) => {
+    this.forecasts = result;
+    this.forcastLoaded = true;
+   },
+   error: (error) => {
+    console.error(error);
+    this.forcastLoaded = false;
+   },
+  });
+ }
 
-  loadElements(legoSet: ILegoSet) {
-    this.legoSet = legoSet;
-    this.SetVisable = false;
-    this.SubSetBuildVisible = false;
-    this.ElementVisable = true;
-  }
-  subSetBuild(legoSet: ILegoSet) {
-    this.legoSet = legoSet;
-    this.SetVisable = false;
-    this.SubSetBuildVisible = true;
-    this.ElementVisable = false;
-  }
-  protected readonly title = signal('reinstructible.client');
+ loadElements(legoSet: ILegoSet) {
+  this.legoSet = legoSet;
+  this.SetVisable = false;
+  this.SubSetBuildVisible = false;
+  this.ElementVisable = true;
+ }
+ subSetBuild(legoSet: ILegoSet) {
+  this.legoSet = legoSet;
+  this.SetVisable = false;
+  this.SubSetBuildVisible = true;
+  this.ElementVisable = false;
+ }
+ protected readonly title = signal('reinstructible.client');
 }

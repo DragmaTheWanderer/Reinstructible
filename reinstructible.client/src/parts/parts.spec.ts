@@ -3,43 +3,43 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Parts } from './parts';
 
 describe('Parts', () => {
-  let component: Parts;
-  let fixture: ComponentFixture<Parts>;
-  let httpMock: HttpTestingController;
+ let component: Parts;
+ let fixture: ComponentFixture<Parts>;
+ let httpMock: HttpTestingController;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [Parts],
-      imports: [HttpClientTestingModule]
-    }).compileComponents();
-  });
+ beforeEach(async () => {
+  await TestBed.configureTestingModule({
+   declarations: [Parts],
+   imports: [HttpClientTestingModule]
+  }).compileComponents();
+ });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(Parts);
-    component = fixture.componentInstance;
-    httpMock = TestBed.inject(HttpTestingController);
-  });
+ beforeEach(() => {
+  fixture = TestBed.createComponent(Parts);
+  component = fixture.componentInstance;
+  httpMock = TestBed.inject(HttpTestingController);
+ });
 
-  afterEach(() => {
-    httpMock.verify();
-  });
+ afterEach(() => {
+  httpMock.verify();
+ });
 
-  it('should create the app', () => {
-    expect(component).toBeTruthy();
-  });
+ it('should create the app', () => {
+  expect(component).toBeTruthy();
+ });
 
-  //it('should retrieve weather forecasts from the server', () => {
-  //  const mockForecasts = [
-  //    { date: '2021-10-01', temperatureC: 20, temperatureF: 68, summary: 'Mild' },
-  //    { date: '2021-10-02', temperatureC: 25, temperatureF: 77, summary: 'Warm' }
-  //  ];
+ //it('should retrieve weather forecasts from the server', () => {
+ // const mockForecasts = [
+ //  { date: '2021-10-01', temperatureC: 20, temperatureF: 68, summary: 'Mild' },
+ //  { date: '2021-10-02', temperatureC: 25, temperatureF: 77, summary: 'Warm' }
+ // ];
 
-  //  component.ngOnInit();
+ // component.ngOnInit();
 
-  //  const req = httpMock.expectOne('/set');
-  //  expect(req.request.method).toEqual('GET');
-  //  req.flush(mockForecasts);
+ // const req = httpMock.expectOne('/set');
+ // expect(req.request.method).toEqual('GET');
+ // req.flush(mockForecasts);
 
-  //  expect(component.forecasts).toEqual(mockForecasts);
-  //});
+ // expect(component.forecasts).toEqual(mockForecasts);
+ //});
 });

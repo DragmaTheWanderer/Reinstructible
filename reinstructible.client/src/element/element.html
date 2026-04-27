@@ -1,114 +1,114 @@
 <!--Loader-->
 @if (!Loaded) {
-  <div class="overlay"><span class="loader"></span></div>
+ <div class="overlay"><span class="loader"></span></div>
 }
 <!--sidebar-->
-  <div class="w3-sidebar w3-light-grey w3-bar-block" style="width: 400px">
-    
-    <filterComponent  [elementList]="elementsBase"
-                      (onOptionsSent)="filter($event)"
-                      [(filterType)]="options.filterType"
-                      (onDisplayMode)="setDisplayMode($event)"
-                      (onFileOption)="triggerFileOption($event)"
-                      (onCurrentGrouping)="setCurrentGrouping($event)"
-                      (onSetSubBuild)="setSubBuild($event)"
-                     ></filterComponent>
-      <!--
-      (onOptionsStringSent)="partStorageFilter($event)"
-        -->
+ <div class="w3-sidebar w3-light-grey w3-bar-block" style="width: 400px">
+  
+  <filterComponent [elementList]="elementsBase"
+           (onOptionsSent)="filter($event)"
+           [(filterType)]="options.filterType"
+           (onDisplayMode)="setDisplayMode($event)"
+           (onFileOption)="triggerFileOption($event)"
+           (onCurrentGrouping)="setCurrentGrouping($event)"
+           (onSetSubBuild)="setSubBuild($event)"
+           ></filterComponent>
+   <!--
+   (onOptionsStringSent)="partStorageFilter($event)"
+    -->
 
-      <!--@switch (selectedControllTab()) {
-  @case (categoryOptionType) {-->
-      <!--Category-->
-      <!--<filterComponent
-      [filterType]="categoryOptionType"
-      [options]="partCategoryOptions"
-      [inCurrentGrouping]="options.currentGrouping"
+   <!--@switch (selectedControllTab()) {
+ @case (categoryOptionType) {-->
+   <!--Category-->
+   <!--<filterComponent
+   [filterType]="categoryOptionType"
+   [options]="partCategoryOptions"
+   [inCurrentGrouping]="options.currentGrouping"
 
-      (onDisplayMode)="setDisplayMode($event)"
-      (onFileOption)="triggerFileOption($event)"
-      (onCurrentGrouping)="setCurrentGrouping($event)"
-      (onOptionsSent)="partCatergoryFilter($event)"
-      (onSetSubBuild)="setSubBuild($event)"
-    ></filterComponent>
+   (onDisplayMode)="setDisplayMode($event)"
+   (onFileOption)="triggerFileOption($event)"
+   (onCurrentGrouping)="setCurrentGrouping($event)"
+   (onOptionsSent)="partCatergoryFilter($event)"
+   (onSetSubBuild)="setSubBuild($event)"
+  ></filterComponent>
+ }
+
+ @case (colorOptionType) {-->
+   <!--Color-->
+   <!--<filterComponent
+   [filterType]="colorOptionType"
+   [options]="partColorOptions"
+   [inCurrentGrouping]="options.currentGrouping"
+   (onFileOption)="triggerFileOption($event)"
+   (onDisplayMode)="setDisplayMode($event)"
+   (onCurrentGrouping)="setCurrentGrouping($event)"
+   (onOptionsSent)="partColorFilter($event)"
+   (onSetSubBuild)="setSubBuild($event)"
+  ></filterComponent>
+ }
+ @case (storageOptionType) {-->
+   <!--Storage-->
+   <!--<filterComponent
+    [filterType]="storageOptionType"
+    [options]="partStorageOptions"
+    [inCurrentGrouping]="options.currentGrouping"
+    (onFileOption)="triggerFileOption($event)"
+    (onDisplayMode)="setDisplayMode($event)"
+    (onCurrentGrouping)="setCurrentGrouping($event)"
+    (onOptionsStringSent)="partStorageFilter($event)"
+    (onSetSubBuild)="setSubBuild($event)"
+   ></filterComponent>
   }
-
-  @case (colorOptionType) {-->
-      <!--Color-->
-      <!--<filterComponent
-      [filterType]="colorOptionType"
-      [options]="partColorOptions"
-      [inCurrentGrouping]="options.currentGrouping"
-      (onFileOption)="triggerFileOption($event)"
-      (onDisplayMode)="setDisplayMode($event)"
-      (onCurrentGrouping)="setCurrentGrouping($event)"
-      (onOptionsSent)="partColorFilter($event)"
-      (onSetSubBuild)="setSubBuild($event)"
-    ></filterComponent>
-  }
-  @case (storageOptionType) {-->
-      <!--Storage-->
-      <!--<filterComponent
-        [filterType]="storageOptionType"
-        [options]="partStorageOptions"
-        [inCurrentGrouping]="options.currentGrouping"
-        (onFileOption)="triggerFileOption($event)"
-        (onDisplayMode)="setDisplayMode($event)"
-        (onCurrentGrouping)="setCurrentGrouping($event)"
-        (onOptionsStringSent)="partStorageFilter($event)"
-        (onSetSubBuild)="setSubBuild($event)"
-      ></filterComponent>
-    }
-  }-->
-    
+ }-->
+  
 </div>
 
 <!--Body-->
 
 <div class="w3-container element-header">
-  <span class="w3-left">
-    <!--<img class="title-img" src="{{legoSet!.set_img_url!}}" />-->
-    <app-image
-      img_url="{{ legoSet!.set_img_url! }}"
-      alt_img_url=""
-      id="{{ legoSet!.set_num }}"
-      imgClass="title-img"
-    >
-    </app-image>
-  </span>
-  <span class="w3-middle">
-    <h1 id="tableLabel">{{ legoSet!.name }} Elements</h1>
-  </span>
+ <span class="w3-left">
+  <!--<img class="title-img" src="{{legoSet!.set_img_url!}}" />-->
+  <app-image
+   img_url="{{ legoSet!.set_img_url! }}"
+   alt_img_url=""
+   id="{{ legoSet!.set_num }}"
+   imgClass="title-img"
+  >
+  </app-image>
+ </span>
+ <span class="w3-middle">
+  <h1 id="tableLabel">{{ legoSet!.name }} Elements</h1>
+ </span>
 
-  @if (!Loaded) {
-    <p><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
-  }
+ @if (!Loaded) {
+  <p><em>Please enter a set number (normally found on the instruction book, or box).</em></p>
+ }
 </div>
 @if (Loaded) {
 <div>
-  @if (options.displayMode === enumDisplyMode.TV) {
-  <elementTable [elements]="elements"
-                [optionGroups]="filterOptionGroups"
-                [currentGrouping]="options.currentGrouping"
-                (itemForStorage)="setStorage($event)"></elementTable>
-  <!--[groupColor]="filterOptionGroups.partColorOptions"
-  [groupCategory]="filterOptionGroups.partCategoryOptions"
-  [groupStorage]="filterOptionGroups.partStorageOptions"-->
-  } @else if (options.displayMode === enumDisplyMode.CV) {
-  <elementCards [elements]="elements"
-                [optionGroups]="filterOptionGroups"
-                [currentGrouping]="options.currentGrouping"
-                (itemForStorage)="setStorage($event)"></elementCards>
-  <!--[groupColor]="filterOptionGroups.partColorOptions"
-  [groupCategory]="filterOptionGroups.partCategoryOptions"
-  [groupStorage]="filterOptionGroups.partStorageOptions"-->  }
+ @if (options.displayMode === enumDisplyMode.TV) {
+ <elementTable [elements]="elements"
+        [optionGroups]="filterOptionGroups"
+        [currentGrouping]="options.currentGrouping"
+        (itemForStorage)="setStorage($event)"></elementTable>
+ <!--[groupColor]="filterOptionGroups.partColorOptions"
+ [groupCategory]="filterOptionGroups.partCategoryOptions"
+ [groupStorage]="filterOptionGroups.partStorageOptions"-->
+ } @else if (options.displayMode === enumDisplyMode.CV) {
+ <elementCards [elements]="elements"
+        [optionGroups]="filterOptionGroups"
+        [currentGrouping]="options.currentGrouping"
+        (itemForStorage)="setStorage($event)"></elementCards>
+ <!--[groupColor]="filterOptionGroups.partColorOptions"
+ [groupCategory]="filterOptionGroups.partCategoryOptions"
+ [groupStorage]="filterOptionGroups.partStorageOptions"--> }
 </div>
 }
 @if (storageVisable) {
-  <storage
-    [elementValue]="elementForStorage"
-    (saveStorageEvent)="addedStorage($event)"
-    (closeModalEvent)="setStorageHidden($event)"
-  >
-  </storage>
+ <storage
+  [elementValue]="elementForStorage"
+  (saveStorageEvent)="addedStorage($event)"
+  (closeModalEvent)="setStorageHidden($event)"
+ >
+ </storage>
 }

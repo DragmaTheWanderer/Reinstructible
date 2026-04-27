@@ -6,18 +6,18 @@ import { PartsRoutingModule } from './parts-routing-module';
 import { Parts } from './parts';
 
 @NgModule({
-  declarations: [
-   
-  ],
-  imports: [
-    BrowserModule, 
-    PartsRoutingModule,
-    Parts,
-  ],
-  providers: [
-    provideHttpClient(),
-    provideBrowserGlobalErrorListeners()
-  ],
-  bootstrap: [Parts]
+ declarations: [
+  
+ ],
+ imports: [
+  BrowserModule, 
+  PartsRoutingModule,
+  Parts,
+ ],
+ providers: [
+  provideHttpClient(),
+  provideBrowserGlobalErrorListeners()
+ ],
+ bootstrap: [Parts]
 })
 export class PartsModule { }
